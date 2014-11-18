@@ -41,12 +41,14 @@ inputManagerProcessBuffer:
     move $s1, $a1           # Buffer 0 para $s1
     li $s2, 0x00F0          # $s2 contem o codigo para remocao de botao
 
+    j PULA_BOTOES
+
+##################################################################################
     srl $t0, $s0, 24        # Byte mais significativo do buffer 1 vai pra $t0
     bne $t0, $s2, inputManagerProcessBuffer_ignoreFirstByte # Se $t0 nao for 0x00F0, ignora esse byte
     li $a1, 0               # Se $t0 for 0x00F0, seta o proximo byte para false, se for um botao
     sll $a0, $s0, 8
     srl $a0, $a0, 24
-
 
     jal inputManagerSetButton   # Seta o segundo byte pra false
     j inputManagerProcessBuffer_thirdByte # Vai para o terceiro byte
@@ -102,8 +104,8 @@ inputManagerProcessBuffer_sixthByteToFalse:
     j inputManagerProcessBuffer_seventhByte # Vai pro setimo byte
 inputManagerProcessBuffer_sixthByte:
     sll $a0, $s1, 8
-    srl $a0, $s1, 24
-    beq $a0, $s2, inputManagerProcessBuffer_sixthByteToFalse
+    srl $a0, $a0, 24
+    beq $a0, $s2, inputManagerProcessBuffer_seventhByteToFalse
     li $a1, 1
     jal inputManagerSetButton #seta o sexto byte pra true
     j inputManagerProcessBuffer_seventhByte # Vai pro setimo byte
@@ -113,10 +115,13 @@ inputManagerProcessBuffer_seventhByteToFalse:
     li $a1, 0
     jal inputManagerSetButton   # Seta o setimo byte pra false
     j inputManagerProcessBuffer_eighthByte # Vai pro oitavo byte
+##################################################################################
+PULA_BOTOES:
 inputManagerProcessBuffer_seventhByte:
     sll $a0, $s1, 16
-    srl $a0, $s1, 24
-    beq $a0, $s2, inputManagerProcessBuffer_sixthByteToFalse
+    srl $a0, $a0, 24
+    beq $a0, $s2, inputManagerProcessBuffer_eighthByteToFalse
+    j inputManagerProcessBuffer_eighthByte
     li $a1, 1
     jal inputManagerSetButton #seta o setimo byte pra true
     j inputManagerProcessBuffer_eighthByte # Vai pro oitavo byte
@@ -128,7 +133,7 @@ inputManagerProcessBuffer_eighthByteToFalse:
     j inputManagerProcessBuffer_end # termina
 inputManagerProcessBuffer_eighthByte:
     sll $a0, $s1, 24
-    srl $a0, $s1, 24
+    srl $a0, $a0, 24
     li $a1, 1
     jal inputManagerSetButton #seta o oitavo byte pra true
 inputManagerProcessBuffer_end:
@@ -141,7 +146,6 @@ inputManagerProcessBuffer_end:
     addi $sp, $sp, 24
     jr $ra
 
-### TODO: testar esses valores
 ## Dado um byte no registrador $a0, descobre se eh um botao e seta a flag correspondente.
 ## Se o valor em $a1 for 0, seta para falso. Se for 1, seta para verdadeiro.
 inputManagerSetButton:
@@ -162,36 +166,36 @@ inputManagerSetButton_X:
     j inputManagerSetButtonFoundButton
 inputManagerSetButton_Y:
     li $t0, 0x0000001C ### Botao Y
-    bne $t0, $a0, inputManagerSetButton_Right
-    li $t0, 0x0008
-    j inputManagerSetButtonFoundButton
-inputManagerSetButton_Right:
-    li $t0, 0x0000004B ### Botao Right
-    bne $t0, $a0, inputManagerSetButton_Up
-    li $t0, 0x0010
-    j inputManagerSetButtonFoundButton
-inputManagerSetButton_Up:
-    li $t0, 0x00000043 ### Botao Up
-    bne $t0, $a0, inputManagerSetButton_Left
-    li $t0, 0x0020
-    j inputManagerSetButtonFoundButton
-inputManagerSetButton_Left:
-    li $t0, 0x0000003B ### Botao Left
-    bne $t0, $a0, inputManagerSetButton_Down
-    li $t0, 0x0040
-    j inputManagerSetButtonFoundButton
-inputManagerSetButton_Down:
-    li $t0, 0x00000042 ### Botao Down
     bne $t0, $a0, inputManagerSetButton_Start
-    li $t0, 0x0080
+    li $t0, 0x0008
     j inputManagerSetButtonFoundButton
 inputManagerSetButton_Start:
     li $t0, 0x0000005A ### Botao Start
     bne $t0, $a0, inputManagerSetButton_Select
-    li $t0, 0x0100
+    li $t0, 0x0010
     j inputManagerSetButtonFoundButton
 inputManagerSetButton_Select:
     li $t0, 0x00000059 ### Botao Select
+    bne $t0, $a0, inputManagerSetButton_Right
+    li $t0, 0x0020
+    j inputManagerSetButtonFoundButton
+inputManagerSetButton_Right:
+    li $t0, 0x0000004B ### Botao Right
+    bne $t0, $a0, inputManagerSetButton_Up
+    li $t0, 0x0040
+    j inputManagerSetButtonFoundButton
+inputManagerSetButton_Up:
+    li $t0, 0x00000043 ### Botao Up
+    bne $t0, $a0, inputManagerSetButton_Left
+    li $t0, 0x0080
+    j inputManagerSetButtonFoundButton
+inputManagerSetButton_Left:
+    li $t0, 0x0000003B ### Botao Left
+    bne $t0, $a0, inputManagerSetButton_Down
+    li $t0, 0x0100
+    j inputManagerSetButtonFoundButton
+inputManagerSetButton_Down:
+    li $t0, 0x00000042 ### Botao Down
     bne $t0, $a0, inputManagerSetButton_R
     li $t0, 0x0200
     j inputManagerSetButtonFoundButton
