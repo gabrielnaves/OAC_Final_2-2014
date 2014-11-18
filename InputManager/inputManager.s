@@ -42,8 +42,9 @@ inputManagerProcessBuffer:
     li $s2, 0x00F0          # $s2 contem o codigo para remocao de botao
 
     j PULA_BOTOES
-
 ##################################################################################
+##################################################################################
+PULA_BOTOES:
     srl $t0, $s0, 24        # Byte mais significativo do buffer 1 vai pra $t0
     bne $t0, $s2, inputManagerProcessBuffer_ignoreFirstByte # Se $t0 nao for 0x00F0, ignora esse byte
     li $a1, 0               # Se $t0 for 0x00F0, seta o proximo byte para false, se for um botao
@@ -115,13 +116,10 @@ inputManagerProcessBuffer_seventhByteToFalse:
     li $a1, 0
     jal inputManagerSetButton   # Seta o setimo byte pra false
     j inputManagerProcessBuffer_eighthByte # Vai pro oitavo byte
-##################################################################################
-PULA_BOTOES:
 inputManagerProcessBuffer_seventhByte:
     sll $a0, $s1, 16
     srl $a0, $a0, 24
     beq $a0, $s2, inputManagerProcessBuffer_eighthByteToFalse
-    j inputManagerProcessBuffer_eighthByte
     li $a1, 1
     jal inputManagerSetButton #seta o setimo byte pra true
     j inputManagerProcessBuffer_eighthByte # Vai pro oitavo byte
@@ -219,6 +217,8 @@ inputManagerSetButtonSetToFalse:
     and $t1, $t0, $t1
     sw $t1, inputManagerFlags
     jr $ra
+
+
 
 isButtonDown_A:
     lw $v0, inputManagerFlags
