@@ -4,3 +4,7 @@ InputManager/Mars44_Custom_v34.jar
 InputManager/syscall_code.mif
 InputManager/syscall_data.mif
 InputManager/tmp_code.mif
+printImg/printImgTest_code.mif
+printImg/printImgTest_data.mif
+printImg/syscall_code.mif
+printImg/syscall_data.mif
