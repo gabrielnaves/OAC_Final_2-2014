@@ -1,4 +1,4 @@
-#    .data
+    .data
 ####################################
 # inputManagerFlags:               #
 # Bit 0: A        Bit 6: Right     #
@@ -8,9 +8,9 @@
 # Bit 4: Start    Bit 10: R        #
 # Bit 5: Select   Bit 11: L        #
 ####################################
-#inputManagerFlags:           .word    0x00000000
+inputManagerFlags:           .word    0x00000000
 
-#    .text
+    .text
 inputManagerUpdate:
     addi $sp, $sp, -8
     sw $ra, 0($sp)
@@ -41,10 +41,6 @@ inputManagerProcessBuffer:
     move $s1, $a1           # Buffer 0 para $s1
     li $s2, 0x00F0          # $s2 contem o codigo para remocao de botao
 
-    j PULA_BOTOES
-##################################################################################
-##################################################################################
-PULA_BOTOES:
     srl $t0, $s0, 24        # Byte mais significativo do buffer 1 vai pra $t0
     bne $t0, $s2, inputManagerProcessBuffer_ignoreFirstByte # Se $t0 nao for 0x00F0, ignora esse byte
     li $a1, 0               # Se $t0 for 0x00F0, seta o proximo byte para false, se for um botao

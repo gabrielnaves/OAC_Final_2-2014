@@ -12,17 +12,6 @@ stringBotao_Down:        .asciiz   "Botao Down pressionado"
 stringBotao_R:           .asciiz   "Botao R pressionado"
 stringBotao_L:           .asciiz   "Botao L pressionado"
 
-####################################
-# inputManagerFlags:               #
-# Bit 0: A        Bit 6: Right     #
-# Bit 1: B        Bit 7: Up        #
-# Bit 2: X        Bit 8: Left      #
-# Bit 3: Y        Bit 9: Down      #
-# Bit 4: Start    Bit 10: R        #
-# Bit 5: Select   Bit 11: L        #
-####################################
-inputManagerFlags:           .word    0x00000000
-
     .text
     ## Habilita deteccao de excecoes do teclado ##
     la $t0, 0x66666666
