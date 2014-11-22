@@ -35,6 +35,17 @@ UART_READ:
 # t3: contador do protocolo rs232 definido (primeiros 4 bytes indicam quantidade de bytes a serem lidos do arquivo)
 ###################
 	
+	move $t0, $zero
+	move $t1, $zero
+	move $t2, $zero
+	move $t3, $zero
+	move $t4, $zero
+	move $t5, $zero
+	move $t6, $zero
+	move $t7, $zero
+	move $t8, $zero
+	move $t9, $zero
+	
 	la $t0, 0xFFFF0120
 	move $t3, $zero	
 	li $t6, 3
@@ -69,8 +80,6 @@ UART_READ:
 		
 		
 		bne $t4, $zero, CONTADOR_BYTES_ARQ
-		
-		#TRAP: j TRAP
 	
 	###########################################
 	# Baseado na quantidade de bytes, espera receber $t3 bytes do arquivo e escreve na memória
