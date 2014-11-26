@@ -8,6 +8,92 @@
 #  Byte de transparencia: 0x28                                      #
 #####################################################################
     .text
+
+#################################
+# $a0: endereço da imagem
+# $a1: half0: posição x | half1: posição y
+###############################
+printTile:
+    addi $sp, $sp, -32
+    sw $s0, 0($sp)
+    sw $s1, 4($sp)
+    sw $s2, 8($sp)
+    sw $s3, 12($sp)
+    sw $s4, 16($sp)
+    sw $s5, 20($sp)
+    sw $s6, 24($sp)
+    sw $s7, 28($sp)
+
+    lh $s0, 0($a1) #x
+    lh $s1, 2($a1) #y
+
+    add $a0, $a0, $s0 #posiciona
+
+    li $s2, 20 #largura
+    li $s3, 17 #altura
+
+    add $s6, $zero, $zero #contador de posicao y
+    li $s7, 24 #numero 27
+
+    printTileLoop:
+        lw $s7, 0($a0)
+        addi $t1, $zero, 0xFF #mascara
+        addi $t2, $zero, $zero #contador de shift
+        add $s5, $zero, $zero #contador de posicao x
+
+        eixoX:
+            beq $t6, $t2, pulaEixoY
+
+            li $v0, 45                          # Codigo do syscall plot
+
+            add $t0, $s0, $s5                   # posicao x do pixel + contador de pixel x
+            move $a0, $t0                       # Posicao x do pixel
+
+            add $t0, $s1, $s6                   # posicao y do pixel + contador de pixel y
+            move $a1, $t1                       # Posicao y do pixel
+
+            and $t8, $s7, $t1                   # pega pixel da imagem
+            srlv $t8, $t8, $t2                  # shifta para pixel ocupar posicao menos significativa
+            move $a2, $t8                       # Cor para printar
+            syscall                             # Plota o pixel
+
+            addi $t2, $t2, 8
+            srlv $t1, $t1, 8
+
+            addi $s5, $s5, 1
+
+            slt $t3, $t2, $s7
+            beq $t3, $zero, proximaWord
+
+            j eixoX
+
+            proximaWord:
+                addi $a0, $a0, 4
+                lw $s7, 0($a0)
+                addi $t1, $zero, 0xFF #mascara
+                addi $t2, $zero, $zero #contador de shift
+
+                j eixoX
+        pulaEixoY:
+            addi $s6, $s6, 1
+            slt $t0, $s3, $s6           #se o contador de altura for maior que a altura da imagem, fim
+            addi $a0, $a0, 300          #mais 300 porque andou 20 de x
+
+            bne $t0, $zero, printTileLoop
+
+    fimPrintTile:
+
+        lw $s0, 0($sp)
+        lw $s1, 4($sp)
+        lw $s2, 8($sp)
+        lw $s3, 12($sp)
+        lw $s4, 16($sp)
+        lw $s5, 20($sp)
+        lw $s6, 24($sp)
+        lw $s7, 28($sp)
+        addi $sp, $sp, 32
+        jr $ra
+
 printImg:
     addi $sp, $sp, -32
     sw $s0, 0($sp)
