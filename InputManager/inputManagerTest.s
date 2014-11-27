@@ -27,7 +27,7 @@ stringBotao_L:           .asciiz   "Botao L pressionado"
 main:
     jal inputManagerUpdate
 
-    la $t0, 0xFFFF0100 
+    la $t0, 0xFFFF0100 #buffer0
     lw $s7, 0($t0)
 
 botao_A:
