@@ -29,6 +29,9 @@ printTile:
 
     add $a0, $a0, $s0 #posiciona
 
+    TRAP:
+        j TRAP
+
     li $s2, 20 #largura
     li $s3, 17 #altura
 
@@ -38,11 +41,11 @@ printTile:
     printTileLoop:
         lw $s7, 0($a0)
         addi $t1, $zero, 0xFF #mascara
-        addi $t2, $zero, $zero #contador de shift
+        add $t2, $zero, $zero #contador de shift
         add $s5, $zero, $zero #contador de posicao x
 
         eixoX:
-            beq $t6, $t2, pulaEixoY
+            beq $s5, $s2, pulaEixoY
 
             li $v0, 45                          # Codigo do syscall plot
 
@@ -58,7 +61,7 @@ printTile:
             syscall                             # Plota o pixel
 
             addi $t2, $t2, 8
-            srlv $t1, $t1, 8
+            srl $t1, $t1, 8
 
             addi $s5, $s5, 1
 
@@ -71,7 +74,7 @@ printTile:
                 addi $a0, $a0, 4
                 lw $s7, 0($a0)
                 addi $t1, $zero, 0xFF #mascara
-                addi $t2, $zero, $zero #contador de shift
+                add $t2, $zero, $zero #contador de shift
 
                 j eixoX
         pulaEixoY:
