@@ -1,11 +1,28 @@
-
+###########################################
+# Argumentos:
+# 	$a0: endereço para escrita dos bytes do RS232
+# Retorno:
+#	$v0: bytes lidos
+#
+# NOTA: Os primeiros 4 bytes a serem enviados pela RS232 *DEVEM* ser a quantidade de bytes que o arquivo possui
+# NOTA2: eu não me importo com temporários
+###########################################
 UART_READ:
-###################
-# t0: endereço para leitura
+
+# t0: endereço para leitura do RS232
 # t1: indica quando byte está pronto para ser lido
 # t2: byte lido
 # t3: contador do protocolo rs232 definido (primeiros 4 bytes indicam quantidade de bytes a serem lidos do arquivo)
-###################
+	move $t0, $zero
+	move $t1, $zero
+	move $t2, $zero
+	move $t3, $zero
+	move $t4, $zero
+	move $t5, $zero
+	move $t6, $zero
+	move $t7, $zero
+	move $t8, $zero
+	move $t9, $zero
 	
 	la $t0, 0xFFFF0120
 	move $t3, $zero	
@@ -14,10 +31,7 @@ UART_READ:
 	li $t4, 4	#contador de 4 bytes
 	
 	
-	###########################################
 	# Método para pegar os 4 primeiros bytes e associá-los a um contador de bytes do arquivo
-	# 
-	###########################################
 	CONTADOR_BYTES_ARQ: 
 		CHECK_READY1_CONTADOR:
 			lw $t1, 8($t0) 	#0xFFFF0128
@@ -44,10 +58,7 @@ UART_READ:
 		
 		#TRAP: j TRAP
 	
-	###########################################
 	# Baseado na quantidade de bytes, espera receber $t3 bytes do arquivo e escreve na memória
-	# 
-	###########################################
 	move $v0, $t3
 	li $t4, 4	#contador de uma word
 	li $t6, 3
