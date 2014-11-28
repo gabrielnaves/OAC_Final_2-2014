@@ -22,15 +22,14 @@ printTile:
     mult $t3, $t1
     mflo $t3 #pixel y
 
-    add $a1, $zero, $zero
-    add $a1, $t2
+    add $a1, $t2, $zero
     sll $a1, $a1, 16 #x
-    add $a1, $t3 #y
+    add $a1, $a1, $t3 #y
 
     addi $sp, $sp, -4
     sw $ra, 0($sp)
 
-    j printTile
+    jal printTilePixel
 
     lw $ra, 0($sp)
     addi $sp, $sp, 4
