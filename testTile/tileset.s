@@ -10,7 +10,7 @@
 
 printTile:
     li $t0, 20 #largura tile
-    li $t1, 16 #altura tile
+    li $t1, 17 #altura tile
 
     srl $t2, $a1, 16 #i
     sll $t3, $a1, 16 #pré-j
@@ -75,8 +75,8 @@ printTilePixel:
     add $t4, $zero, $a0 #coloca em t4 o endereço de onde estão os pixels da imagem
 
 
-    li $s2, 21 #largura tile + 1 (20 na verdade)
-    li $s3, 18 #altura tile + 1 (17 na verdade)
+    li $s2, 20 #largura tile + 1 (20 na verdade)
+    li $s3, 17 #altura tile + 1 (17 na verdade)
 
     add $s6, $zero, $zero #contador de posicao y
     li $s4, 25 #numero 24
