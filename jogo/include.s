@@ -1,6 +1,6 @@
 .text
 
-	.include "uartRead.s"
-	.include "inputManager.s"
-	.include "printImg.s"
-	.include "tileset.s"
+	.include "modulos/uartRead.s"
+	.include "modulos/inputManager.s"
+	.include "modulos/printImg.s"
+	.include "modulos/tileset.s"
