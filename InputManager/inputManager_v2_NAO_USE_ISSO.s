@@ -42,7 +42,7 @@ inputManagerProcessBuffer:
     li $s2, 0x00F0          # $s2 contem o codigo para remocao de botao
 
 inputManagerProcessBuffer_firstByte:
-    srl $a0, $s0, 24        # $t0 contem o byte mais significativo do buffer 1
+    srl $a0, $s0, 24        # $a0 contem o byte mais significativo do buffer 1
     beq $a0, $s2, inputManagerProcessBuffer_secondByte # Se esse codigo for 0x00F0 esse byte pode ser ignorado
     # Se o codigo do primeiro byte nao for 0x00F0 seta esse byte pra true se for botao
     li $a1, 1
