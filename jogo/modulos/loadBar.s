@@ -1,7 +1,8 @@
 .text	
 ###########plota a barra de load####################
-#não salva os $s pois é o primeiro programa a rodar#
 loadBar:
+    addi $sp, $sp, -4
+    sw $s0, 0($sp)
 	li $s2, 200 #y
 linhasdeloadhorizontal:
 	li $s1, 60 #x inicial
@@ -117,6 +118,8 @@ li $v0, 45
     lw $ra, 0($sp)
     addi $sp, $sp, 4
 
+lw $s0, 0($sp)
+addi $sp, $sp, 4
 jr $ra
 
 
@@ -215,3 +218,39 @@ Plot:
 	or $a0,$a0,$a1
 	sb $a2,0($a0)
 	jr $ra
+
+loadGame:
+    addi $sp, $sp, -4
+    sw $ra, 0($sp)
+    move $s0, $a0 # numero de arquivos para ler
+    li $a0,0xaa  #fundo azul
+    jal CLS
+    ########
+    jal loadBar
+    ########
+    li $s1, 0 #contador
+
+    li $s2, 0x10010000 #.data
+    li $s3, 0x10014000 # sram
+    sw $s3, 0($s2)
+
+    loadGameLoop:
+        beq $s0, $s1, loadGameFim
+        lw $s3, 0($s2)
+        move $a0, $s3 #endereco para ser escrito na sram
+        jal UART_READ
+        add $t0, $s3, $v0 #endereco anterior mais o numero de bytes do arquivo anterior
+        add $s2, $s2, 4 #aponta para a proxima label no .data
+        sw $t0, 0($s2)  #altera essa label para o proximo endereco vago
+        #printa alguma coisa referete ao load
+        addi $s1, $s1, 1
+        
+        move $a0, $s1
+        move $a1, $s0
+        jal preenchePorcentagem
+
+        j loadGameLoop
+loadGameFim:
+    lw $ra, 0($sp)
+    addi $sp, $sp, 4
+    jr $ra
