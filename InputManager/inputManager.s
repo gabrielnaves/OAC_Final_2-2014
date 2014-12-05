@@ -12,9 +12,10 @@ inputManagerFlags:           .word    0x00000000
 
     .text
 inputManagerUpdate:
-    addi $sp, $sp, -8
+    addi $sp, $sp, -12
     sw $ra, 0($sp)
     sw $a0, 4($sp)
+    sw $a1, 8($sp)
 
     la $t0, 0xFFFF0104 # Endereco do buffer 1 do teclado
     lw $a0, 0($t0)
@@ -24,7 +25,8 @@ inputManagerUpdate:
 
     lw $ra, 0($sp)
     lw $a0, 4($sp)
-    addi $sp, $sp, 8
+    lw $a1, 8($sp)
+    addi $sp, $sp, 12
     jr $ra
 
 ## Processa o buffer do teclado. $a0 contem o buffer 1 e $a1 contem o buffer 0.
