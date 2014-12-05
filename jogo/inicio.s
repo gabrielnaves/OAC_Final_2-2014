@@ -139,8 +139,4 @@ fimLoad:
 
 
 EXIT: j EXIT
-	.include "modulos/loadBar.s"
-	.include "modulos/uartRead.s"
-	.include "modulos/inputManager.s"
-	.include "modulos/printImg.s"
-	.include "modulos/tileset.s"
+	.include "include.s"
