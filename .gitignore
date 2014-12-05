@@ -9,3 +9,7 @@ printImg/printImgTest_data.mif
 printImg/syscall_code.mif
 printImg/syscall_data.mif
 MIPS-MULTI_v16
+InputManager/monta.s
+InputManager/tmp.s
+printImg/Mars44_Custom_v34.jar
+printImg/printImgTestRS232_code.mif
