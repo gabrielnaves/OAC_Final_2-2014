@@ -145,6 +145,7 @@ printInTile:
 #################################
 # $a0: endereco da imagem
 # $a1: half0: posicao da matriz i | half2: posicao da matriz j
+# Printa o tile (i,j) do BG
 # _________
 # | i | j |
 #
@@ -182,6 +183,7 @@ printTile:
 #################################
 # $a0: endereco da imagem
 # $a1: half0: posicao x | half2: posicao y
+# Função auxiliar para printar o tile
 # _________
 # | x | y |
 ###############################
