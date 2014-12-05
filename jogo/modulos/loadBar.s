@@ -10,7 +10,11 @@ linhasdeloadhorizontal:
 	add $a1, $s2, $zero
 	li $a2, 0x44
 	li $v0, 45
-	syscall
+	    addi $sp, $sp, -4
+    sw $ra, 0($sp)
+    jal Plot
+    lw $ra, 0($sp)
+    addi $sp, $sp, 4
 	#linha de cima
 	linhaLoadhorizontal:
 		beq $s1, $s3, proximaLinhaloadhorizontal
@@ -18,7 +22,13 @@ linhasdeloadhorizontal:
 		add $a1, $s2, $zero
 		li $a2, 0x44
 		li $v0, 45
-		syscall
+
+		addi $sp, $sp, -4
+    	sw $ra, 0($sp)
+    	jal Plot
+    	lw $ra, 0($sp)
+    	addi $sp, $sp, 4
+
 		addi $s1, $s1, 1
 		j linhaLoadhorizontal
 
@@ -38,7 +48,11 @@ linhasdeloadverticais:
 	add $a1, $s1, $zero
 	li $a2, 0x44
 	li $v0, 45
-	syscall
+	    addi $sp, $sp, -4
+    sw $ra, 0($sp)
+    jal Plot
+    lw $ra, 0($sp)
+    addi $sp, $sp, 4
 	#linha da esquerda
 	linhaLoadvertical:
 		beq $s1, $s3, proximaLinhaloadvertical
@@ -46,7 +60,13 @@ linhasdeloadverticais:
 		add $a1, $s1, $zero
 		li $a2, 0x44
 		li $v0, 45
-		syscall
+
+		addi $sp, $sp, -4
+    	sw $ra, 0($sp)
+    	jal Plot
+    	lw $ra, 0($sp)
+    	addi $sp, $sp, 4
+
 		addi $s1, $s1, 1
 		j linhaLoadvertical
 
@@ -69,7 +89,13 @@ preenchendoBarra:
 		add $a1, $s0, $zero
 		li $a2, 0xff
 		li $v0, 45
-		syscall
+
+		addi $sp, $sp, -4
+    	sw $ra, 0($sp)
+    	jal Plot
+    	lw $ra, 0($sp)
+    	addi $sp, $sp, 4
+
 		addi $s2, $s2, 1
 		j loopPreencher
 
@@ -85,7 +111,11 @@ addi $a0, $zero, 260
 addi $a1, $zero, 210
 li $a2, 0x44
 li $v0, 45
-syscall
+    addi $sp, $sp, -4
+    sw $ra, 0($sp)
+    jal Plot
+    lw $ra, 0($sp)
+    addi $sp, $sp, 4
 
 jr $ra
 
@@ -124,7 +154,13 @@ preenchePorcentagem:#
 		add $a1, $s0, $zero
 		li $a2, 0x44
 		li $v0, 45
-		syscall
+
+		addi $sp, $sp, -4
+    	sw $ra, 0($sp)
+    	jal Plot
+    	lw $ra, 0($sp)
+    	addi $sp, $sp, 4
+
 		addi $s0, $s0, 1
 		j loopPreencherPorcetagem
 
@@ -143,3 +179,39 @@ fimPorcentagem:
 	addi $sp, $sp, 16
 
     jr $ra
+
+##########funcoes do antigo syscall#############
+#####clear screen######
+#######################
+#  CLS	              #
+#  $a0	=  cor        #
+#######################
+ CLS:	
+ 	la $t6,0xFF000000  # Memoria VGA
+	la $t2,0xFF012C00  # Fim da memorai vga
+Fort3:  beq $t2,$t6, Endt3
+	sb $a0,0($t6)
+	addi $t6, $t6, 1
+	j Fort3
+Endt3:  jr $ra
+
+
+
+
+
+########Plot###########
+#######################
+#  Plot	              #
+#  $a0	=  x          #
+#  $a1	=  y          #
+#  $a2	=  cor        #
+#######################
+Plot:
+	li $at,320  
+	mult $a1,$at
+	mflo $a1
+	add $a0,$a0,$a1
+	la $a1, 0xFF000000   #endereco VGA
+	or $a0,$a0,$a1
+	sb $a2,0($a0)
+	jr $ra
