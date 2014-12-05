@@ -23,9 +23,14 @@ compile with the command: gcc tx.c rs232.c -Wall -Wextra -std=c99 -o2 -o tx
 
 int main(){
     mandaArquivo("../img/lvl2mapa2.bin\0");
-    mandaArquivo("../img/max_parado_1.bin\0");
 
-    
+    Sleep(1000);
+
+    mandaArquivo("../img/lvl2mapa2_matriz.bin\0");
+
+    Sleep(1000);
+
+    mandaArquivo("../img/max_parado_1.bin\0");
     return 0;
 }
 

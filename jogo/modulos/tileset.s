@@ -2,10 +2,11 @@
 # Sinayra Pascoal Cotts Moreira - 04/12/2014
 #  Modulos para lidar com tiles
 ###############################
-
+.text
 
 .eqv WIDTH_TILE 20 
 .eqv HEIGHT_TILE 17 
+
 
 #################################
 # $a0: half0: posicao do pixel x | half2: posicao do pixel y
@@ -93,9 +94,8 @@ printInTile:
 
 
 #################################
-# $a0: endereco da imagem background
+# $a0: endereco da imagem
 # $a1: half0: posicao da matriz i | half2: posicao da matriz j
-# Printa o tile do BG na matriz i,j
 # _________
 # | i | j |
 #
@@ -103,11 +103,11 @@ printInTile:
 ###############################
 
 printTile:
-    li $t0, WIDTH_TILE 
-    li $t1, HEIGHT_TILE
+    li $t0, 20 #largura tile
+    li $t1, 17 #altura tile
 
     srl $t2, $a1, 16 #i
-    sll $t3, $a1, 16 #pre-j
+    sll $t3, $a1, 16 #pré-j
     srl $t3, $t3, 16 #j
 
     mult $t2, $t0
@@ -131,12 +131,10 @@ printTile:
     jr $ra
 
 #################################
-# $a0: endereco da imagem do BG
+# $a0: endereco da imagem
 # $a1: half0: posicao x | half2: posicao y
-# Funcao interna: printa tile a partir da posicao c e y na tela
 # _________
 # | x | y |
-# Nota: eu nao me importo com temporarios
 ###############################
 printTilePixel:
     addi $sp, $sp, -4
@@ -152,12 +150,12 @@ printTilePixel:
     sw $s6, 24($sp)
     sw $s7, 28($sp)
 
-    # BOSTA! Nao funciona lh e lhu
+    # BOSTA! NÃ£o funciona lh e lhu
     #lh $s0, 0($a1) #x
     #lh $s1, 2($a1) #y
     
     srl $s0, $a1, 16 #x
-    sll $s1, $a1, 16 #pre-y
+    sll $s1, $a1, 16 #pré-y
     srl $s1, $s1, 16 #y
 
     addi $a0, $a0, 8 #pula word de largura e altura da imagem
@@ -171,9 +169,8 @@ printTilePixel:
     add $t4, $zero, $a0 #coloca em t4 o endereço de onde estão os pixels da imagem
 
 
-    li $s2, WIDTH_TILE
-    addi $s2, $s2, 1
-    li $s3, HEIGHT_TILE
+    li $s2, 20 #largura tile + 1 (20 na verdade)
+    li $s3, 17 #altura tile + 1 (17 na verdade)
 
     add $s6, $zero, $zero #contador de posicao y
     li $s4, 25 #numero 24
