@@ -7,11 +7,44 @@
 .eqv WIDTH_TILE 20 
 .eqv HEIGHT_TILE 17 
 
+
+#################################
+# $a0: endereco da imagem
+# $a1: half0: posicao da matriz i | half2: posicao da matriz j
+# $a2: byte que irá substituir conteúdo (i,j)
+# _________
+# | i | j |
+#
+# Nota: eu nao me importo com temporarios
+###############################
+updateTile:
+
+    srl $t0, $a1, 16 #i
+    sll $t1, $a1, 16 #pre-j
+    srl $t1, $t1, 16 #j
+
+    addi $t2, $zero, 16 
+    mult $t1, $t2
+    mflo $t2
+    add $t2, $t2, $t0 
+    
+    add $t0, $a0, $t0 
+
+    li $t3, 0xFFFFFF00
+    lw $t4, 0($t0)
+    and $t5, $t4, $t3
+    or $t5, $t5, $a2
+    sw $t5, 0($t0)
+
+    jr $ra
+
+#################################
 #Dado um endereço de memória de uma matriz de movimentação, retornar o conteudo de uma posicao dessa matriz
 #$v0 -> conteudo da posicao da matriz
 #$a0 -> começo da matriz
 #$a1 -> x
 #$a2 -> y
+#################################
 getTileInfo:
 	addi $t0, $zero, 16 
 	mult $a2, $t0
@@ -25,7 +58,7 @@ getTileInfo:
 	jr $ra
 
 #################################
-# $a0: half0: posicao do pixel x | half2: posicao do pixel y
+# $a1: half0: posicao do pixel x | half2: posicao do pixel y
 # $v0: half0: posicao da matriz i | half2: posicao da matriz j
 # Retorna, a partir da posicao (x,y) a posicao (i,j) da matriz de tile
 #      _________
@@ -39,8 +72,8 @@ getTile:
     li $t0, WIDTH_TILE 
     li $t1, HEIGHT_TILE
 
-    srl $t2, $a0, 16 #x
-    sll $t3, $a0, 16 #pre-y
+    srl $t2, $a1, 16 #x
+    sll $t3, $a1, 16 #pre-y
     srl $t3, $t3, 16 #y
 
     add $t4, $zero, $t0
