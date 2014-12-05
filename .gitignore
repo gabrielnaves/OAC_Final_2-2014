@@ -9,3 +9,4 @@ printImg/printImgTest_data.mif
 printImg/syscall_code.mif
 printImg/syscall_data.mif
 MIPS-MULTI_v16
+jogo/modulos/tileset.s
