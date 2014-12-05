@@ -69,7 +69,12 @@ printImgWidthEnd:
     move $a0, $s4                       # Posicao x do pixel
     move $a1, $s3                       # Posicao y do pixel
     move $a2, $t0                       # Cor para printar
-    syscall                             # Plota o pixel
+    #syscall                             # Plota o pixel
+    addi $sp, $sp, -4
+    sw $ra, 0($sp)
+    jal Plot
+    lw $ra, 0($sp)
+    addi $sp, $sp, 4
 printImgWidthEnd_JumpPixel:
     addi $s5, $s5, 1                    # contador de pixel++
     addi $s4, $s4, 1                    # j++
