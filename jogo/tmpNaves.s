@@ -2,7 +2,8 @@
     BG_1: .word 0x00000000
     MBG_1: .word 0x00000000
     MAX_FRONT: .word 0x00000000
-
+##############################################################################################################
+    FRAME_COUNTER: .word 0x00000000
 .text
 
 main:
@@ -24,6 +25,10 @@ main:
 
 ##############################################################################################################
 mainGameLoop:
+    lw $t0, FRAME_COUNTER
+    addi $t0, $t0, 1
+    sw $t0, FRAME_COUNTER
+
     jal inputManagerUpdate
     jal updateMax
     j mainGameLoop

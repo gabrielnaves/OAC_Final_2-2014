@@ -10,7 +10,6 @@ maxPositionY: .word 0x00000000
 updateMax:
     addi $sp, $sp, -4
     sw $ra, 0($sp)
-
     jal max_GetMovementInput
     move $a0, $v0
     move $a1, $v1
@@ -106,12 +105,12 @@ verificaMoveMax:
     beq $s0, $t0, verificaMoveMax_invalid
     li $t0, 14
     beq $s1, $t0, verificaMoveMax_invalid
-    #lw $a0, MBG_1
-    #move $a1, $s0
-    #move $a2, $s1
-    #jal getTileInfo
-    #li $t0, 0x23
-    #beq $v0, $t0, verificaMoveMax_invalid
+    lw $a0, MBG_1
+    move $a1, $s0
+    move $a2, $s1
+    jal getTileInfo
+    li $t0, 0x23
+    beq $v0, $t0, verificaMoveMax_invalid
     li $v0, 1
     j verificaMoveMax_End
 verificaMoveMax_invalid:
@@ -134,6 +133,22 @@ moveMax:
     sw $ra, 0($sp)
     sw $s0, 4($sp)
     sw $s1, 8($sp)
+    beq $a0, $zero, moveMax1450
+    beq $a1, $zero, moveMax1450
+moveMax2000:
+    lw $t0, FRAME_COUNTER
+    li $t1, 2050
+    div $t0, $t1
+    mfhi $t0
+    bne $t0, $zero, moveMax_End
+    j moveMax_checkIfHasMovement
+moveMax1450:
+    lw $t0, FRAME_COUNTER
+    li $t1, 1450
+    div $t0, $t1
+    mfhi $t0
+    bne $t0, $zero, moveMax_End
+moveMax_checkIfHasMovement:
     bne $a0, $zero, moveMax_move
     bne $a1, $zero, moveMax_move
     j moveMax_End
