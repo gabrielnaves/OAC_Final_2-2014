@@ -5,4 +5,4 @@
 	.include "modulos/printImg.s"
 	.include "modulos/tileset.s"
     .include "modulos/loadBar.s"
-    .include "enderecamento.s"
+    .include "modulos/max.s"

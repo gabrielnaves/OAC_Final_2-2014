@@ -85,11 +85,11 @@ apagaMax:
     move $a0, $s0
     addi $a1, $s1, -1
     jal printTile
-    
+
     lw $ra, 0($sp)
     lw $s0, 4($sp)
     lw $s1, 8($sp)
-    addi $sp, $sp, 12  
+    addi $sp, $sp, 12
     jr $ra
 
 ############
@@ -110,25 +110,31 @@ verificaMoveMax:
 # $a1 = movimento vertical (-1, 0, 1)
 ############
 moveMax:
-    addi $sp, $sp, -4
+    addi $sp, $sp, -12
     sw $ra, 0($sp)
+    sw $s0, 4($sp)
+    sw $s1, 8($sp)
     bne $a0, $zero, moveMax_move
     bne $a1, $zero, moveMax_move
     j moveMax_End
 moveMax_move:
     lw $t6, maxPositionX
     lw $t7, maxPositionY
-    add $a0, $t6, $a0
-    add $a1, $t7, $a1
+    add $s0, $t6, $a0
+    add $s1, $t7, $a1
+    move $a0, $s0
+    move $a1, $s1
     jal verificaMoveMax
     beq $v0, $zero, moveMax_End
-    #jal apagaMax
-    sw $a0, maxPositionX
-    sw $a1, maxPositionY
+    jal apagaMax
+    sw $s0, maxPositionX
+    sw $s1, maxPositionY
     jal printMax
 moveMax_End:
     lw $ra, 0($sp)
-    addi $sp, $sp, 4
+    lw $s0, 4($sp)
+    lw $s1, 8($sp)
+    addi $sp, $sp, 12
     jr $ra
 
 ############
