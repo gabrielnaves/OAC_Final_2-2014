@@ -9,8 +9,8 @@ main:
     li $a0, 3 # Numero de elementos no jogo
     jal loadGame
     sw $zero, inputManagerFlags
-    sw $zero, maxPositionX
     li $t0, 1
+    sw $t0, maxPositionX
     sw $t0, maxPositionY
     #li $a0, 0
     #li $a1, 0
