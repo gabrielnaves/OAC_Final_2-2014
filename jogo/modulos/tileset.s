@@ -12,10 +12,8 @@
 #$a0 -> começo da matriz
 #$a1 -> x
 #$a2 -> y
-getTileInfo:
-	addi $t0, $zero, 16 
-	mult $a2, $t0
-	mflo $t0
+getTileInfo: 
+	sll $t0, $a2, 4
 	add $t0, $t0, $a1 
 	
 	add $t0, $a0, $t0 

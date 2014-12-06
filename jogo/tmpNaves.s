@@ -8,8 +8,15 @@
 main:
     li $a0, 3 # Numero de elementos no jogo
     jal loadGame
-    la $t0, inputManagerFlags
-    sw $zero, 0($t0)
+    sw $zero, inputManagerFlags
+    sw $zero, maxPositionX
+    li $t0, 1
+    sw $t0, maxPositionY
+    #li $a0, 0
+    #li $a1, 0
+    #lw $a2, MAX_FRONT
+    #jal printImg
+    jal printMax
 ##############################################################################################################
 mainGameLoop:
     jal inputManagerUpdate
