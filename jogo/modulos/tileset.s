@@ -1,7 +1,3 @@
-#################################
-# Sinayra Pascoal Cotts Moreira - 04/12/2014
-#  Modulos para lidar com tiles
-###############################
 .text
 
 .eqv WIDTH_TILE 20 
@@ -58,7 +54,7 @@ getTile:
 
     procuraY:
         slt $t8, $t3, $t9 #pixel < tile ?
-        beq $t8, $t6, setIJ # t8 == 1, entao tileX ok
+        beq $t8, $t6, setIJ # t8 == 1, entao tileY ok
         addi $t7, $t7, 1
         add $t9, $t9, $t1
         j procuraY
@@ -124,7 +120,7 @@ printTile:
     li $t1, 17 #altura tile
 
     srl $t2, $a1, 16 #i
-    sll $t3, $a1, 16 #pré-j
+    sll $t3, $a1, 16 #pre-j
     srl $t3, $t3, 16 #j
 
     mult $t2, $t0
@@ -167,13 +163,9 @@ printTilePixel:
     sw $s5, 20($sp)
     sw $s6, 24($sp)
     sw $s7, 28($sp)
-
-    # BOSTA! NÃ£o funciona lh e lhu
-    #lh $s0, 0($a1) #x
-    #lh $s1, 2($a1) #y
     
     srl $s0, $a1, 16 #x
-    sll $s1, $a1, 16 #pré-y
+    sll $s1, $a1, 16 #pre-y
     srl $s1, $s1, 16 #y
 
     addi $a0, $a0, 8 #pula word de largura e altura da imagem
@@ -187,8 +179,8 @@ printTilePixel:
     add $t4, $zero, $a0 #coloca em t4 o endereço de onde estão os pixels da imagem
 
 
-    li $s2, 20 #largura tile + 1 (20 na verdade)
-    li $s3, 17 #altura tile + 1 (17 na verdade)
+    li $s2, 20 
+    li $s3, 17 
 
     add $s6, $zero, $zero #contador de posicao y
     li $s4, 25 #numero 24
@@ -288,6 +280,3 @@ printTilePixel:
 
         jr $ra
 
-
-#ADICIONE ESTE INCLUDE CASO QUEIRA TESTAR O GETTILE SEPARADO
-#.include "printImg.s"
