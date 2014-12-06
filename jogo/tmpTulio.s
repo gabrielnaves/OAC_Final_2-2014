@@ -2,38 +2,56 @@
     BG_1: .word 0x00000000
     MBG_1: .word 0x00000000
     MAX_FRONT: .word 0x00000000
-.eqv MAX_END_INI 0x10020005
 .text
 
 main:
-    li $a0, 2 # Numero de elementos no jogo
+    li $a0, 3 # Numero de elementos no jogo
     jal loadGame
     la $t0, inputManagerFlags
     sw $zero, 0($t0)
 
-    ####inicializacao padrao
-    la $v0,BG_1         #mapa 0
-    la $v1,MAX_END_INI  #endereco inical do Max
-    ####
-selecionaMapa:
-    move $a0,$v0
-    move $a1,$v1
-    jal mudaMapa
+    ####inicializacao padrao do mapa
+    #lw $a0,BG_1         #mapa 0
+    #la $a1,MAX_END_INI  #endereco inical do Max
+    #jal mudaMapa
 
+    li $a0, 0
+    li $a1, 0
+    lw $a2, BG_1
+    jal printImg
+
+    ##print inicial do max
+    # li $a0, 20
+    # li $a1, 17
+    # lw $a2, MAX_FRONT           #endereço da imagem na sram
+    # jal printImg
+
+    jal startMax
+    jal printMax
 ##############################################################################################################
 mainGameLoop:
     jal inputManagerUpdate
     jal updateMax
-    bne $v0,$zero,selecionaMapa
+    li $v0,0
+    bne $v0,$zero,mudaMapa
 
     jal updateMapa
     j mainGameLoop
 ##############################################################################################################
 mudaMapa:
     jr $ra
-updateMax:
-    jr $ra
+
 updateMapa:
+    jr $ra
+
+#####
+#a0 = x inicial
+#a1 = y inicial
+#####
+startMax:
+    addi $t0, $zero,5
+    sw $t0, maxPositionX
+    sw $t0, maxPositionY
     jr $ra
 
 .include "include.s"
