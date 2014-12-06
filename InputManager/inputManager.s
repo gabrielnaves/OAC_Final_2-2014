@@ -216,7 +216,9 @@ inputManagerSetButtonSetToFalse:
     sw $t1, inputManagerFlags
     jr $ra
 
-
+## As funcoes isButtonDown retornam a flag em $v0
+## $v0 = 0 => Botao nao esta pressionado
+## $v0 = 1 => Botao esta pressionado
 
 isButtonDown_A:
     lw $v0, inputManagerFlags
