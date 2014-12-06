@@ -8,15 +8,20 @@
 main:
     li $a0, 3 # Numero de elementos no jogo
     jal loadGame
-    sw $zero, inputManagerFlags
+    sw $zero, inputManagerFlags # Zera as flags do inputManager
+    # Printa o mapa
+    li $a0, 0
+    li $a1, 0
+    lw $a2, BG_1
+    jal printImg
+    # Seta a posicao inicial do max (temporario)
     li $t0, 1
     sw $t0, maxPositionX
+    li $t0, 2
     sw $t0, maxPositionY
-    #li $a0, 0
-    #li $a1, 0
-    #lw $a2, MAX_FRONT
-    #jal printImg
+    # printa o max
     jal printMax
+
 ##############################################################################################################
 mainGameLoop:
     jal inputManagerUpdate

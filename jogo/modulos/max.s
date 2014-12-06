@@ -1,9 +1,4 @@
 .data
-##########################################################
-# A posicao do max eh representada em apenas uma word    #
-# A parte mais significativa contem a posicao no eixo x  #
-# A parte menos significativa contem a posicao no eixo y #
-##########################################################
 maxPositionX: .word 0x00000000
 maxPositionY: .word 0x00000000
 
@@ -11,8 +6,6 @@ maxPositionY: .word 0x00000000
 
 ############
 # Funcao principal do update do max, deve rodar a cada frame do jogo.
-# $s6 = posicao no eixo x
-# $s7 = posicao no eixo y
 ############
 updateMax:
     addi $sp, $sp, -4
@@ -100,7 +93,34 @@ apagaMax:
 # $v0 = 1 se a posicao for valida
 ############
 verificaMoveMax:
+    addi $sp, $sp, -12
+    sw $ra, 0($sp)
+    sw $s0, 4($sp)
+    sw $s1, 8($sp)
+    move $s0, $a0
+    move $s1, $a1
+    li $t0, -1
+    beq $s0, $t0, verificaMoveMax_invalid
+    beq $s1, $t0, verificaMoveMax_invalid
+    li $t0, 16
+    beq $s0, $t0, verificaMoveMax_invalid
+    li $t0, 14
+    beq $s1, $t0, verificaMoveMax_invalid
+    #lw $a0, MBG_1
+    #move $a1, $s0
+    #move $a2, $s1
+    #jal getTileInfo
+    #li $t0, 0x23
+    #beq $v0, $t0, verificaMoveMax_invalid
     li $v0, 1
+    j verificaMoveMax_End
+verificaMoveMax_invalid:
+    li $v0, 0
+verificaMoveMax_End:
+    lw $ra, 0($sp)
+    lw $s0, 4($sp)
+    lw $s1, 8($sp)
+    addi $sp, $sp, 12
     jr $ra
 
 ############
