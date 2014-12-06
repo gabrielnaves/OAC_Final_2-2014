@@ -1,8 +1,12 @@
 .text	
 ###########plota a barra de load####################
 loadBar:
-    addi $sp, $sp, -4
+	addi $sp, $sp, -16
     sw $s0, 0($sp)
+    sw $s1, 4($sp)
+    sw $s2, 8($sp)
+    sw $s3, 12($sp)
+
 	li $s2, 200 #y
 linhasdeloadhorizontal:
 	li $s1, 60 #x inicial
@@ -118,8 +122,12 @@ li $v0, 45
     lw $ra, 0($sp)
     addi $sp, $sp, 4
 
+
 lw $s0, 0($sp)
-addi $sp, $sp, 4
+lw $s1, 4($sp)
+lw $s2, 8($sp)
+lw $s3, 12($sp)
+addi $sp, $sp, 16
 jr $ra
 
 
