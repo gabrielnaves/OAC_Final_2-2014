@@ -13,16 +13,23 @@
 #$a1 -> x
 #$a2 -> y
 getTileInfo:
-	addi $t0, $zero, 16 
-	mult $a2, $t0
-	mflo $t0
-	add $t0, $t0, $a1 
-	
-	add $t0, $a0, $t0 
-	lw $v0, 0($t0) #carrega em $v0 o conteudo desejado
-	sll $v0, $v0, 24 #limpa os 24 bits da esquerda
-	srl $v0, $v0, 24 #devolve o byte para o canto da direita
-	jr $ra
+    sll $t0, $a2, 4
+    add $t0, $t0, $a1 #carrega 16*y + x em $t0
+
+    li $t4, 4
+    div $t0, $t4
+    mflo $t1
+    sll $t0, $t1, 2
+    add $t0, $t0, $a0
+
+    lw $t2, 0($t0)
+    mfhi $t1
+    sll $t1, $t1, 3
+   
+    sllv $t2, $t2, $t1 #coloca o byte desejado no fim da word 
+    srl $v0, $t2, 24 #bota esse byte no inicio da word
+
+    jr $ra
 
 #################################
 # $a0: half0: posicao do pixel x | half2: posicao do pixel y
