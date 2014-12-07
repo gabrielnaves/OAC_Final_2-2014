@@ -255,14 +255,26 @@ moveMax_End:
 printMax:
     addi $sp, $sp, -4
     sw $ra, 0($sp)
-    la $a0, MAX_FRONT
-    lw $a0, 0($a0)
+    lw $a0, MAX_FRONT
     lw $t0, maxPositionX
     sll $t0, $t0, 16
     lw $t1, maxPositionY
     addi $t1, $t1, -1
+    # Verifica se o max esta um tile fora da tela
+    li $t4, -1
+    beq $t1, $t4, printMaxHardCoded
     or $a1, $t0, $t1
     jal printInTile
+    j printMax_end
+printMaxHardCoded:
+    move $a2, $a0
+    li $t5, 20
+    lw $t0, maxPositionX
+    mult $t0, $t5
+    mflo $a0
+    li $a1, -17
+    jal printImg
+printMax_end:
     lw $ra, 0($sp)
     addi $sp, $sp, 4
     jr $ra
