@@ -1,6 +1,19 @@
 .data
 maxPositionX: .word 0x00000000
 maxPositionY: .word 0x00000000
+#################################################################
+# maxSide contem a informacao de pra que lado o max esta virado #
+# Frente = 0                                                    #
+# Tras = 1                                                      #
+# Direita = 2                                                   #
+# Esquerda = 3                                                  #
+# Esse dado vai ser controlado pelo updateMax, junto com o      #
+# max_ChangeSide.                                               #
+#################################################################
+maxSide: .word 0x00000000
+## maxCurrentImage contem o endereco da imagem atual.
+## Esse endereco sera atualizado pelo max_ChangeSide.
+maxCurrentImage: .word 0x00000000
 
 .text
 
@@ -13,6 +26,7 @@ updateMax:
     jal max_GetMovementInput
     move $a0, $v0
     move $a1, $v1
+    jal max_ChangeSide
     jal moveMax
     lw $ra, 0($sp)
     addi $sp, $sp, 4
@@ -206,9 +220,9 @@ moveMax:
     sw $ra, 0($sp)
     sw $s0, 4($sp)
     sw $s1, 8($sp)
-    beq $a0, $zero, moveMax1450
-    beq $a1, $zero, moveMax1450
-moveMax2000:
+    beq $a0, $zero, moveMax_delayOrtogonal
+    beq $a1, $zero, moveMax_delayOrtogonal
+moveMax_delayDiagonal:
     li $a2, 1
     lw $t0, FRAME_COUNTER
     li $t1, 2050
@@ -216,7 +230,7 @@ moveMax2000:
     mfhi $t0
     bne $t0, $zero, moveMax_End
     j moveMax_checkIfHasMovement
-moveMax1450:
+moveMax_delayOrtogonal:
     li $a2, 0
     lw $t0, FRAME_COUNTER
     li $t1, 1450
@@ -255,7 +269,7 @@ moveMax_End:
 printMax:
     addi $sp, $sp, -4
     sw $ra, 0($sp)
-    lw $a0, MAX_FRONT
+    lw $a0, maxCurrentImage
     lw $t0, maxPositionX
     sll $t0, $t0, 16
     lw $t1, maxPositionY
@@ -277,4 +291,81 @@ printMaxHardCoded:
 printMax_end:
     lw $ra, 0($sp)
     addi $sp, $sp, 4
+    jr $ra
+
+############
+# A partir do lado antigo do max e do movimento (horizontal e vertical),
+# define se deve alterar o sprite.
+# $a0 = movimento horizontal
+# $a1 = movimento vertical
+# Convencao do maxSide:
+# Frente = 0
+# Tras = 1
+# Direita = 2
+# Esquerda = 3
+############
+max_ChangeSide:
+    addi $sp, $sp, -12
+    sw $ra, 0($sp)
+    sw $a0, 4($sp)
+    sw $a1, 8($sp)
+    ## Verifica se o movimento eh diagonal. Se for, nao altera o lado
+    beq $a0, $zero, max_ChangeSide_CheckVertical
+    beq $a1, $zero, max_ChangeSide_CheckHorizontal
+    j max_ChangeSide_end
+max_ChangeSide_CheckVertical:
+    beq $a1, $zero, max_ChangeSide_end # Se $a1 for zero nao tem movimento
+    # Aqui tem movimento vertical apenas
+    li $t0, -1
+    beq $t0, $a1, max_ChangeSide_CheckVertical_negative
+    # Aqui o movimento eh pra baixo
+    lw $t0, maxSide
+    beq $t0, $zero, max_ChangeSide_end # Se o lado anterior for igual ao atual, nao precisa fazer nada
+    sw $zero, maxSide
+    lw $t0, MAX_FRONT
+    sw $t0, maxCurrentImage
+    jal apagaMax
+    jal printMax
+    j max_ChangeSide_end
+max_ChangeSide_CheckVertical_negative:
+    # Aqui o movimento eh pra cima
+    li $t0, 1
+    lw $t1, maxSide
+    beq $t0, $t1, max_ChangeSide_end # Se o lado anterior for igual ao atual, nao precisa fazer nada
+    sw $t0, maxSide
+    lw $t0, MAX_BACK
+    sw $t0, maxCurrentImage
+    jal apagaMax
+    jal printMax
+    j max_ChangeSide_end
+max_ChangeSide_CheckHorizontal:
+    beq $a0, $zero, max_ChangeSide_end # Se $a0 for zero nao tem movimento
+    # Aqui tem movimento horizontal apenas
+    li $t0, -1
+    beq $t0, $a0, max_ChangeSide_CheckHorizontal_negative
+    # Aqui o movimento eh pra direita
+    li $t0, 2
+    lw $t1, maxSide
+    beq $t0, $t1, max_ChangeSide_end # Se o lado anterior for igual ao atual, nao precisa fazer nada
+    sw $t0, maxSide
+    lw $t0, MAX_RIGHT
+    sw $t0, maxCurrentImage
+    jal apagaMax
+    jal printMax
+    j max_ChangeSide_end
+max_ChangeSide_CheckHorizontal_negative:
+    # Aqui o movimento eh pra esquerda
+    li $t0, 3
+    lw $t1, maxSide
+    beq $t0, $t1, max_ChangeSide_end # Se o lado anterior for igual ao atual, nao precisa fazer nada
+    sw $t0, maxSide
+    lw $t0, MAX_LEFT
+    sw $t0, maxCurrentImage
+    jal apagaMax
+    jal printMax
+max_ChangeSide_end:
+    lw $ra, 0($sp)
+    lw $a0, 4($sp)
+    lw $a1, 8($sp)
+    addi $sp, $sp, 12
     jr $ra

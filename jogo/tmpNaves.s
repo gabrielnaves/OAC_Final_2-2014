@@ -2,12 +2,15 @@
     BG_1: .word 0x00000000
     MBG_1: .word 0x00000000
     MAX_FRONT: .word 0x00000000
+    MAX_BACK: .word 0x00000000
+    MAX_RIGHT: .word 0x00000000
+    MAX_LEFT: .word 0x00000000
 ##############################################################################################################
     FRAME_COUNTER: .word 0x00000000
 .text
 
 main:
-    li $a0, 3 # Numero de elementos no jogo
+    li $a0, 6 # Numero de elementos no jogo
     jal loadGame
     sw $zero, inputManagerFlags # Zera as flags do inputManager
     # Printa o mapa
@@ -20,6 +23,10 @@ main:
     sw $t0, maxPositionX
     li $t0, 2
     sw $t0, maxPositionY
+    # Seta o lado inicial do max e o sprite inicial
+    sw $zero, maxSide
+    lw $t0, MAX_FRONT
+    sw $t0, maxCurrentImage
     # printa o max
     jal printMax
 
