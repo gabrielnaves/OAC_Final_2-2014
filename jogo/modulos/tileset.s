@@ -71,7 +71,7 @@ getObjAddr:
     move $v0, $zero #nao encontrou
     jr $ra
     return_c:
-        lw $v0, movingBlock
+        lw $v0, MVBLOCK
         jr $ra
 
     return_e:

@@ -387,6 +387,8 @@ printaObjetosInicio:
 			beq $v0, $t2, proxMATUALj
 			li $t2, 0x4F
 			beq $v0, $t2, proxMATUALj
+			li $t2, 0x2e
+			beq $v0, $t2, proxMATUALj
 
 			#TRAP: j TRAP
 

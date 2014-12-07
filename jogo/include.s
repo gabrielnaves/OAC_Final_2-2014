@@ -6,4 +6,5 @@
     .include "modulos/loadBar.s"
     .include "modulos/max.s"
     .include "modulos/updateMap.s"
-    .include "modulos/fireballmap2.s"
+    #.include "modulos/fireballmap2.s"
+    .include "modulos/movingBlock.s"
