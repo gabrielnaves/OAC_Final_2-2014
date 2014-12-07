@@ -5,12 +5,16 @@
     MAX_BACK: .word 0x00000000
     MAX_RIGHT: .word 0x00000000
     MAX_LEFT: .word 0x00000000
+    MAX_2_FRONT: .word 0x00000000
+    MAX_2_BACK: .word 0x00000000
+    MAX_2_RIGHT: .word 0x00000000
+    MAX_2_LEFT: .word 0x00000000
 ##############################################################################################################
     FRAME_COUNTER: .word 0x00000000
 .text
 
 main:
-    li $a0, 6 # Numero de elementos no jogo
+    li $a0, 10 # Numero de elementos no jogo
     jal loadGame
     sw $zero, inputManagerFlags # Zera as flags do inputManager
     # Printa o mapa
@@ -27,6 +31,8 @@ main:
     sw $zero, maxSide
     lw $t0, MAX_FRONT
     sw $t0, maxCurrentImage
+    # Seta o estado inicial do max
+    sw $zero, maxCurrentState
     # printa o max
     jal printMax
 

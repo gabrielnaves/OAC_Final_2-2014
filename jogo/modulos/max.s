@@ -8,28 +8,71 @@ maxPositionY: .word 0x00000000
 # Direita = 2                                                   #
 # Esquerda = 3                                                  #
 # Esse dado vai ser controlado pelo updateMax, junto com o      #
-# max_ChangeSide.                                               #
+# max_ChangeSprite.                                             #
 #################################################################
 maxSide: .word 0x00000000
 ## maxCurrentImage contem o endereco da imagem atual.
-## Esse endereco sera atualizado pelo max_ChangeSide.
+## Esse endereco sera atualizado pelo max_ChangeSprite.
 maxCurrentImage: .word 0x00000000
-
+#################################################################
+# Contem a informacao do estado atual do max.
+# Os estados sao:
+# 0 => estado normal
+# 1 => maos levantadas sem segurar nada
+# 2 => maos levantadas segurando algo
+#################################################################
+maxCurrentState: .word 0x00000000
+#####
+# Serve para dizer quando ha mudanca de estado do max, pois deve apagar o max antigo e printar o max novamente
+#####
+maxCurrentStateControl: .word 0x00000000
 .text
 
 ############
 # Funcao principal do update do max, deve rodar a cada frame do jogo.
 ############
 updateMax:
-    addi $sp, $sp, -4
-    sw $ra, 0($sp)
+    addi $sp, $sp, -12
+    sw $s0, 0($sp)
+    sw $s1, 4($sp)
+    sw $ra, 8($sp)
     jal max_GetMovementInput
-    move $a0, $v0
-    move $a1, $v1
-    jal max_ChangeSide
+    move $s0, $v0
+    move $s1, $v1
+    jal max_GetInteractionInput
+    lw $t0, maxCurrentState
+    beq $t0, $zero, updateMax_SetNormalSprite
+    la $t0, MAX_2_FRONT
+    lw $a2, 0($t0) # max front
+    lw $a3, 4($t0) # max back
+    lw $t1, 8($t0)
+    lw $t2, 12($t0)
+    addi $sp, $sp, -8
+    sw $t1, 0($sp) # max right
+    sw $t2, 4($sp) # max left
+    j updateMax_changeSprite
+updateMax_SetNormalSprite:
+    la $t0, MAX_FRONT
+    lw $a2, 0($t0) # max front
+    lw $a3, 4($t0) # max back
+    lw $t1, 8($t0)
+    lw $t2, 12($t0)
+    addi $sp, $sp, -8
+    sw $t1, 0($sp) # max right
+    sw $t2, 4($sp) # max left
+updateMax_changeSprite:
+    move $a0, $s0
+    move $a1, $s1
+    jal max_ChangeSprite
+    addi $sp, $sp, 8
+    move $a0, $s0
+    move $a1, $s1
     jal moveMax
-    lw $ra, 0($sp)
-    addi $sp, $sp, 4
+    
+    lw $s0, 0($sp)
+    lw $s1, 4($sp)
+    lw $ra, 8($sp)
+    addi $sp, $sp, 12
     jr $ra
 
 ############
@@ -295,77 +338,141 @@ printMax_end:
 
 ############
 # A partir do lado antigo do max e do movimento (horizontal e vertical),
-# define se deve alterar o sprite.
+# define se deve alterar o sprite. Os sprites vem em $a2 e $a3, e de duas posicoes da pilha.
 # $a0 = movimento horizontal
 # $a1 = movimento vertical
+# $a2 = sprite front
+# $a3 = sprite back
+# Topo da pilha = sprite right
+# Topo da pilha menos um = sprite left
 # Convencao do maxSide:
 # Frente = 0
 # Tras = 1
 # Direita = 2
 # Esquerda = 3
 ############
-max_ChangeSide:
-    addi $sp, $sp, -12
+max_ChangeSprite:
+    addi $sp, $sp, -28
     sw $ra, 0($sp)
     sw $a0, 4($sp)
     sw $a1, 8($sp)
+    sw $s0, 12($sp)
+    sw $s1, 16($sp)
+    sw $s2, 20($sp)
+    sw $s3, 24($sp)
+    ## move os argumentos pros registradores salvos
+    move $s0, $a2 # front
+    move $s1, $a3 # back
+    lw $s2, 28($sp) # right
+    lw $s3, 32($sp) # left
     ## Verifica se o movimento eh diagonal. Se for, nao altera o lado
-    beq $a0, $zero, max_ChangeSide_CheckVertical
-    beq $a1, $zero, max_ChangeSide_CheckHorizontal
-    j max_ChangeSide_end
-max_ChangeSide_CheckVertical:
-    beq $a1, $zero, max_ChangeSide_end # Se $a1 for zero nao tem movimento
+    beq $a0, $zero, max_ChangeSprite_CheckVertical
+    beq $a1, $zero, max_ChangeSprite_CheckHorizontal
+    j max_ChangeSprite_checkStateControl
+max_ChangeSprite_CheckVertical:
+    beq $a1, $zero, max_ChangeSprite_checkStateControl # Se $a1 for zero nao tem movimento
     # Aqui tem movimento vertical apenas
     li $t0, -1
-    beq $t0, $a1, max_ChangeSide_CheckVertical_negative
+    beq $t0, $a1, max_ChangeSprite_CheckVertical_negative
     # Aqui o movimento eh pra baixo
     lw $t0, maxSide
-    beq $t0, $zero, max_ChangeSide_end # Se o lado anterior for igual ao atual, nao precisa fazer nada
+    beq $t0, $zero, max_ChangeSprite_checkStateControl # Se o lado anterior for igual ao atual, nao precisa fazer nada
     sw $zero, maxSide
-    lw $t0, MAX_FRONT
-    sw $t0, maxCurrentImage
-    jal apagaMax
-    jal printMax
-    j max_ChangeSide_end
-max_ChangeSide_CheckVertical_negative:
+    sw $s0, maxCurrentImage
+    j max_ChangeSprite_reprintMax
+max_ChangeSprite_CheckVertical_negative:
     # Aqui o movimento eh pra cima
     li $t0, 1
     lw $t1, maxSide
-    beq $t0, $t1, max_ChangeSide_end # Se o lado anterior for igual ao atual, nao precisa fazer nada
+    beq $t0, $t1, max_ChangeSprite_checkStateControl # Se o lado anterior for igual ao atual, nao precisa fazer nada
     sw $t0, maxSide
-    lw $t0, MAX_BACK
-    sw $t0, maxCurrentImage
-    jal apagaMax
-    jal printMax
-    j max_ChangeSide_end
-max_ChangeSide_CheckHorizontal:
-    beq $a0, $zero, max_ChangeSide_end # Se $a0 for zero nao tem movimento
+    sw $s1, maxCurrentImage
+    j max_ChangeSprite_reprintMax
+max_ChangeSprite_CheckHorizontal:
+    beq $a0, $zero, max_ChangeSprite_checkStateControl # Se $a0 for zero nao tem movimento
     # Aqui tem movimento horizontal apenas
     li $t0, -1
-    beq $t0, $a0, max_ChangeSide_CheckHorizontal_negative
+    beq $t0, $a0, max_ChangeSprite_CheckHorizontal_negative
     # Aqui o movimento eh pra direita
     li $t0, 2
     lw $t1, maxSide
-    beq $t0, $t1, max_ChangeSide_end # Se o lado anterior for igual ao atual, nao precisa fazer nada
+    beq $t0, $t1, max_ChangeSprite_checkStateControl # Se o lado anterior for igual ao atual, nao precisa fazer nada
     sw $t0, maxSide
-    lw $t0, MAX_RIGHT
-    sw $t0, maxCurrentImage
-    jal apagaMax
-    jal printMax
-    j max_ChangeSide_end
-max_ChangeSide_CheckHorizontal_negative:
+    sw $s2, maxCurrentImage
+    j max_ChangeSprite_reprintMax
+max_ChangeSprite_CheckHorizontal_negative:
     # Aqui o movimento eh pra esquerda
     li $t0, 3
     lw $t1, maxSide
-    beq $t0, $t1, max_ChangeSide_end # Se o lado anterior for igual ao atual, nao precisa fazer nada
+    beq $t0, $t1, max_ChangeSprite_checkStateControl # Se o lado anterior for igual ao atual, nao precisa fazer nada
     sw $t0, maxSide
-    lw $t0, MAX_LEFT
-    sw $t0, maxCurrentImage
+    sw $s3, maxCurrentImage
+    j max_ChangeSprite_reprintMax
+max_ChangeSprite_checkStateControl:
+    lw $t9, maxCurrentStateControl
+    beq $t9, $zero, max_ChangeSprite_end
+max_ChangeSprite_reprintMax:
     jal apagaMax
     jal printMax
-max_ChangeSide_end:
+    sw $zero, maxCurrentStateControl
+max_ChangeSprite_end:
     lw $ra, 0($sp)
     lw $a0, 4($sp)
     lw $a1, 8($sp)
-    addi $sp, $sp, 12
+    lw $s0, 12($sp)
+    lw $s1, 16($sp)
+    lw $s2, 20($sp)
+    lw $s3, 24($sp)
+    addi $sp, $sp, 28
+
+##############################
+# Essa funcao decide se o estado do max ira variar, dependendo dos botoes A, B, X, Y
+# Essa funcao tem um trecho no .data proprio, para saber se um botao esteve pressionado no frame anterior
+##############################
+.data
+    max_GetInteractionInput_A: .word 0x00
+    max_GetInteractionInput_B: .word 0x00
+    max_GetInteractionInput_X: .word 0x00
+    max_GetInteractionInput_Y: .word 0x00
+.text
+max_GetInteractionInput:
+    addi $sp, $sp, -4
+    sw $ra, 0($sp)
+    ## Verifica se esta tentando segurar algo (ou chutar um bloco)
+    jal isButtonDown_B
+    beq $v0, $zero, max_GetInteractionInput_end # Se o botao B nao estiver pressionado pode terminar
+    # Se o botao B estiver pressionado, verifica se esteve pressionado antes
+    la $t0, max_GetInteractionInput_B
+    lw $t1, 0($t0)
+    li $t2, 1
+    beq $t2, $t1, max_GetInteractionInput_end # Se esta pressionado e esteve pressionado, pode terminar
+    # Aqui o botao B nao estava pressionado e foi pressionado
+    lw $t0, maxCurrentState
+    not $t0, $t0
+    andi $t0, $t0, 0x0001
+    sw $t0, maxCurrentState
+    sw $t2, maxCurrentStateControl
+    beq $t0, $zero, max_GetInteractionInput_changeToNormal
+    lw $t0, maxSide
+    li $t1, 4
+    mult $t0, $t1
+    mflo $t0
+    la $t1, MAX_2_FRONT
+    add $t1, $t0, $t1
+    lw $t0, 0($t1)
+    sw $t0, maxCurrentImage
+    j max_GetInteractionInput_end
+max_GetInteractionInput_changeToNormal:
+    lw $t0, maxSide
+    li $t1, 4
+    mult $t0, $t1
+    mflo $t0
+    la $t1, MAX_FRONT
+    add $t1, $t0, $t1
+    lw $t0, 0($t1)
+    sw $t0, maxCurrentImage
+max_GetInteractionInput_end:
+    sw $v0, max_GetInteractionInput_B
+    lw $ra, 0($sp)
+    addi $sp, $sp, 4
     jr $ra
