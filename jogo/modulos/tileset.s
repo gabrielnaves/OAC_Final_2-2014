@@ -1,11 +1,107 @@
-#################################
-# Sinayra Pascoal Cotts Moreira - 04/12/2014
-#  Modulos para lidar com tiles
-###############################
 .text
 
 .eqv WIDTH_TILE 20 
 .eqv HEIGHT_TILE 17 
+
+#################################
+# $a0: byte que representa o objeto
+# $v0: endereço da label do objeto
+# Retorna, a partir da posicao (x,y) a posicao (i,j) da matriz de tile
+# Nota do retorno: Ele retorna 0 quando não encontra o objeto
+#
+# Nota: eu nao me importo com temporarios
+###############################
+getObjAddr:
+    li $t0, 0x63
+    beq $t0, $a0, return_c
+
+    li $t0, 0x65
+    beq $t0, $a0, return_e
+
+    li $t0, 0x66
+    beq $t0, $a0, return_f
+
+    li $t0, 0x67
+    beq $t0, $a0, return_g
+
+    li $t0, 0x31
+    beq $t0, $a0, return_1
+
+    li $t0, 0x32
+    beq $t0, $a0, return_2
+
+    li $t0, 0x33
+    beq $t0, $a0, return_3
+
+    li $t0, 0x34
+    beq $t0, $a0, return_4
+
+    li $t0, 0x35
+    beq $t0, $a0, return_5
+
+    li $t0, 0x36
+    beq $t0, $a0, return_6
+
+    #li $t0, 0x41
+    #beq $t0, $a0, return_A
+
+    #li $t0, 0x42
+    #beq $t0, $a0, return_B
+
+    #li $t0, 0x43
+    #beq $t0, $a0, return_C
+
+    #li $t0, 0x44
+    #beq $t0, $a0, return_D
+
+    #li $t0, 0x45
+    #beq $t0, $a0, return_E
+
+    #li $t0, 0x46
+    #beq $t0, $a0, return_F
+
+    #li $t0, 0x47
+    #beq $t0, $a0, return_G
+
+    #li $t0, 0x48
+    #beq $t0, $a0, return_H
+
+    TRAP: j TRAP
+
+    move $v0, $zero #nao encontrou
+    jr $ra
+    return_c:
+        lw $v0, movingBlock
+        jr $ra
+
+    return_e:
+        lw $v0, movingBlock2
+        jr $ra
+
+    return_f:
+        lw $v0, barrel
+        jr $ra
+    return_g:
+        lw $v0, plant
+        jr $ra
+    return_1:
+        lw $v0, key
+        jr $ra
+    return_2:
+        lw $v0, bossKey
+        jr $ra
+    return_3:
+        lw $v0, cherry
+        jr $ra
+    return_4:
+        lw $v0, gancho
+        jr $ra
+    return_5:
+        lw $v0, tabua
+        jr $ra
+    return_6:
+        lw $v0, diamondRed
+        jr $ra
 
 #Dado um endereço de memória de uma matriz de movimentação, retornar o conteudo de uma posicao dessa matriz
 #$v0 -> conteudo da posicao da matriz

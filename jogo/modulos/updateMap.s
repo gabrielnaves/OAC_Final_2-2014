@@ -215,6 +215,12 @@ addi $sp, $sp, 4
 
 addi $sp, $sp, -4
 sw, $ra, 0($sp)
+jal printaObjetosInicio
+lw $ra, 0($sp)
+addi $sp, $sp, 4
+
+addi $sp, $sp, -4
+sw, $ra, 0($sp)
 jal iniciaMaxPosicao
 lw $ra, 0($sp)
 addi $sp, $sp, 4
@@ -295,3 +301,144 @@ iniciaMaxPosicao:
 		li $t2, 1
 		sw $t2, maxPositionY
 		jr $ra
+
+#Printa todos os objetos a partir do MAPA ATUAL
+#FAVOR EXECUTAR ISSO AQUI ANTES DO LOOP DO JOGO, DEPOIS DE TER POPULADO A MATRIZ ATUAL
+printaObjetosInicio:
+		
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+
+	addi $sp, $sp, -8
+	sw $s0, 0($sp)
+	sw $s1, 4($sp)
+
+	li $s0, 14
+	li $s1, 16
+
+	move $t0, $zero
+	objetosMATUALi:
+
+		move $t1, $zero
+		beq $t0, $s0, objetosFim
+		
+		objetosMATUALj:
+			beq $t1, $s1, fimMATUALj
+
+			addi $sp, $sp, -16
+			sw $s0, 0($sp)
+			sw $s1, 4($sp)
+			sw $t0, 8($sp)
+			sw $t1, 12($sp)
+
+			add $a1, $zero, $t1
+			add $a2, $zero, $t0
+			lw $a0, MATUAL
+			jal getTileInfo 
+
+			lw $s0, 0($sp)
+			lw $s1, 4($sp)
+			lw $t0, 8($sp)
+			lw $t1, 12($sp)
+			addi $sp, $sp, 16
+
+			li $t2, 0x23 # parede
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x3D # limite
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x2A # caminho pisável
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x7C # porta
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x61 # botão pra caixa
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x62 # botão pra caixa com gancho
+			beq $v0, $t2, proxMATUALj
+
+
+			#inimigos
+			li $t2, 0x41
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x42
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x43
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x44
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x45
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x46
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x47
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x48
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x49
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x4A
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x4B
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x4C
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x4D
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x4E
+			beq $v0, $t2, proxMATUALj
+			li $t2, 0x4F
+			beq $v0, $t2, proxMATUALj
+
+			#TRAP: j TRAP
+
+			beq $v0, $zero, proxMATUALj
+
+
+			addi $sp, $sp, -16
+			sw $s0, 0($sp)
+			sw $s1, 4($sp)
+			sw $t0, 8($sp)
+			sw $t1, 12($sp)
+
+			move $a0, $v0
+			jal getObjAddr
+
+			lw $s0, 0($sp)
+			lw $s1, 4($sp)
+			lw $t0, 8($sp)
+			lw $t1, 12($sp)
+			addi $sp, $sp, 16
+
+			addi $sp, $sp, -16
+			sw $s0, 0($sp)
+			sw $s1, 4($sp)
+			sw $t0, 8($sp)
+			sw $t1, 12($sp)
+
+			move $a0, $v0
+			add $a1, $zero, $t1
+			sll $a1, $a1, 16
+			add $a1, $a1, $t0
+			jal printInTile
+
+			lw $s0, 0($sp)
+			lw $s1, 4($sp)
+			lw $t0, 8($sp)
+			lw $t1, 12($sp)
+			addi $sp, $sp, 16
+
+			proxMATUALj:		
+				addi $t1, $t1, 1
+				j objetosMATUALj
+		fimMATUALj:
+			addi $t0, $t0, 1
+			j objetosMATUALi
+
+	objetosFim:
+		lw $s0, 0($sp)
+		lw $s1, 4($sp)
+		addi $sp, $sp, 8
+
+
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
+jr $ra
