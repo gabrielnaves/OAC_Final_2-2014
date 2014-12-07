@@ -1,5 +1,4 @@
 .text
-
 	.include "modulos/uartRead.s"
 	.include "modulos/inputManager.s"
 	.include "modulos/printImg.s"
@@ -7,3 +6,4 @@
     .include "modulos/loadBar.s"
     .include "modulos/max.s"
     .include "modulos/updateMap.s"
+    .include "modulos/fireballmap2.s"

@@ -262,7 +262,7 @@ verificaTileIntransponivel:
     ###
     li $t0, 0x23    ## Codigo de paredes
     beq $v0, $t0, verificaTileIntransponivel_RetornaZero
-    li $t0, 0x63    ## Codigo de paredes
+    li $t0, 0x63    ## Codigo de blocos com estrela
     beq $v0, $t0, verificaTileIntransponivel_RetornaZero
     ### Para adicionar mais tiles como "paredes", colocar aqui!
     li $v0, 1
