@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
-#include "bootLoader/rs232.c"
+#include "rs232.c"
 #include <windows.h>
 using namespace std;
 
@@ -11,13 +11,13 @@ void sleep(int n)
 {
     for (int i = 0; i < n; ++i);
 }
+static int cport_nr = 5,bdrate=115200;
+static char mode[]={'8','N','2',0};
 
 int mandaArquivo(char *fileName)
 {
-	unsigned int timeSleep = 1;
 	unsigned char byte;
 	long int lSize;
-	int cport_nr=4;
 	FILE *arq = fopen(fileName, "rb");
 
 	if(!arq){
@@ -44,9 +44,7 @@ int mandaArquivo(char *fileName)
 }
 
 int enviaBootLoader(){
-	unsigned int timeSleep = 1;
-    int cport_nr=4, bdrate=115200, i = 0;
-    char mode[]={'8','N','2',0};
+    int i = 0;
     unsigned char byte, aux0,aux1,aux2,aux3;
     unsigned int nbytes = 0;
     //FILE *fileIn;
@@ -54,10 +52,10 @@ int enviaBootLoader(){
 
     //fileIn = fopen("mapalvl2.bin", "rb");
     
-    arq[0] = fopen("bootLoader/ktext.txt","rb");
-    arq[1] = fopen("bootLoader/kdata.txt","rb");
-    arq[2] = fopen("bootLoader/text.txt","rb");
-    arq[3] = fopen("bootLoader/data.txt","rb");
+    arq[0] = fopen("ktext.txt","rb");
+    arq[1] = fopen("kdata.txt","rb");
+    arq[2] = fopen("text.txt","rb");
+    arq[3] = fopen("data.txt","rb");
     
     
     //Error Handling (fingindo)
@@ -94,8 +92,6 @@ int enviaBootLoader(){
 	    
 	    
 	    // ENVIA ARQUIVO PARA FPGA
-	
-	    //fread(&byte, sizeof(unsigned char), 1, fileIn);
 	    
 	    //Envia o tamanho em bytes do arquivo para a FPGA
 	    byte = nbytes >> 24;				//8 mais significativos
@@ -109,7 +105,6 @@ int enviaBootLoader(){
 		Sleep(1);
 	    //Envia o arquivo em si para a FPGA
 	    while (true)
-	    //for (/*int i = 0*/; !feof(fileIn);/* ++i*/)
 	    {
 	        fread(&aux0, sizeof(unsigned char), 1, arq[i]);
 	        if (feof(arq[i])) break;
@@ -119,15 +114,20 @@ int enviaBootLoader(){
 	        if (feof(arq[i])) break;
 	        fread(&aux3, sizeof(unsigned char), 1, arq[i]);
 	        if (feof(arq[i])) break;
-	        
-	        RS232_SendByte(cport_nr, aux3);
-	        //Sleep(1);
-	        RS232_SendByte(cport_nr, aux2);
-	        //Sleep(1);
-	        RS232_SendByte(cport_nr, aux1);
-	        //Sleep(1);
-	        RS232_SendByte(cport_nr, aux0);
-	        //Sleep(1);
+	        if(i>1){
+	        	//.data e .text estao invertidos por causa do dump memory
+	        	RS232_SendByte(cport_nr, aux3);
+	        	RS232_SendByte(cport_nr, aux2);
+	       		RS232_SendByte(cport_nr, aux1);
+	        	RS232_SendByte(cport_nr, aux0);
+	        }else{
+	        	//.kdata e .ktext nao estao invertidos porque eu compilei eles a partir do mif
+	        	RS232_SendByte(cport_nr, aux0);
+	        	RS232_SendByte(cport_nr, aux1);
+	        	RS232_SendByte(cport_nr, aux2);
+	        	RS232_SendByte(cport_nr, aux3);
+	        }
+
 	    }
 	
 	    fclose (arq[i]);
@@ -138,8 +138,7 @@ int enviaBootLoader(){
 }
 
 int enviaObjetos(){
-	int cport_nr=4, bdrate=115200,lSize = 0;
-    char mode[]={'8','N','2',0};
+	int lSize = 0;
 	
 	if(RS232_OpenComport(cport_nr, bdrate, mode))
     {
@@ -148,110 +147,18 @@ int enviaObjetos(){
     }
 	printf("Enviando Objetos: \n");
 	
-	lSize = mandaArquivo("img\objetos\banana.bin\0");
+	lSize = mandaArquivo("obj1.bin\0");
 	if(lSize > 0)
 		printf("Enviando o Objeto de tamanho = %d\n",lSize);
 	else
 		return -1;
-//	Sleep(10);
-//    lSize = mandaArquivo("obj2.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj3.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj4.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//   	//sleep(100000);
-//   	Sleep(10);
-//    lSize = mandaArquivo("obj5.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj6.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj7.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj8.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj9.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj10.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj11.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj12.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj13.bin\0");
-//   	if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    //sleep(100000);
-//    Sleep(10);
-//    lSize = mandaArquivo("obj14.bin\0");
-//    if(lSize > 0)
-//		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-//	else
-//		return -1;
-//    Sleep(1);
     
 	RS232_CloseComport(cport_nr);
 }
 
 int enviaMapas(){
 	
-	int cport_nr=4, bdrate=115200, lSize = 0;
-    char mode[]={'8','N','2',0};
+	int lSize = 0;
 	
 	if(RS232_OpenComport(cport_nr, bdrate, mode))
     {
@@ -269,6 +176,20 @@ int enviaMapas(){
 	//	return -1;
 	//Sleep(10);
    
+   lSize = mandaArquivo("lvl2mapa2.bin");
+    if(lSize > 0)
+		printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	else
+		return -1;
+	Sleep(10);
+   
+    lSize = mandaArquivo("lvl2mapa2_matriz.bin");
+    if(lSize > 0)
+		printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	else
+		return -1;
+	Sleep(10);
+   
 	RS232_CloseComport(cport_nr);
 	
 	return 0;
@@ -276,8 +197,7 @@ int enviaMapas(){
 
 int enviaSeresVivos(){
 			
-	int cport_nr=4, bdrate=115200, lSize = 0;
-    char mode[]={'8','N','2',0};
+	int lSize = 0;
 	
 	if(RS232_OpenComport(cport_nr, bdrate, mode))
     {
@@ -293,17 +213,45 @@ int enviaSeresVivos(){
 	//else
 	//	return -1;
 	//Sleep(10);
-   
-	RS232_CloseComport(cport_nr);
 	
+	lSize = mandaArquivo("max_parado_front.bin\0");
+    if(lSize > 0)
+		printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	else
+		return -1;
+	Sleep(10);
+	
+	lSize = mandaArquivo("max_parado_back.bin\0");
+    if(lSize > 0)
+		printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	else
+		return -1;
+	Sleep(10);
+	
+	lSize = mandaArquivo("max_parado_right.bin\0");
+    if(lSize > 0)
+		printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	else
+		return -1;
+	Sleep(10);
+	
+	lSize = mandaArquivo("max_parado_left.bin\0");
+    if(lSize > 0)
+		printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	else
+		return -1;
+	Sleep(10);
+	
+	
+	RS232_CloseComport(cport_nr);
 	return 0;
 }
 
 int enviaAudio(){
 	
 			
-	int cport_nr=4, bdrate=115200, lSize = 0;
-    char mode[]={'8','N','2',0};
+	int lSize = 0;
+	
 	
 	if(RS232_OpenComport(cport_nr, bdrate, mode))
     {
@@ -341,6 +289,16 @@ int main()
 		return 0;
 	}
 
+	printf("Envia Mapas? ");
+	c = getchar();
+	while ( getchar() != '\n' ); //LIMPA BUFFER
+	if (c =='s' || c == 'S' )
+		errorHandler = enviaMapas();
+	if (errorHandler==-1){
+		printf("\n#####Erro interno####\n");
+		return 0;
+	}	
+	
 	
 	printf("Envia Objetos? ");
 	c = getchar();
@@ -352,20 +310,11 @@ int main()
 		return 0;
 	}	
 	
-	printf("Envia Mapas? ");
-	c = getchar();
-	while ( getchar() != '\n' ); //LIMPA BUFFER
-	//errorHandler = enviaMapas();
-	if (errorHandler==-1){
-		printf("\n#####Erro interno####\n");
-		return 0;
-	}	
-	
-	
 	printf("Envia Seres vivos? ");
 	c = getchar();
 	while ( getchar() != '\n' ); //LIMPA BUFFER
-	//errorHandler = enviaSeresVivos();
+	if (c =='s' || c == 'S' )
+		errorHandler = enviaSeresVivos();
 	if (errorHandler==-1){
 		printf("\n#####Erro interno####\n");
 		return 0;
@@ -375,7 +324,8 @@ int main()
 	printf("Envia Audio? ");
 	c = getchar();
 	while ( getchar() != '\n' ); //LIMPA BUFFER
-	//errorHandler = enviaAudio();
+	if (c =='s' || c == 'S' )
+		errorHandler = enviaAudio();
 	if (errorHandler==-1){
 		printf("\n#####Erro interno####\n");
 		return 0;
