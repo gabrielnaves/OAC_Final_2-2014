@@ -66,7 +66,7 @@ getObjAddr:
     #li $t0, 0x48
     #beq $t0, $a0, return_H
 
-    TRAP: j TRAP
+    #TRAP: j TRAP
 
     move $v0, $zero #nao encontrou
     jr $ra
