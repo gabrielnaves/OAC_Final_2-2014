@@ -93,8 +93,18 @@ int main(){
 	sleep(2);
 	mandaArquivo("max_parado_right.bin\0");
 	sleep(2);
-	
 	mandaArquivo("max_parado_left.bin\0");
+	sleep(2);
+	
+	
+	mandaArquivo("max_1_front.bin\0");
+	sleep(2);
+	mandaArquivo("max_1_back.bin\0");
+	sleep(2);
+	mandaArquivo("max_1_right.bin\0");
+	sleep(2);
+	mandaArquivo("max_1_left.bin\0");
+	sleep(2);
     return 0;
 }
 
