@@ -11,6 +11,10 @@
 inputManagerFlags:           .word    0x00000000
 
     .text
+initInputManager:
+    sw $zero, inputManagerFlags # Zera as flags do inputManager
+    jr $ra
+
 inputManagerUpdate:
     addi $sp, $sp, -12
     sw $ra, 0($sp)

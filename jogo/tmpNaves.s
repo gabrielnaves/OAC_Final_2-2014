@@ -47,7 +47,8 @@
 main:
     li $a0, 40 # Numero de elementos no jogo
     jal loadGame
-    sw $zero, inputManagerFlags # Zera as flags do inputManager
+    jal initInputManager
+
     # Define o mapa0 como BG_ATUAL
     lw $t0, BG_0
     sw $t0, BG_ATUAL
@@ -75,16 +76,15 @@ main:
     lw $a1, MATUAL
     jal copiaMatriz
 
-
 ##############################################################################################################
 mainGameLoop:
     lw $t0, FRAME_COUNTER
     addi $t0, $t0, 1
     sw $t0, FRAME_COUNTER
-
     jal inputManagerUpdate
     jal updateMax
     jal updateMap
     j mainGameLoop
 ##############################################################################################################
+
 .include "include.s"
