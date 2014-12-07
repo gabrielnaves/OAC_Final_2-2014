@@ -162,6 +162,7 @@ verificaMoveMax:
     sw $s2, 12($sp)
     move $s0, $a0  # Nova posicao X vai para $s0
     move $s1, $a1  # Nova posicao Y vai para $s1
+    lw $s2, MATUAL
     bne $a2, $zero, verificaMoveMax_diagonal # Se o movimento for diagonal o tratamento eh diferente
     ## Verifica limites da matriz
     li $t0, -1
@@ -172,12 +173,11 @@ verificaMoveMax:
     li $t0, 14
     beq $s1, $t0, verificaMoveMax_invalid
     ## Verifica o tile de chegada
-    lw $a0, MATUAL
+    move $a0, $s2
     move $a1, $s0
     move $a2, $s1
-    jal getTileInfo
-    li $t0, 0x23
-    beq $v0, $t0, verificaMoveMax_invalid
+    jal verificaTileIntransponivel
+    beq $v0, $zero, verificaMoveMax_invalid
     j verificaMoveMax_valid
 verificaMoveMax_diagonal:
     ## Verifica limites da matriz
@@ -189,44 +189,39 @@ verificaMoveMax_diagonal:
     li $t0, 14
     beq $s1, $t0, verificaMoveMax_invalid
     ## Verifica o tile de chegada
-    lw $a0, MATUAL
+    move $a0, $s2
     move $a1, $s0
     move $a2, $s1
-    jal getTileInfo
-    li $t0, 0x23
-    beq $v0, $t0, verificaMoveMax_diagonalInvalido
+    jal verificaTileIntransponivel
+    beq $v0, $zero, verificaMoveMax_diagonalInvalido
 verificaMoveMax_diagonalValido:
     ## Se o movimento diagonal for valido, precisa verificar as laterais,
     ## eh possivel que o destino seja valido mas o movimento seja invalido
-    lw $a0, MATUAL
-    lw $a1, maxPositionX
+    move $a0, $s2
+    lw   $a1, maxPositionX
     move $a2, $s1
-    jal getTileInfo
-    li $t0, 0x23
-    bne $v0, $t0, verificaMoveMax_valid # Se essa lateral for valida, o movimento eh valido
-    lw $a0, MATUAL
-    lw $a2, maxPositionY
+    jal verificaTileIntransponivel
+    bne $v0, $zero, verificaMoveMax_valid # Se essa lateral for valida, o movimento eh valido
+    move $a0, $s2
     move $a1, $s0
-    jal getTileInfo
-    li $t0, 0x23
-    bne $v0, $t0, verificaMoveMax_valid # Se essa lateral for valida, o movimento eh valido
+    lw   $a2, maxPositionY
+    jal verificaTileIntransponivel
+    bne $v0, $zero, verificaMoveMax_valid # Se essa lateral for valida, o movimento eh valido
     # Se chegar aqui o movimento eh invalido
     j verificaMoveMax_invalid
 verificaMoveMax_diagonalInvalido:
     ## Se o movimento diagonal for invalido, ainda eh possivel que o movimento para
     ## algum dos lados seja valido. Nesse caso, se movimenta para o lado ao inves de para a diagonal
-    lw $a0, MATUAL
-    lw $a1, maxPositionX
+    move $a0, $s2
+    lw   $a1, maxPositionX
     move $a2, $s1
-    jal getTileInfo
-    li $t0, 0x23
-    bne $v0, $t0, verificaMoveMax_validForX # Se essa lateral for valida, o movimento preserva o X
-    lw $a0, MATUAL
+    jal verificaTileIntransponivel
+    bne $v0, $zero, verificaMoveMax_validForX # Se essa lateral for valida, o movimento preserva o X
+    move $a0, $s2
     move $a1, $s0
-    lw $a2, maxPositionY
-    jal getTileInfo
-    li $t0, 0x23
-    bne $v0, $t0, verificaMoveMax_validForY # Se essa lateral for valida, o movimento preserva o Y
+    lw   $a2, maxPositionY
+    jal verificaTileIntransponivel
+    bne $v0, $zero, verificaMoveMax_validForY # Se essa lateral for valida, o movimento preserva o Y
     # Se nao for valido para nenhum lado, o movimento eh invalido
     j verificaMoveMax_invalid
 verificaMoveMax_validForX: # Preserva o X
@@ -250,6 +245,33 @@ verificaMoveMax_End:
     lw $s1, 8($sp)
     lw $s2, 12($sp)
     addi $sp, $sp, 16
+    jr $ra
+
+#####
+# Essa funcao verifica na matriz atual se ha algum objeto intransponivel
+# $a0 = matriz atual
+# $a1 = posicao x
+# $a2 = posicao y
+# $v0 = 0 se o tile atuar como parede
+# $v0 = 1 se o tile nao atuar como parede
+#####
+verificaTileIntransponivel:
+    addi $sp, $sp, -4
+    sw $ra, 0($sp)
+    jal getTileInfo
+    ###
+    li $t0, 0x23    ## Codigo de paredes
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x63    ## Codigo de paredes
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    ### Para adicionar mais tiles como "paredes", colocar aqui!
+    li $v0, 1
+    j verificaTileIntransponivel_end
+verificaTileIntransponivel_RetornaZero:
+    move $v0, $zero
+verificaTileIntransponivel_end:
+    lw $ra, 0($sp)
+    addi $sp, $sp, 4
     jr $ra
 
 ##############################################################################
