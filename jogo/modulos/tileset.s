@@ -233,7 +233,7 @@ printTilePixel:
             sw $t8, 32($sp)
             sw $t9, 36($sp)
 
-            syscall                             # Plota o pixel
+            jal Plot                             # Plota o pixel
 
             lw $t0, 0($sp)
             lw $t1, 4($sp)

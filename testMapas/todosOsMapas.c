@@ -24,70 +24,77 @@ compile with the command: gcc demo_tx.c rs232.c -Wall -Wextra -std=c99 -o2 -o te
 int main(){
     //mandaArquivo("lamar.bin\0");
     mandaArquivo("lvl2mapa0.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa0_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa1.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa1_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa2.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa2_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa3.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa3_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa4.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa4_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa5.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa5_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa6.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa6_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa7.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa7_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa8.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa8_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa9.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa9_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa10.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa10_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa11.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa11_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa12.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa12_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa13.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa13_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa14.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa14_matriz.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa15.bin\0");
-    sleep(200);
+    sleep(2);
     mandaArquivo("lvl2mapa15_matriz.bin\0");
-    sleep(200);
-    mandaArquivo("max_parado_1.bin\0");
+    sleep(2);
+    mandaArquivo("max_parado_front.bin\0");
+	sleep(2);
+	mandaArquivo("max_parado_back.bin\0");
+	sleep(2);
+	mandaArquivo("max_parado_right.bin\0");
+	sleep(2);
+	
+	mandaArquivo("max_parado_left.bin\0");
     return 0;
 }
 
@@ -96,7 +103,7 @@ int main(){
 int mandaArquivo(char *fileName)
 {
 
-  int cport_nr=2,        /* /dev/ttyS0 (COM1 on windows) */
+  int cport_nr=5,        /* /dev/ttyS0 (COM1 on windows) */
       bdrate=115200;       /* 9600 baud */
 
   char mode[]={'8','N','1',0};
@@ -146,7 +153,7 @@ int mandaArquivo(char *fileName)
   //printf("sent: %s\n", buffer);
 
     #ifdef _WIN32
-        Sleep(1000);
+        Sleep(10);
     #else
         usleep(1000);  
     #endif*/

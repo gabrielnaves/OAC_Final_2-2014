@@ -77,7 +77,7 @@ apagaMax:
     sw $s0, 4($sp)
     sw $s1, 8($sp)
 
-    lw $s0, BG_1
+    lw $s0, BG_ATUAL
 
     lw $t0, maxPositionX
     sll $t0, $t0, 16
@@ -129,7 +129,7 @@ verificaMoveMax:
     li $t0, 14
     beq $s1, $t0, verificaMoveMax_invalid
     ## Verifica o tile de chegada
-    lw $a0, MBG_1
+    lw $a0, MATUAL
     move $a1, $s0
     move $a2, $s1
     jal getTileInfo
@@ -146,7 +146,7 @@ verificaMoveMax_diagonal:
     li $t0, 14
     beq $s1, $t0, verificaMoveMax_invalid
     ## Verifica o tile de chegada
-    lw $a0, MBG_1
+    lw $a0, MATUAL
     move $a1, $s0
     move $a2, $s1
     jal getTileInfo
@@ -155,13 +155,13 @@ verificaMoveMax_diagonal:
 verificaMoveMax_diagonalValido:
     ## Se o movimento diagonal for valido, precisa verificar as laterais,
     ## eh possivel que o destino seja valido mas o movimento seja invalido
-    lw $a0, MBG_1
+    lw $a0, MATUAL
     lw $a1, maxPositionX
     move $a2, $s1
     jal getTileInfo
     li $t0, 0x23
     bne $v0, $t0, verificaMoveMax_valid # Se essa lateral for valida, o movimento eh valido
-    lw $a0, MBG_1
+    lw $a0, MATUAL
     lw $a2, maxPositionY
     move $a1, $s0
     jal getTileInfo
@@ -172,13 +172,13 @@ verificaMoveMax_diagonalValido:
 verificaMoveMax_diagonalInvalido:
     ## Se o movimento diagonal for invalido, ainda eh possivel que o movimento para
     ## algum dos lados seja valido. Nesse caso, se movimenta para o lado ao inves de para a diagonal
-    lw $a0, MBG_1
+    lw $a0, MATUAL
     lw $a1, maxPositionX
     move $a2, $s1
     jal getTileInfo
     li $t0, 0x23
     bne $v0, $t0, verificaMoveMax_validForX # Se essa lateral for valida, o movimento preserva o X
-    lw $a0, MBG_1
+    lw $a0, MATUAL
     move $a1, $s0
     lw $a2, maxPositionY
     jal getTileInfo
