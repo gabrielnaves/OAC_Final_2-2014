@@ -31,6 +31,64 @@ getTileInfo:
 
     jr $ra
 
+
+#setTileInfo
+#$a0->endereço da matriz
+#$a1->x
+#$a2->y
+#$a3->conteudo para ser colocado no local
+#SOMENTE BYTES
+setTileInfo:
+    sll $t0, $a2, 4
+    add $t0, $t0, $a1 #carrega 16*y + x em $t0
+
+    li $t4, 4
+    div $t0, $t4
+    mflo $t1
+    sll $t0, $t1, 2
+    add $t0, $t0, $a0
+
+    lw $t2, 0($t0)
+    move $t7, $t0
+    mfhi $t1
+    beq $t1, $zero, restoZero
+    li $t3, 1
+    beq $t1, $t3, restoUm
+    li $t3, 2
+    beq $t1, $t3, restoDois
+    li $t3, 3
+    beq $t1, $t3, restoTres
+    
+restoZero:
+    lw $t0, 0($t7)
+    andi $t1, $t0, 0x00ffffff
+    sll $t0, $a3, 24
+    or $t0,$t1, $t0
+    sw $t0, 0($t7)
+    jr $ra
+restoUm:
+    lw $t0, 0($t7)
+    andi $t1, $t0, 0xff00ffff
+    sll $t0, $a3, 16
+    or $t0,$t1, $t0
+    sw $t0, 0($t7)
+    jr $ra
+restoDois:
+    lw $t0, 0($t7)
+    andi $t1, $t0, 0xffff00ff
+    sll $t0, $a3, 8
+    or $t0,$t1, $t0
+    sw $t0, 0($t7)
+    jr $ra
+restoTres:
+    lw $t0, 0($t7)
+    andi $t1, $t0, 0xffffff00
+    or $t0,$t1, $a3
+    sw $t0, 0($t7)
+    jr $ra
+
+
+
 #################################
 # $a0: half0: posicao do pixel x | half2: posicao do pixel y
 # $v0: half0: posicao da matriz i | half2: posicao da matriz j
