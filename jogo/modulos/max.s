@@ -252,12 +252,12 @@ verificaMoveMax_End:
     addi $sp, $sp, 16
     jr $ra
 
-############
-# A partir do maxPosition e da direcao do movimento, atualiza a posicao
-# do max (verifica se pode atualizar a posicao antes de efetivamente mover).
-# $a0 = movimento horizontal (-1, 0, 1)
-# $a1 = movimento vertical (-1, 0, 1)
-############
+##############################################################################
+# A partir do maxPosition e da direcao do movimento, atualiza a posicao      #
+# do max (verifica se pode atualizar a posicao antes de efetivamente mover). #
+# $a0 = movimento horizontal (-1, 0, 1)                                      #
+# $a1 = movimento vertical (-1, 0, 1)                                        #
+##############################################################################
 moveMax:
     addi $sp, $sp, -12
     sw $ra, 0($sp)
@@ -268,7 +268,7 @@ moveMax:
 moveMax_delayDiagonal:
     li $a2, 1
     lw $t0, FRAME_COUNTER
-    li $t1, 2050
+    li $t1, 424
     div $t0, $t1
     mfhi $t0
     bne $t0, $zero, moveMax_End
@@ -276,7 +276,7 @@ moveMax_delayDiagonal:
 moveMax_delayOrtogonal:
     li $a2, 0
     lw $t0, FRAME_COUNTER
-    li $t1, 1450
+    li $t1, 300
     div $t0, $t1
     mfhi $t0
     bne $t0, $zero, moveMax_End
@@ -304,11 +304,11 @@ moveMax_End:
     addi $sp, $sp, 12
     jr $ra
 
-############
-# A partir do maxPosition, printa o max.
-# Observacao: a posicao do max se refere aos seus pes. Ao printar, essa funcao
-# printa o max um tile acima
-############
+################################################################################
+# A partir do maxPosition, printa o max.                                       #
+# Observacao: a posicao do max se refere aos seus pes. Ao printar, essa funcao #
+# printa o max um tile acima                                                   #
+################################################################################
 printMax:
     addi $sp, $sp, -4
     sw $ra, 0($sp)
@@ -336,21 +336,21 @@ printMax_end:
     addi $sp, $sp, 4
     jr $ra
 
-############
-# A partir do lado antigo do max e do movimento (horizontal e vertical),
-# define se deve alterar o sprite. Os sprites vem em $a2 e $a3, e de duas posicoes da pilha.
-# $a0 = movimento horizontal
-# $a1 = movimento vertical
-# $a2 = sprite front
-# $a3 = sprite back
-# Topo da pilha = sprite right
-# Topo da pilha menos um = sprite left
-# Convencao do maxSide:
-# Frente = 0
-# Tras = 1
-# Direita = 2
-# Esquerda = 3
-############
+################################################################################################
+# A partir do lado antigo do max e do movimento (horizontal e vertical),                       #
+# define se deve alterar o sprite. Os sprites vem em $a2 e $a3, e de duas posicoes da pilha.   #
+# $a0 = movimento horizontal                                                                   #
+# $a1 = movimento vertical                                                                     #
+# $a2 = sprite front                                                                           #
+# $a3 = sprite back                                                                            #
+# Topo da pilha = sprite right                                                                 #
+# Topo da pilha menos um = sprite left                                                         #
+# Convencao do maxSide:                                                                        #
+# Frente = 0                                                                                   #
+# Tras = 1                                                                                     #
+# Direita = 2                                                                                  #
+# Esquerda = 3                                                                                 #
+################################################################################################
 max_ChangeSprite:
     addi $sp, $sp, -28
     sw $ra, 0($sp)
@@ -425,10 +425,10 @@ max_ChangeSprite_end:
     lw $s3, 24($sp)
     addi $sp, $sp, 28
 
-##############################
-# Essa funcao decide se o estado do max ira variar, dependendo dos botoes A, B, X, Y
-# Essa funcao tem um trecho no .data proprio, para saber se um botao esteve pressionado no frame anterior
-##############################
+###########################################################################################################
+# Essa funcao decide se o estado do max ira variar, dependendo dos botoes A, B, X, Y                      #
+# Essa funcao tem um trecho no .data proprio, para saber se um botao esteve pressionado no frame anterior #
+###########################################################################################################
 .data
     max_GetInteractionInput_A: .word 0x00
     max_GetInteractionInput_B: .word 0x00

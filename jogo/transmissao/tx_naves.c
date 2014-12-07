@@ -1,12 +1,12 @@
 
 /**************************************************
 
-file: demo_tx.c
+file: tx_naves.c
 purpose: simple demo that transmits characters to
 the serial port and print them on the screen,
 exit the program by pressing Ctrl-C
 
-compile with the command: gcc demo_tx.c rs232.c -Wall -Wextra -std=c99 -o2 -o test_tx
+compile with the command: gcc tx_naves.c rs232.c -Wall -Wextra -std=c99 -o2 -o tx_naves
 
 **************************************************/
 
@@ -110,7 +110,7 @@ int main(){
 int mandaArquivo(char *fileName)
 {
 
-  int cport_nr=4,        /* /dev/ttyS0 (COM1 on windows) */
+  int cport_nr=10,        /* /dev/ttyS0 (COM1 on windows) */
       bdrate=115200;       /* 9600 baud */
 
   char mode[]={'8','N','1',0};
