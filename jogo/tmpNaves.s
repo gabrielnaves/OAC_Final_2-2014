@@ -35,13 +35,17 @@
     MAX_BACK: .word 0x00000000
     MAX_RIGHT: .word 0x00000000
     MAX_LEFT: .word 0x00000000
+    MAX_2_FRONT: .word 0x00000000
+    MAX_2_BACK: .word 0x00000000
+    MAX_2_RIGHT: .word 0x00000000
+    MAX_2_LEFT: .word 0x00000000
     MATUAL: .space 0x000000E0
 ##############################################################################################################
     FRAME_COUNTER: .word 0x00000000
 .text
 
 main:
-    li $a0, 36 # Numero de elementos no jogo
+    li $a0, 40 # Numero de elementos no jogo
     jal loadGame
     sw $zero, inputManagerFlags # Zera as flags do inputManager
     # Define o mapa0 como BG_ATUAL
@@ -62,7 +66,8 @@ main:
     sw $zero, maxSide
     lw $t0, MAX_FRONT
     sw $t0, maxCurrentImage
-
+    # Seta o estado inicial do max
+    sw $zero, maxCurrentState
     # printa o max
     jal printMax
     #coloca a matriz atual com o conteudo do matrix_mapa0
