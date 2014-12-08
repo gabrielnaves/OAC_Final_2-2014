@@ -597,26 +597,28 @@ max_GetInteractionInput_end:
 # Descobre se o tile na frente do max eh um bloco chutavel
 ##############
 checkMaxFront:
-    addi $sp, $sp, -4
+    addi $sp, $sp, -12
     sw $ra, 0($sp)
-    la $t4, maxPositionX
-    lw $t5, 4($t4) # Posicao y do max em $t5
-    lw $t4, 0($t4) # Posicao x do max em $t4
+    sw $s4, 4($sp)
+    sw $s5, 8($sp)
+    la $s4, maxPositionX
+    lw $s5, 4($s4) # Posicao y do max em $s5
+    lw $s4, 0($s4) # Posicao x do max em $s4
     lw $t0, maxSide
     lw $t6, MATUAL
     bne $t0, $zero, checkBack
     # Max esta de frente
     li $t2, 13
-    beq $t2, $t5, checkMaxFront_end # Se estiver de frente e no limite inferior do mapa, nao precisa fazer nada
+    beq $t2, $s5, checkMaxFront_end # Se estiver de frente e no limite inferior do mapa, nao precisa fazer nada
     move $a0, $t6
-    move $a1, $t4
-    move $a2, $t5
+    move $a1, $s4
+    move $a2, $s5
     addi $a2, $a2, 1
     jal getTileInfo
     li $t0, 0x63
     bne $v0, $t0, checkMaxFront_no_tile
-    move $v0, $t4
-    move $v1, $t5
+    move $v0, $s4
+    move $v1, $s5
     addi $v1, $v1, 1
     j checkMaxFront_end
 checkBack:
@@ -624,16 +626,16 @@ checkBack:
     bne $t0, $t1, checkRight
     # Max esta de costas
     li $t2, 0
-    beq $t2, $t5, checkMaxFront_end # Se estiver de costas e no limite superior do mapa, nao precisa fazer nada
+    beq $t2, $s5, checkMaxFront_end # Se estiver de costas e no limite superior do mapa, nao precisa fazer nada
     move $a0, $t6
-    move $a1, $t4
-    move $a2, $t5
+    move $a1, $s4
+    move $a2, $s5
     addi $a2, $a2, -1
     jal getTileInfo
     li $t0, 0x63
     bne $v0, $t0, checkMaxFront_no_tile
-    move $v0, $t4
-    move $v1, $t5
+    move $v0, $s4
+    move $v1, $s5
     addi $v1, $v1, -1
     j checkMaxFront_end
 checkRight:
@@ -641,36 +643,38 @@ checkRight:
     bne $t0, $t1, checkLeft
     # Max esta para a direita
     li $t2, 15
-    beq $t2, $t4, checkMaxFront_end # Se estiver para a direita e no limite do mapa, nao precisa fazer nada
+    beq $t2, $s4, checkMaxFront_end # Se estiver para a direita e no limite do mapa, nao precisa fazer nada
     move $a0, $t6
-    move $a1, $t4
+    move $a1, $s4
     addi $a1, $a1, 1
-    move $a2, $t5
+    move $a2, $s5
     jal getTileInfo
     li $t0, 0x63
     bne $v0, $t0, checkMaxFront_no_tile
-    move $v0, $t4
-    move $v1, $t5
+    move $v0, $s4
+    move $v1, $s5
     addi $v0, $v0, 1
     j checkMaxFront_end
 checkLeft:
     # Max esta de frente
     li $t2, 0
-    beq $t2, $t4, checkMaxFront_end # Se estiver para a esquerda e no limite do mapa, nao precisa fazer nada
+    beq $t2, $s4, checkMaxFront_end # Se estiver para a esquerda e no limite do mapa, nao precisa fazer nada
     move $a0, $t6
-    move $a1, $t4
+    move $a1, $s4
     addi $a1, $a1, -1
-    move $a2, $t5
+    move $a2, $s5
     jal getTileInfo
     li $t0, 0x63
     bne $v0, $t0, checkMaxFront_no_tile
-    move $v0, $t4
-    move $v1, $t5
+    move $v0, $s4
+    move $v1, $s5
     addi $v0, $v0, -1
     j checkMaxFront_end
 checkMaxFront_no_tile:
     li $v0, -1 # Se nao houver tile, retorna -1 em $v0
 checkMaxFront_end:
     lw $ra, 0($sp)
-    addi $sp, $sp, 4
+    lw $s4, 4($sp)
+    lw $s5, 8($sp)
+    addi $sp, $sp, 12
     jr $ra
