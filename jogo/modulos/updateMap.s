@@ -133,10 +133,33 @@ vaipra13:
     lw $a2, BG_13
     j atualizaMapaInfo
 vaipra14:
+	#CODIGO PARA TROCAR A MUSICA
+	addi $sp, $sp, -8
+	sw $ra, 0($sp)
+	sw $a0, 4($sp)
+	lw $a0,BEGIN_MUS_1
+    jal trocaMus
+	lw $ra, 0($sp)
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
+	#CODIGO PARA TROCAR A MUSICA
+
     lw $a0, MBG_14
     lw $a2, BG_14
     j atualizaMapaInfo
 vaipra15:
+
+	#CODIGO PARA TROCAR A MUSICA
+	addi $sp, $sp, -8
+	sw $ra, 0($sp)
+	sw $a0, 4($sp)
+	lw $a0,BEGIN_MUS_2
+    jal trocaMus
+	lw $ra, 0($sp)
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
+	#CODIGO PARA TROCAR A MUSICA
+	
     lw $a0, MBG_15
     lw $a2, BG_15
     j atualizaMapaInfo
@@ -224,6 +247,7 @@ sw, $ra, 0($sp)
 jal iniciaMaxPosicao
 lw $ra, 0($sp)
 addi $sp, $sp, 4
+
 
 addi $sp, $sp, -4
 sw $ra, 0($sp)

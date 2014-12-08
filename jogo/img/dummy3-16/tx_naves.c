@@ -128,6 +128,14 @@ int main(){
     mandaArquivo("tabua.bin\0");
     Sleep(100);
     mandaArquivo("diamondRed.bin\0"); //50
+    
+    
+    
+	Sleep(100);
+    mandaArquivo("assobio\0");
+    Sleep(100);
+    mandaArquivo("batida2\0");		//52
+    
     return 0;
 }
 

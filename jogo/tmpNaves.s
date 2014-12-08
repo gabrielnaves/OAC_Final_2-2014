@@ -1,4 +1,5 @@
 .data #0x10010000
+    #mapas
     BG_0: .word 0x00000000
     MBG_0: .word 0x00000000
     BG_1: .word 0x00000000
@@ -32,6 +33,8 @@
     BG_15: .word 0x00000000
     MBG_15: .word 0x00000000 #32
 
+
+    #Max
     MAX_FRONT: .word 0x00000000
     MAX_BACK: .word 0x00000000
     MAX_RIGHT: .word 0x00000000
@@ -41,6 +44,8 @@
     MAX_2_RIGHT: .word 0x00000000
     MAX_2_LEFT: .word 0x00000000 #40
 
+
+    #objetos
     MVBLOCK: .word 0x00000000
     movingBlock2: .word 0x00000000
     barrel: .word 0x00000000
@@ -52,13 +57,19 @@
     tabua: .word 0x00000000
     diamondRed: .word 0x00000000 #50
 
+    #musicas
+    BEGIN_MUS_1: .word 0x00000000
+    BEGIN_MUS_2: .word 0x00000000#52
+
+
+    #matriz atual
     MATUAL: .space 0x000000E0
 ##############################################################################################################
     FRAME_COUNTER: .word 0x00000000
 .text
 
 main:
-    li $a0, 50 # Numero de elementos no jogo
+    li $a0, 52 # Numero de elementos no jogo
     jal loadGame
     jal initInputManager
 
@@ -106,6 +117,10 @@ main:
     li $t0, 3
     sw $t0, mvBlockDir
 
+
+    #setup musicas
+    lw $a0,BEGIN_MUS_1
+    jal trocaMus
 ##############################################################################################################
 mainGameLoop:
     lw $t0, FRAME_COUNTER
@@ -115,6 +130,7 @@ mainGameLoop:
     jal updateMax
     jal updateMap
     jal updateBlock
+    jal TocaMusica
     j mainGameLoop
 ##############################################################################################################
 

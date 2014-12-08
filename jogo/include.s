@@ -8,3 +8,4 @@
     .include "modulos/updateMap.s"
     #.include "modulos/fireballmap2.s"
     .include "modulos/movingBlock.s"
+    .include "modulos/TrilhaSonora.s"

@@ -126,6 +126,14 @@ int main(){
     mandaArquivo("tabua.bin\0");
     Sleep(100);
     mandaArquivo("diamondRed.bin\0"); //50
+    
+    
+    
+    Sleep(100);
+    mandaArquivo("assobio\0");
+    Sleep(100);
+    mandaArquivo("batida2\0");
+    
     return 0;
 }
 
@@ -134,7 +142,7 @@ int main(){
 int mandaArquivo(char *fileName)
 {
 
-  int cport_nr=4,        /* /dev/ttyS0 (COM1 on windows) */
+  int cport_nr=3,        /* /dev/ttyS0 (COM1 on windows) */
       bdrate=115200;       /* 9600 baud */
 
   char mode[]={'8','N','1',0};
