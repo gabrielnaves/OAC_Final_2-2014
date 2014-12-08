@@ -57,6 +57,10 @@
     tabua: .word 0x00000000
     diamondRed: .word 0x00000000 #50
 
+
+
+    MBG_22: .word 0x00000000
+
     #musicas
     BEGIN_MUS_1: .word 0x00000000
     BEGIN_MUS_2: .word 0x00000000#52
@@ -69,12 +73,16 @@
 .text
 
 main:
-    li $a0, 52 # Numero de elementos no jogo
+    
+
+
+
+    li $a0, 53 # Numero de elementos no jogo
     jal loadGame
     jal initInputManager
 
     # Define o mapa0 como BG_ATUAL
-    lw $t0, BG_0
+    lw $t0, BG_2
     sw $t0, BG_ATUAL
     # Printa o mapa
     li $a0, 0
@@ -96,31 +104,19 @@ main:
     # printa o max
     jal printMax
     #coloca a matriz atual com o conteudo do matrix_mapa0
-    lw $a0, MBG_0
+    lw $a0, MBG_2
     lw $a1, MATUAL
     jal copiaMatriz
 
     jal printaObjetosInicio
 
-    lw $a0, MVBLOCK
-    li $t0, 4
-    sll $t0, $t0, 16
-    li $t1, 9
-    or $a1, $t0, $t1
-    jal printInTile
 
-    #teste em que o bloco vai para uma direcao
-    li $t0, 6
-    sw $t0, mvBlockPosX
-    li $t0, 6
-    sw $t0, mvBlockPosY
-    li $t0, 3
-    sw $t0, mvBlockDir
 
 
     #setup musicas
     lw $a0,BEGIN_MUS_1
     jal trocaMus
+
 ##############################################################################################################
 mainGameLoop:
     lw $t0, FRAME_COUNTER
@@ -130,8 +126,10 @@ mainGameLoop:
     jal updateMax
     jal updateMap
     jal updateBlock
+    jal updateDoor
     jal TocaMusica
     j mainGameLoop
 ##############################################################################################################
 
 .include "include.s"
+.include "modulos/updateDoor.s"
