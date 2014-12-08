@@ -1,6 +1,6 @@
 .data
-	mvBlockPosX: .word 0x00000000
-	mvBlockPosY: .word 0x00000000
+    mvBlockPosX: .word 0x00000000
+    mvBlockPosY: .word 0x00000000
     mvBlockDir:  .word 0x00000000
 
 .text
@@ -16,9 +16,9 @@ updateBlock:
     # Tras = 2                                                      #
     # Direita = 3                                                   #
     # Esquerda = 4                                                  #
-    li $t1, 1
-    beq $t1, $t0, mvFrente
     li $t1, 2
+    beq $t1, $t0, mvFrente
+    li $t1, 1
     beq $t1, $t0, mvTras
     li $t1, 3
     beq $t1, $t0, mvDireita
@@ -45,6 +45,8 @@ mvFrente:
     beq $t0, $v0, mvFront
     li $t0, 0x2a
     beq $t0, $v0, mvFront
+    li $t0, 0x00000000
+    sw $t0, mvBlockDir
     j fimUpdateBlock
 
     mvFront:
@@ -99,6 +101,8 @@ mvTras:
     beq $t0, $v0, mvBack
     li $t0, 0x2a
     beq $t0, $v0, mvBack
+    li $t0, 0x00000000
+    sw $t0, mvBlockDir
     j fimUpdateBlock
 
     mvBack: 
@@ -152,10 +156,15 @@ mvDireita:
     beq $t0, $v0, mvRight
     li $t0, 0x2a
     beq $t0, $v0, mvRight
+    li $t0, 0x00000000
+    sw $t0, mvBlockDir
     j fimUpdateBlock
 
     mvRight:
         #escreve na matriz a proxima matriz
+        lw $t0, mvBlockPosX
+        lw $t1, mvBlockPosY
+        addi $t0, $t0, 1
         lw $a0, MATUAL
         li $a3, 0x63
         jal setTileInfo
@@ -204,10 +213,15 @@ mvEsquerda:
     beq $t0, $v0, mvLeft
     li $t0, 0x2a
     beq $t0, $v0, mvLeft
+    li $t0, 0x00000000
+    sw $t0, mvBlockDir
     j fimUpdateBlock
 
     mvLeft:
         #escreve na matriz a proxima matriz
+        lw $t0, mvBlockPosX
+        lw $t1, mvBlockPosY
+        addi $t0, $t0, -1
         lw $a0, MATUAL
         li $a3, 0x63 #caixa
         jal setTileInfo
