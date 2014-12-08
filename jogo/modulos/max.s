@@ -131,15 +131,49 @@ apagaMax:
     move $a1, $s1
     jal printTile
     
+    lw $a0, MATUAL
+    lw $a1, maxPositionX
+    lw $a2, maxPositionY
+    addi $a2, $a2, -1
+    jal getTileInfo
+
+    li $t0, 0x2A
+    beq $v0, $t0, preencheComBg #caso seja chao pisavel
+    li $t0, 0x23
+    beq $v0, $t0, preencheComBg #caso seja parede
+    li $t0, 0x64
+    beq $v0, $t0, preencheComBg #caso seja caixa de madeira
+preencheComMAtual: #TODO: Modularizar isso
+    li $t0, 0x63
+    beq $v0, $t0, max_printMovingBlock
+    li $t0, 0x66
+    beq $v0, 0x66 max_printBarrel
+
+preencheComBg:
     move $a0, $s0
     addi $a1, $s1, -1
     jal printTile
-
+fimApagaMax:
     lw $ra, 0($sp)
     lw $s0, 4($sp)
     lw $s1, 8($sp)
     addi $sp, $sp, 12
     jr $ra
+
+max_printMovingBlock:
+    lw $a0, MVBLOCK
+    sll $a1, $s0, 16
+    add $a1, $a1, $s1
+    addi $a1, $a1, -1
+    jal printInTile
+    j fimApagaMax
+max_printBarrel:
+    lw $a0, barrel
+    sll $a1, $s0, 16
+    add $a1, $a1, $s1
+    addi $a1, $a1, -1
+    jal printInTile
+    j fimApagaMax    
 
 ###########################################################
 # A partir da posicao dada, verifica se eh valida ou nao. #
@@ -264,6 +298,36 @@ verificaTileIntransponivel:
     beq $v0, $t0, verificaTileIntransponivel_RetornaZero
     li $t0, 0x63    ## Codigo de blocos com estrela
     beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x42   ## Inimigo Magro azul
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x43    ## Inimigo Magro verde
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x44    ## Inimigo Azul escuro que vira bolota
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x45    ## Chefão
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x46    ## Porco espinho
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x41    ##Inimigo Gordo azul claro
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x47    ## Sapo
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x48    ## Cobra
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x4E    ## Canhão vivo
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x4F    ## Canhão morto
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x64    ## Caixa de madeira
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x66    ## Barril
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x67    ## Planta
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x34    ## Gancho
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
+    li $t0, 0x7C    ## Porta
+    beq $v0, $t0, verificaTileIntransponivel_RetornaZero
     ### Para adicionar mais tiles como "paredes", colocar aqui!
     li $v0, 1
     j verificaTileIntransponivel_end
@@ -273,6 +337,7 @@ verificaTileIntransponivel_end:
     lw $ra, 0($sp)
     addi $sp, $sp, 4
     jr $ra
+
 
 ##############################################################################
 # A partir do maxPosition e da direcao do movimento, atualiza a posicao      #

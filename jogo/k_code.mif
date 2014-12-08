@@ -1,0 +1,2069 @@
+DEPTH = 4096;
+WIDTH = 32;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+CONTENT
+BEGIN
+
+00000000 : 24040034;  % 72:     li $a0, 52 # Numero de elementos no jogo %
+00000001 : 0c100350;  % 73:     jal loadGame %
+00000002 : 0c10007a;  % 74:     jal initInputManager %
+00000003 : 3c011001;  % 77:     lw $t0, BG_0 %
+00000004 : 8c280000;  % 77:  %
+00000005 : 3c011001;  % 78:     sw $t0, BG_ATUAL %
+00000006 : ac2801e0;  % 78:  %
+00000007 : 24040000;  % 80:     li $a0, 0 %
+00000008 : 24050000;  % 81:     li $a1, 0 %
+00000009 : 3c011001;  % 82:     lw $a2, BG_ATUAL %
+0000000a : 8c2601e0;  % 82:  %
+0000000b : 0c100161;  % 83:     jal printImg %
+0000000c : 24080005;  % 85:     li $t0, 5 %
+0000000d : 3c011001;  % 86:     sw $t0, maxPositionX %
+0000000e : ac2801b8;  % 86:  %
+0000000f : 24080005;  % 87:     li $t0, 5 %
+00000010 : 3c011001;  % 88:     sw $t0, maxPositionY %
+00000011 : ac2801bc;  % 88:  %
+00000012 : 3c011001;  % 91:     sw $zero, maxSide %
+00000013 : ac2001c0;  % 91:  %
+00000014 : 3c011001;  % 92:     lw $t0, MAX_FRONT %
+00000015 : 8c280080;  % 92:  %
+00000016 : 3c011001;  % 93:     sw $t0, maxCurrentImage %
+00000017 : ac2801c4;  % 93:  %
+00000018 : 3c011001;  % 95:     sw $zero, maxCurrentState %
+00000019 : ac2001c8;  % 95:  %
+0000001a : 0c10048e;  % 97:     jal printMax %
+0000001b : 3c011001;  % 99:     lw $a0, MBG_0 %
+0000001c : 8c240004;  % 99:  %
+0000001d : 3c011001;  % 100:     lw $a1, MATUAL %
+0000001e : 8c2500d0;  % 100:  %
+0000001f : 0c100674;  % 101:     jal copiaMatriz %
+00000020 : 0c10069f;  % 103:     jal printaObjetosInicio %
+00000021 : 3c011001;  % 105:     lw $a0, MVBLOCK %
+00000022 : 8c2400a0;  % 105:  %
+00000023 : 24080004;  % 106:     li $t0, 4 %
+00000024 : 00084400;  % 107:     sll $t0, $t0, 16 %
+00000025 : 24090009;  % 108:     li $t1, 9 %
+00000026 : 01092825;  % 109:     or $a1, $t0, $t1 %
+00000027 : 0c100238;  % 110:     jal printInTile %
+00000028 : 24080006;  % 113:     li $t0, 6 %
+00000029 : 3c011001;  % 114:     sw $t0, mvBlockPosX %
+0000002a : ac2801e4;  % 114:  %
+0000002b : 24080006;  % 115:     li $t0, 6 %
+0000002c : 3c011001;  % 116:     sw $t0, mvBlockPosY %
+0000002d : ac2801e8;  % 116:  %
+0000002e : 24080003;  % 117:     li $t0, 3 %
+0000002f : 3c011001;  % 118:     sw $t0, mvBlockDir %
+00000030 : ac2801ec;  % 118:  %
+00000031 : 3c011001;  % 122:     lw $a0,BEGIN_MUS_1 %
+00000032 : 8c2400c8;  % 122:  %
+00000033 : 0c100807;  % 123:     jal trocaMus %
+00000034 : 3c011001;  % 126:     lw $t0, FRAME_COUNTER %
+00000035 : 8c2801b0;  % 126:  %
+00000036 : 21080001;  % 127:     addi $t0, $t0, 1 %
+00000037 : 3c011001;  % 128:     sw $t0, FRAME_COUNTER %
+00000038 : ac2801b0;  % 128:  %
+00000039 : 0c10007d;  % 129:     jal inputManagerUpdate %
+0000003a : 0c10036b;  % 130:     jal updateMax %
+0000003b : 0c100571;  % 131:     jal updateMap %
+0000003c : 0c10070b;  % 132:     jal updateBlock %
+0000003d : 0c1007eb;  % 133:     jal TocaMusica %
+0000003e : 08100034;  % 134:     j mainGameLoop %
+0000003f : 00004021;  % 16: 	move $t0, $zero %
+00000040 : 00004821;  % 17: 	move $t1, $zero %
+00000041 : 00005021;  % 18: 	move $t2, $zero %
+00000042 : 00005821;  % 19: 	move $t3, $zero %
+00000043 : 00006021;  % 20: 	move $t4, $zero %
+00000044 : 00006821;  % 21: 	move $t5, $zero %
+00000045 : 00007021;  % 22: 	move $t6, $zero %
+00000046 : 00007821;  % 23: 	move $t7, $zero %
+00000047 : 0000c021;  % 24: 	move $t8, $zero %
+00000048 : 0000c821;  % 25: 	move $t9, $zero %
+00000049 : 3c01ffff;  % 27: 	la $t0, 0xFFFF0120 %
+0000004a : 34280120;  % 27:  %
+0000004b : 00005821;  % 28: 	move $t3, $zero	 %
+0000004c : 240e0003;  % 29: 	li $t6, 3 %
+0000004d : 20180008;  % 30: 	addi $t8, $zero, 8 	# número 8 %
+0000004e : 240c0004;  % 31: 	li $t4, 4	#contador de 4 bytes %
+0000004f : 8d090008;  % 37: 			lw $t1, 8($t0) 	#0xFFFF0128 %
+00000050 : 00094882;  % 38: 			srl $t1, $t1, 2 %
+00000051 : 1120fffd;  % 40: 			beq $t1, $zero, CHECK_READY1_CONTADOR %
+00000052 : 8d0a0000;  % 42: 		lw $t2, 0($t0)	 %
+00000053 : 01d80018;  % 43: 		mult $t6, $t8 %
+00000054 : 00006812;  % 44: 		mflo $t5 	#quantos shifts serão necessários para colocar este byte na posição certa %
+00000055 : 01aa5004;  % 45: 		sllv $t2, $t2, $t5 %
+00000056 : 016a5825;  % 46: 		or $t3, $t3, $t2 #coloca no t3 o resultado da soma com shift %
+00000057 : 218cffff;  % 47: 		addi $t4, $t4, -1 %
+00000058 : 21ceffff;  % 48: 		addi $t6, $t6, -1 %
+00000059 : 8d090008;  % 51: 			lw $t1, 8($t0) 	#0xFFFF0128 %
+0000005a : 00094882;  % 52: 			srl $t1, $t1, 2 %
+0000005b : 1520fffd;  % 54: 			bne $t1, $zero, CHECK_READY0_CONTADOR %
+0000005c : 1580fff2;  % 57: 		bne $t4, $zero, CONTADOR_BYTES_ARQ %
+0000005d : 000b1021;  % 62: 	move $v0, $t3 %
+0000005e : 240c0004;  % 63: 	li $t4, 4	#contador de uma word %
+0000005f : 240e0003;  % 64: 	li $t6, 3 %
+00000060 : 20180008;  % 65: 	addi $t8, $zero, 8 	# número 8 %
+00000061 : 11600015;  % 68: 		beq $t3, $zero, FIM_UART_READ %
+00000062 : 8d090008;  % 70: 			lw $t1, 8($t0) 	#0xFFFF0128 %
+00000063 : 00094882;  % 71: 			srl $t1, $t1, 2 %
+00000064 : 1120fffd;  % 72: 			beq $t1, $zero, CHECK_READY1 %
+00000065 : 8d0a0000;  % 74: 		lw $t2, 0($t0)	 %
+00000066 : 01d80018;  % 75: 		mult $t6, $t8 %
+00000067 : 00006812;  % 76: 		mflo $t5 	#quantos shifts serão necessários para colocar este byte na posição certa %
+00000068 : 01aa5004;  % 77: 		sllv $t2, $t2, $t5 %
+00000069 : 01ea7825;  % 78: 		or $t7, $t7, $t2 #coloca no t3 o resultado da soma com shift %
+0000006a : 218cffff;  % 80: 		addi $t4, $t4, -1 %
+0000006b : 21ceffff;  % 81: 		addi $t6, $t6, -1 %
+0000006c : 216bffff;  % 83: 		addi $t3, $t3, -1 %
+0000006d : 8d090008;  % 86: 			lw $t1, 8($t0) 	#0xFFFF0128 %
+0000006e : 00094882;  % 87: 			srl $t1, $t1, 2 %
+0000006f : 1520fffd;  % 88: 			bne $t1, $zero, CHECK_READY0 %
+00000070 : 1580fff0;  % 90: 		bne $t4, $zero, BYTES_ARQ %
+00000071 : 240c0004;  % 92: 		li $t4, 4 %
+00000072 : ac8f0000;  % 93: 		sw $t7, 0($a0) %
+00000073 : 20840004;  % 94: 		addi $a0, $a0, 4		 %
+00000074 : 00007821;  % 95: 		move $t7, $zero %
+00000075 : 240e0003;  % 96: 		li $t6, 3 %
+00000076 : 08100061;  % 98: 		j BYTES_ARQ %
+00000077 : 11e00001;  % 101: 		beq $t7, $zero, FIM_UART_READ_JUMP %
+00000078 : ac8f0000;  % 102: 		sw $t7, 0($a0) %
+00000079 : 03e00008;  % 104: 		jr $ra %
+0000007a : 3c011001;  % 15:     sw $zero, inputManagerFlags # Zera as flags do inputManager %
+0000007b : ac2001b4;  % 15:  %
+0000007c : 03e00008;  % 16:     jr $ra %
+0000007d : 23bdfff4;  % 19:     addi $sp, $sp, -12 %
+0000007e : afbf0000;  % 20:     sw $ra, 0($sp) %
+0000007f : afa40004;  % 21:     sw $a0, 4($sp) %
+00000080 : afa50008;  % 22:     sw $a1, 8($sp) %
+00000081 : 3c01ffff;  % 24:     la $t0, 0xFFFF0104 # Endereco do buffer 1 do teclado %
+00000082 : 34280104;  % 24:  %
+00000083 : 8d040000;  % 25:     lw $a0, 0($t0) %
+00000084 : 3c01ffff;  % 26:     la $t0, 0xFFFF0100 # Endereco do buffer 0 do teclado %
+00000085 : 34280100;  % 26:  %
+00000086 : 8d050000;  % 27:     lw $a1, 0($t0) %
+00000087 : 0c10008d;  % 28:     jal inputManagerProcessBuffer %
+00000088 : 8fbf0000;  % 30:     lw $ra, 0($sp) %
+00000089 : 8fa40004;  % 31:     lw $a0, 4($sp) %
+0000008a : 8fa50008;  % 32:     lw $a1, 8($sp) %
+0000008b : 23bd000c;  % 33:     addi $sp, $sp, 12 %
+0000008c : 03e00008;  % 34:     jr $ra %
+0000008d : 23bdffe8;  % 38:     addi $sp, $sp, -24 %
+0000008e : afbf0000;  % 39:     sw $ra, 0($sp) %
+0000008f : afb00004;  % 40:     sw $s0, 4($sp) %
+00000090 : afb10008;  % 41:     sw $s1, 8($sp) %
+00000091 : afb2000c;  % 42:     sw $s2, 12($sp) %
+00000092 : afa40010;  % 43:     sw $a0, 16($sp) %
+00000093 : afa50014;  % 44:     sw $a1, 20($sp) %
+00000094 : 00048021;  % 46:     move $s0, $a0           # Buffer 1 para $s0 %
+00000095 : 00058821;  % 47:     move $s1, $a1           # Buffer 0 para $s1 %
+00000096 : 241200f0;  % 48:     li $s2, 0x00F0          # $s2 contem o codigo para remocao de botao %
+00000097 : 00104602;  % 50:     srl $t0, $s0, 24        # Byte mais significativo do buffer 1 vai pra $t0 %
+00000098 : 15120005;  % 51:     bne $t0, $s2, inputManagerProcessBuffer_ignoreFirstByte # Se $t0 nao for 0x00F0, ignora esse byte %
+00000099 : 24050000;  % 52:     li $a1, 0               # Se $t0 for 0x00F0, seta o proximo byte para false, se for um botao %
+0000009a : 00102200;  % 53:     sll $a0, $s0, 8 %
+0000009b : 00042602;  % 54:     srl $a0, $a0, 24 %
+0000009c : 0c1000ea;  % 56:     jal inputManagerSetButton   # Seta o segundo byte pra false %
+0000009d : 081000a9;  % 57:     j inputManagerProcessBuffer_thirdByte # Vai para o terceiro byte %
+0000009e : 00102200;  % 59:     sll $a0, $s0, 8 %
+0000009f : 00042602;  % 60:     srl $a0, $a0, 24 %
+000000a0 : 10920003;  % 61:     beq $a0, $s2, inputManagerProcessBuffer_thirdByteToFalse # Se for 0x00F0, seta o proximo byte para false %
+000000a1 : 24050001;  % 62:     li $a1, 1 %
+000000a2 : 0c1000ea;  % 63:     jal inputManagerSetButton     # Seta o segundo byte pra true %
+000000a3 : 081000a9;  % 64:     j inputManagerProcessBuffer_thirdByte # Vai para o terceiro byte %
+000000a4 : 00102400;  % 66:     sll $a0, $s0, 16 %
+000000a5 : 00042602;  % 67:     srl $a0, $a0, 24 %
+000000a6 : 24050000;  % 68:     li $a1, 0 %
+000000a7 : 0c1000ea;  % 69:     jal inputManagerSetButton    # Seta o terceiro byte pra false %
+000000a8 : 081000b4;  % 70:     j inputManagerProcessBuffer_fourthByte # vai pro quarto byte %
+000000a9 : 00102400;  % 72:     sll $a0, $s0, 16 %
+000000aa : 00042602;  % 73:     srl $a0, $a0, 24 %
+000000ab : 10920003;  % 74:     beq $a0, $s2, inputManagerProcessBuffer_fourthByteToFalse %
+000000ac : 24050001;  % 75:     li $a1, 1 %
+000000ad : 0c1000ea;  % 76:     jal inputManagerSetButton    # Seta o terceiro byte pra true %
+000000ae : 081000b4;  % 77:     j inputManagerProcessBuffer_fourthByte # vai pro quarto byte %
+000000af : 00102600;  % 79:     sll $a0, $s0, 24 %
+000000b0 : 00042602;  % 80:     srl $a0, $a0, 24 %
+000000b1 : 24050000;  % 81:     li $a1, 0 %
+000000b2 : 0c1000ea;  % 82:     jal inputManagerSetButton   # Seta o quarto byte pra false %
+000000b3 : 081000be;  % 83:     j inputManagerProcessBuffer_fifthByte # Vai pro quinto byte %
+000000b4 : 00102600;  % 85:     sll $a0, $s0, 24 %
+000000b5 : 00042602;  % 86:     srl $a0, $a0, 24 %
+000000b6 : 10920003;  % 87:     beq $a0, $s2, inputManagerProcessBuffer_fifthByteToFalse %
+000000b7 : 24050001;  % 88:     li $a1, 1 %
+000000b8 : 0c1000ea;  % 89:     jal inputManagerSetButton    # Seta o quarto byte pra true %
+000000b9 : 081000be;  % 90:     j inputManagerProcessBuffer_fifthByte # Vai pro quinto byte %
+000000ba : 00112602;  % 92:     srl $a0, $s1, 24 %
+000000bb : 24050000;  % 93:     li $a1, 0 %
+000000bc : 0c1000ea;  % 94:     jal inputManagerSetButton   # Seta o quinto byte pra false %
+000000bd : 081000c8;  % 95:     j inputManagerProcessBuffer_sixthByte # Vai pro sexto byte %
+000000be : 00112602;  % 97:     srl $a0, $s1, 24 %
+000000bf : 10920003;  % 98:     beq $a0, $s2, inputManagerProcessBuffer_sixthByteToFalse %
+000000c0 : 24050001;  % 99:     li $a1, 1 %
+000000c1 : 0c1000ea;  % 100:     jal inputManagerSetButton #seta o quinto byte pra true %
+000000c2 : 081000c8;  % 101:     j inputManagerProcessBuffer_sixthByte # Vai pro sexto byte %
+000000c3 : 00112200;  % 103:     sll $a0, $s1, 8 %
+000000c4 : 00042602;  % 104:     srl $a0, $a0, 24 %
+000000c5 : 24050000;  % 105:     li $a1, 0 %
+000000c6 : 0c1000ea;  % 106:     jal inputManagerSetButton   # Seta o sexto byte pra false %
+000000c7 : 081000d3;  % 107:     j inputManagerProcessBuffer_seventhByte # Vai pro setimo byte %
+000000c8 : 00112200;  % 109:     sll $a0, $s1, 8 %
+000000c9 : 00042602;  % 110:     srl $a0, $a0, 24 %
+000000ca : 10920003;  % 111:     beq $a0, $s2, inputManagerProcessBuffer_seventhByteToFalse %
+000000cb : 24050001;  % 112:     li $a1, 1 %
+000000cc : 0c1000ea;  % 113:     jal inputManagerSetButton #seta o sexto byte pra true %
+000000cd : 081000d3;  % 114:     j inputManagerProcessBuffer_seventhByte # Vai pro setimo byte %
+000000ce : 00112400;  % 116:     sll $a0, $s1, 16 %
+000000cf : 00042602;  % 117:     srl $a0, $a0, 24 %
+000000d0 : 24050000;  % 118:     li $a1, 0 %
+000000d1 : 0c1000ea;  % 119:     jal inputManagerSetButton   # Seta o setimo byte pra false %
+000000d2 : 081000de;  % 120:     j inputManagerProcessBuffer_eighthByte # Vai pro oitavo byte %
+000000d3 : 00112400;  % 122:     sll $a0, $s1, 16 %
+000000d4 : 00042602;  % 123:     srl $a0, $a0, 24 %
+000000d5 : 10920003;  % 124:     beq $a0, $s2, inputManagerProcessBuffer_eighthByteToFalse %
+000000d6 : 24050001;  % 125:     li $a1, 1 %
+000000d7 : 0c1000ea;  % 126:     jal inputManagerSetButton #seta o setimo byte pra true %
+000000d8 : 081000de;  % 127:     j inputManagerProcessBuffer_eighthByte # Vai pro oitavo byte %
+000000d9 : 00112600;  % 129:     sll $a0, $s1, 24 %
+000000da : 00042602;  % 130:     srl $a0, $a0, 24 %
+000000db : 24050000;  % 131:     li $a1, 0 %
+000000dc : 0c1000ea;  % 132:     jal inputManagerSetButton   # Seta o oitavo byte pra false %
+000000dd : 081000e2;  % 133:     j inputManagerProcessBuffer_end # termina %
+000000de : 00112600;  % 135:     sll $a0, $s1, 24 %
+000000df : 00042602;  % 136:     srl $a0, $a0, 24 %
+000000e0 : 24050001;  % 137:     li $a1, 1 %
+000000e1 : 0c1000ea;  % 138:     jal inputManagerSetButton #seta o oitavo byte pra true %
+000000e2 : 8fbf0000;  % 140:     lw $ra, 0($sp) %
+000000e3 : 8fb00004;  % 141:     lw $s0, 4($sp) %
+000000e4 : 8fb10008;  % 142:     lw $s1, 8($sp) %
+000000e5 : 8fb2000c;  % 143:     lw $s2, 12($sp) %
+000000e6 : 8fa40010;  % 144:     lw $a0, 16($sp) %
+000000e7 : 8fa50014;  % 145:     lw $a1, 20($sp) %
+000000e8 : 23bd0018;  % 146:     addi $sp, $sp, 24 %
+000000e9 : 03e00008;  % 147:     jr $ra %
+000000ea : 3c011001;  % 152:     lw $t1, inputManagerFlags %
+000000eb : 8c2901b4;  % 152:  %
+000000ec : 24080022;  % 153:     li $t0, 0x00000022 ### Botao A %
+000000ed : 15040002;  % 154:     bne $t0, $a0, inputManagerSetButton_B %
+000000ee : 24080001;  % 155:     li $t0, 0x0001 %
+000000ef : 0810011c;  % 156:     j inputManagerSetButtonFoundButton %
+000000f0 : 2408001a;  % 158:     li $t0, 0x0000001A ### Botao B %
+000000f1 : 15040002;  % 159:     bne $t0, $a0, inputManagerSetButton_X %
+000000f2 : 24080002;  % 160:     li $t0, 0x0002 %
+000000f3 : 0810011c;  % 161:     j inputManagerSetButtonFoundButton %
+000000f4 : 2408001b;  % 163:     li $t0, 0x0000001B ### Botao X %
+000000f5 : 15040002;  % 164:     bne $t0, $a0, inputManagerSetButton_Y %
+000000f6 : 24080004;  % 165:     li $t0, 0x0004 %
+000000f7 : 0810011c;  % 166:     j inputManagerSetButtonFoundButton %
+000000f8 : 2408001c;  % 168:     li $t0, 0x0000001C ### Botao Y %
+000000f9 : 15040002;  % 169:     bne $t0, $a0, inputManagerSetButton_Start %
+000000fa : 24080008;  % 170:     li $t0, 0x0008 %
+000000fb : 0810011c;  % 171:     j inputManagerSetButtonFoundButton %
+000000fc : 2408005a;  % 173:     li $t0, 0x0000005A ### Botao Start %
+000000fd : 15040002;  % 174:     bne $t0, $a0, inputManagerSetButton_Select %
+000000fe : 24080010;  % 175:     li $t0, 0x0010 %
+000000ff : 0810011c;  % 176:     j inputManagerSetButtonFoundButton %
+00000100 : 24080059;  % 178:     li $t0, 0x00000059 ### Botao Select %
+00000101 : 15040002;  % 179:     bne $t0, $a0, inputManagerSetButton_Right %
+00000102 : 24080020;  % 180:     li $t0, 0x0020 %
+00000103 : 0810011c;  % 181:     j inputManagerSetButtonFoundButton %
+00000104 : 2408004b;  % 183:     li $t0, 0x0000004B ### Botao Right %
+00000105 : 15040002;  % 184:     bne $t0, $a0, inputManagerSetButton_Up %
+00000106 : 24080040;  % 185:     li $t0, 0x0040 %
+00000107 : 0810011c;  % 186:     j inputManagerSetButtonFoundButton %
+00000108 : 24080043;  % 188:     li $t0, 0x00000043 ### Botao Up %
+00000109 : 15040002;  % 189:     bne $t0, $a0, inputManagerSetButton_Left %
+0000010a : 24080080;  % 190:     li $t0, 0x0080 %
+0000010b : 0810011c;  % 191:     j inputManagerSetButtonFoundButton %
+0000010c : 2408003b;  % 193:     li $t0, 0x0000003B ### Botao Left %
+0000010d : 15040002;  % 194:     bne $t0, $a0, inputManagerSetButton_Down %
+0000010e : 24080100;  % 195:     li $t0, 0x0100 %
+0000010f : 0810011c;  % 196:     j inputManagerSetButtonFoundButton %
+00000110 : 24080042;  % 198:     li $t0, 0x00000042 ### Botao Down %
+00000111 : 15040002;  % 199:     bne $t0, $a0, inputManagerSetButton_R %
+00000112 : 24080200;  % 200:     li $t0, 0x0200 %
+00000113 : 0810011c;  % 201:     j inputManagerSetButtonFoundButton %
+00000114 : 24080021;  % 203:     li $t0, 0x00000021 ### Botao R %
+00000115 : 15040002;  % 204:     bne $t0, $a0, inputManagerSetButton_L %
+00000116 : 24080400;  % 205:     li $t0, 0x0400 %
+00000117 : 0810011c;  % 206:     j inputManagerSetButtonFoundButton %
+00000118 : 240a0023;  % 208:     li $t2, 0x00000023 ### Botao L %
+00000119 : 24080800;  % 209:     li $t0, 0x0800 %
+0000011a : 11440001;  % 210:     beq $t2, $a0, inputManagerSetButtonFoundButton %
+0000011b : 03e00008;  % 211:     jr $ra %
+0000011c : 10a00004;  % 213:     beq $a1, $zero, inputManagerSetButtonSetToFalse %
+0000011d : 01094825;  % 214:     or $t1, $t0, $t1 %
+0000011e : 3c011001;  % 215:     sw $t1, inputManagerFlags %
+0000011f : ac2901b4;  % 215:  %
+00000120 : 03e00008;  % 216:     jr $ra %
+00000121 : 01004027;  % 218:     not $t0, $t0 %
+00000122 : 01094824;  % 219:     and $t1, $t0, $t1 %
+00000123 : 3c011001;  % 220:     sw $t1, inputManagerFlags %
+00000124 : ac2901b4;  % 220:  %
+00000125 : 03e00008;  % 221:     jr $ra %
+00000126 : 3c011001;  % 226:     lw $v0, inputManagerFlags %
+00000127 : 8c2201b4;  % 226:  %
+00000128 : 30420001;  % 227:     andi $v0, $v0, 0x0001 %
+00000129 : 03e00008;  % 228:     jr $ra %
+0000012a : 3c011001;  % 231:     lw $v0, inputManagerFlags %
+0000012b : 8c2201b4;  % 231:  %
+0000012c : 30420002;  % 232:     andi $v0, $v0, 0x0002 %
+0000012d : 00021042;  % 233:     srl $v0, $v0, 1 %
+0000012e : 03e00008;  % 234:     jr $ra %
+0000012f : 3c011001;  % 237:     lw $v0, inputManagerFlags %
+00000130 : 8c2201b4;  % 237:  %
+00000131 : 30420004;  % 238:     andi $v0, $v0, 0x0004 %
+00000132 : 00021082;  % 239:     srl $v0, $v0, 2 %
+00000133 : 03e00008;  % 240:     jr $ra %
+00000134 : 3c011001;  % 243:     lw $v0, inputManagerFlags %
+00000135 : 8c2201b4;  % 243:  %
+00000136 : 30420008;  % 244:     andi $v0, $v0, 0x0008 %
+00000137 : 000210c2;  % 245:     srl $v0, $v0, 3 %
+00000138 : 03e00008;  % 246:     jr $ra %
+00000139 : 3c011001;  % 249:     lw $v0, inputManagerFlags %
+0000013a : 8c2201b4;  % 249:  %
+0000013b : 30420010;  % 250:     andi $v0, $v0, 0x0010 %
+0000013c : 00021102;  % 251:     srl $v0, $v0, 4 %
+0000013d : 03e00008;  % 252:     jr $ra %
+0000013e : 3c011001;  % 255:     lw $v0, inputManagerFlags %
+0000013f : 8c2201b4;  % 255:  %
+00000140 : 30420020;  % 256:     andi $v0, $v0, 0x0020 %
+00000141 : 00021142;  % 257:     srl $v0, $v0, 5 %
+00000142 : 03e00008;  % 258:     jr $ra %
+00000143 : 3c011001;  % 261:     lw $v0, inputManagerFlags %
+00000144 : 8c2201b4;  % 261:  %
+00000145 : 30420040;  % 262:     andi $v0, $v0, 0x0040 %
+00000146 : 00021182;  % 263:     srl $v0, $v0, 6 %
+00000147 : 03e00008;  % 264:     jr $ra %
+00000148 : 3c011001;  % 267:     lw $v0, inputManagerFlags %
+00000149 : 8c2201b4;  % 267:  %
+0000014a : 30420080;  % 268:     andi $v0, $v0, 0x0080 %
+0000014b : 000211c2;  % 269:     srl $v0, $v0, 7 %
+0000014c : 03e00008;  % 270:     jr $ra %
+0000014d : 3c011001;  % 273:     lw $v0, inputManagerFlags %
+0000014e : 8c2201b4;  % 273:  %
+0000014f : 30420100;  % 274:     andi $v0, $v0, 0x0100 %
+00000150 : 00021202;  % 275:     srl $v0, $v0, 8 %
+00000151 : 03e00008;  % 276:     jr $ra %
+00000152 : 3c011001;  % 279:     lw $v0, inputManagerFlags %
+00000153 : 8c2201b4;  % 279:  %
+00000154 : 30420200;  % 280:     andi $v0, $v0, 0x0200 %
+00000155 : 00021242;  % 281:     srl $v0, $v0, 9 %
+00000156 : 03e00008;  % 282:     jr $ra %
+00000157 : 3c011001;  % 285:     lw $v0, inputManagerFlags %
+00000158 : 8c2201b4;  % 285:  %
+00000159 : 30420400;  % 286:     andi $v0, $v0, 0x0400 %
+0000015a : 00021282;  % 287:     srl $v0, $v0, 10 %
+0000015b : 03e00008;  % 288:     jr $ra %
+0000015c : 3c011001;  % 291:     lw $v0, inputManagerFlags %
+0000015d : 8c2201b4;  % 291:  %
+0000015e : 30420800;  % 292:     andi $v0, $v0, 0x0800 %
+0000015f : 000212c2;  % 293:     srl $v0, $v0, 11 %
+00000160 : 03e00008;  % 294:     jr $ra %
+00000161 : 23bdffe0;  % 12:     addi $sp, $sp, -32 %
+00000162 : afb00000;  % 13:     sw $s0, 0($sp) %
+00000163 : afb10004;  % 14:     sw $s1, 4($sp) %
+00000164 : afb20008;  % 15:     sw $s2, 8($sp) %
+00000165 : afb3000c;  % 16:     sw $s3, 12($sp) %
+00000166 : afb40010;  % 17:     sw $s4, 16($sp) %
+00000167 : afb50014;  % 18:     sw $s5, 20($sp) %
+00000168 : afb60018;  % 19:     sw $s6, 24($sp) %
+00000169 : afb7001c;  % 20:     sw $s7, 28($sp) %
+0000016a : 8cd10000;  % 22:     lw $s1, 0($a2)               # Carrega a largura da imagem %
+0000016b : 8cd20004;  % 23:     lw $s2, 4($a2)               # Carrega a altura da imagem %
+0000016c : 20c60008;  % 24:     addi $a2, $a2, 8 %
+0000016d : 00068021;  % 25:     move $s0, $a2                # Endereco da imagem vai para $s0 %
+0000016e : 02248820;  % 26:     add $s1, $s1, $a0            # A posicao x eh somada a largura %
+0000016f : 02459020;  % 27:     add $s2, $s2, $a1            # A posicao y eh somada a altura %
+00000170 : 00059821;  % 28:     move $s3, $a1                # i comeca na posicao y %
+00000171 : 0004b821;  % 29:     move $s7, $a0                # Posicao x passa para $s7 %
+00000172 : 12720031;  % 31:     beq $s3, $s2, printImgHeightExit    # Se i for igual a Altura, termina %
+00000173 : 24150001;  % 32:     li $s5, 1                           # Contador para os pixels %
+00000174 : 8e160000;  % 33:     lw $s6, 0($s0)                      # Carrega o set de pixels atual %
+00000175 : 0017a021;  % 34:     move $s4, $s7                       # j comeca na posicao x (que esta salva em $s7) %
+00000176 : 1291002a;  % 36:     beq $s4, $s1, printImgWidthExit      # Se j for igual a Largura, termina esse loop %
+00000177 : 24080001;  % 38:     li $t0, 1 %
+00000178 : 12a80006;  % 39:     beq $s5, $t0, printImgFirstPixel %
+00000179 : 24080002;  % 40:     li $t0, 2 %
+0000017a : 12a80007;  % 41:     beq $s5, $t0, printImgSecondPixel %
+0000017b : 24080003;  % 42:     li $t0, 3 %
+0000017c : 12a80009;  % 43:     beq $s5, $t0, printImgThirdPixel %
+0000017d : 24080004;  % 44:     li $t0, 4 %
+0000017e : 12a8000b;  % 45:     beq $s5, $t0, printImgFourthPixel %
+0000017f : 00164602;  % 47:     srl $t0, $s6, 24 %
+00000180 : 24090000;  % 48:     li $t1, 0                           # Flag para avisar que a word nao acabou %
+00000181 : 0810018e;  % 49:     j printImgWidthEnd %
+00000182 : 00164200;  % 51:     sll $t0, $s6, 8 %
+00000183 : 00084602;  % 52:     srl $t0, $t0, 24 %
+00000184 : 24090000;  % 53:     li $t1, 0                           # Flag para avisar que a word nao acabou %
+00000185 : 0810018e;  % 54:     j printImgWidthEnd %
+00000186 : 00164400;  % 56:     sll $t0, $s6, 16 %
+00000187 : 00084602;  % 57:     srl $t0, $t0, 24 %
+00000188 : 24090000;  % 58:     li $t1, 0                           # Flag para avisar que a word nao acabou %
+00000189 : 0810018e;  % 59:     j printImgWidthEnd %
+0000018a : 00164600;  % 61:     sll $t0, $s6, 24 %
+0000018b : 00084602;  % 62:     srl $t0, $t0, 24 %
+0000018c : 24150000;  % 63:     li $s5, 0 %
+0000018d : 24090001;  % 64:     li $t1, 1                           # Flag para avisar que a word acabou %
+0000018e : 24190028;  % 66:     li $t9, 0x0028                      ### 0x0028: cor tida como invisivel. ### %
+0000018f : 11190009;  % 67:     beq $t0, $t9, printImgWidthEnd_JumpPixel %
+00000190 : 2402002d;  % 68:     li $v0, 45                          # Codigo do syscall plot %
+00000191 : 00142021;  % 69:     move $a0, $s4                       # Posicao x do pixel %
+00000192 : 00132821;  % 70:     move $a1, $s3                       # Posicao y do pixel %
+00000193 : 00083021;  % 71:     move $a2, $t0                       # Cor para printar %
+00000194 : 23bdfffc;  % 73:     addi $sp, $sp, -4 %
+00000195 : afbf0000;  % 74:     sw $ra, 0($sp) %
+00000196 : 0c100347;  % 75:     jal Plot %
+00000197 : 8fbf0000;  % 76:     lw $ra, 0($sp) %
+00000198 : 23bd0004;  % 77:     addi $sp, $sp, 4 %
+00000199 : 22b50001;  % 79:     addi $s5, $s5, 1                    # contador de pixel++ %
+0000019a : 22940001;  % 80:     addi $s4, $s4, 1                    # j++ %
+0000019b : 12910005;  % 81:     beq $s4, $s1, printImgWidthExit     # Se j for igual a Largura, termina esse loop %
+0000019c : 15200001;  % 82:     bne $t1, $zero, printImgHeightExitOfWord %
+0000019d : 08100176;  % 83:     j printImgWidthLoop %
+0000019e : 22100004;  % 85:     addi $s0, $s0, 4 %
+0000019f : 8e160000;  % 86:     lw $s6, 0($s0)                      # Carrega o set de pixels atual %
+000001a0 : 08100176;  % 87:     j printImgWidthLoop %
+000001a1 : 22730001;  % 89:     addi $s3, $s3, 1                    # i++ %
+000001a2 : 22100004;  % 90:     addi $s0, $s0, 4                    # Proxima word %
+000001a3 : 08100172;  % 91:     j printImgHeightLoop %
+000001a4 : 8fb00000;  % 94:     lw $s0, 0($sp) %
+000001a5 : 8fb10004;  % 95:     lw $s1, 4($sp) %
+000001a6 : 8fb20008;  % 96:     lw $s2, 8($sp) %
+000001a7 : 8fb3000c;  % 97:     lw $s3, 12($sp) %
+000001a8 : 8fb40010;  % 98:     lw $s4, 16($sp) %
+000001a9 : 8fb50014;  % 99:     lw $s5, 20($sp) %
+000001aa : 8fb60018;  % 100:     lw $s6, 24($sp) %
+000001ab : 8fb7001c;  % 101:     lw $s7, 28($sp) %
+000001ac : 23bd0020;  % 102:     addi $sp, $sp, 32 %
+000001ad : 03e00008;  % 103:     jr $ra %
+000001ae : 24080063;  % 15:     li $t0, 0x63 %
+000001af : 11040014;  % 16:     beq $t0, $a0, return_c %
+000001b0 : 24080065;  % 18:     li $t0, 0x65 %
+000001b1 : 11040015;  % 19:     beq $t0, $a0, return_e %
+000001b2 : 24080066;  % 21:     li $t0, 0x66 %
+000001b3 : 11040016;  % 22:     beq $t0, $a0, return_f %
+000001b4 : 24080067;  % 24:     li $t0, 0x67 %
+000001b5 : 11040017;  % 25:     beq $t0, $a0, return_g %
+000001b6 : 24080031;  % 27:     li $t0, 0x31 %
+000001b7 : 11040018;  % 28:     beq $t0, $a0, return_1 %
+000001b8 : 24080032;  % 30:     li $t0, 0x32 %
+000001b9 : 11040019;  % 31:     beq $t0, $a0, return_2 %
+000001ba : 24080033;  % 33:     li $t0, 0x33 %
+000001bb : 1104001a;  % 34:     beq $t0, $a0, return_3 %
+000001bc : 24080034;  % 36:     li $t0, 0x34 %
+000001bd : 1104001b;  % 37:     beq $t0, $a0, return_4 %
+000001be : 24080035;  % 39:     li $t0, 0x35 %
+000001bf : 1104001c;  % 40:     beq $t0, $a0, return_5 %
+000001c0 : 24080036;  % 42:     li $t0, 0x36 %
+000001c1 : 1104001d;  % 43:     beq $t0, $a0, return_6 %
+000001c2 : 00001021;  % 71:     move $v0, $zero #nao encontrou %
+000001c3 : 03e00008;  % 72:     jr $ra %
+000001c4 : 3c011001;  % 74:         lw $v0, MVBLOCK %
+000001c5 : 8c2200a0;  % 74:  %
+000001c6 : 03e00008;  % 75:         jr $ra %
+000001c7 : 3c011001;  % 78:         lw $v0, movingBlock2 %
+000001c8 : 8c2200a4;  % 78:  %
+000001c9 : 03e00008;  % 79:         jr $ra %
+000001ca : 3c011001;  % 82:         lw $v0, barrel %
+000001cb : 8c2200a8;  % 82:  %
+000001cc : 03e00008;  % 83:         jr $ra %
+000001cd : 3c011001;  % 85:         lw $v0, plant %
+000001ce : 8c2200ac;  % 85:  %
+000001cf : 03e00008;  % 86:         jr $ra %
+000001d0 : 3c011001;  % 88:         lw $v0, key %
+000001d1 : 8c2200b0;  % 88:  %
+000001d2 : 03e00008;  % 89:         jr $ra %
+000001d3 : 3c011001;  % 91:         lw $v0, bossKey %
+000001d4 : 8c2200b4;  % 91:  %
+000001d5 : 03e00008;  % 92:         jr $ra %
+000001d6 : 3c011001;  % 94:         lw $v0, cherry %
+000001d7 : 8c2200b8;  % 94:  %
+000001d8 : 03e00008;  % 95:         jr $ra %
+000001d9 : 3c011001;  % 97:         lw $v0, gancho %
+000001da : 8c2200bc;  % 97:  %
+000001db : 03e00008;  % 98:         jr $ra %
+000001dc : 3c011001;  % 100:         lw $v0, tabua %
+000001dd : 8c2200c0;  % 100:  %
+000001de : 03e00008;  % 101:         jr $ra %
+000001df : 3c011001;  % 103:         lw $v0, diamondRed %
+000001e0 : 8c2200c4;  % 103:  %
+000001e1 : 03e00008;  % 104:         jr $ra %
+000001e2 : 00064100;  % 112:     sll $t0, $a2, 4 %
+000001e3 : 01054020;  % 113:     add $t0, $t0, $a1 #carrega 16*y + x em $t0 %
+000001e4 : 240c0004;  % 115:     li $t4, 4 %
+000001e5 : 010c001a;  % 116:     div $t0, $t4 %
+000001e6 : 00004812;  % 117:     mflo $t1 %
+000001e7 : 00094080;  % 118:     sll $t0, $t1, 2 %
+000001e8 : 01044020;  % 119:     add $t0, $t0, $a0 %
+000001e9 : 8d0a0000;  % 121:     lw $t2, 0($t0) %
+000001ea : 00004810;  % 122:     mfhi $t1 %
+000001eb : 000948c0;  % 123:     sll $t1, $t1, 3 %
+000001ec : 012a5004;  % 125:     sllv $t2, $t2, $t1 #coloca o byte desejado no fim da word  %
+000001ed : 000a1602;  % 126:     srl $v0, $t2, 24 #bota esse byte no inicio da word %
+000001ee : 03e00008;  % 128:     jr $ra %
+000001ef : 00064100;  % 138:     sll $t0, $a2, 4 %
+000001f0 : 01054020;  % 139:     add $t0, $t0, $a1 #carrega 16*y + x em $t0 %
+000001f1 : 240c0004;  % 141:     li $t4, 4 %
+000001f2 : 010c001a;  % 142:     div $t0, $t4 %
+000001f3 : 00004812;  % 143:     mflo $t1 %
+000001f4 : 00094080;  % 144:     sll $t0, $t1, 2 %
+000001f5 : 01044020;  % 145:     add $t0, $t0, $a0 %
+000001f6 : 8d0a0000;  % 147:     lw $t2, 0($t0) %
+000001f7 : 00087821;  % 148:     move $t7, $t0 %
+000001f8 : 00004810;  % 149:     mfhi $t1 %
+000001f9 : 11200006;  % 150:     beq $t1, $zero, restoZero %
+000001fa : 240b0001;  % 151:     li $t3, 1 %
+000001fb : 112b000c;  % 152:     beq $t1, $t3, restoUm %
+000001fc : 240b0002;  % 153:     li $t3, 2 %
+000001fd : 112b0012;  % 154:     beq $t1, $t3, restoDois %
+000001fe : 240b0003;  % 155:     li $t3, 3 %
+000001ff : 112b0018;  % 156:     beq $t1, $t3, restoTres %
+00000200 : 8de80000;  % 159:     lw $t0, 0($t7) %
+00000201 : 3c0100ff;  % 160:     andi $t1, $t0, 0x00ffffff %
+00000202 : 3421ffff;  % 160:  %
+00000203 : 01014824;  % 160:  %
+00000204 : 00074600;  % 161:     sll $t0, $a3, 24 %
+00000205 : 01284025;  % 162:     or $t0,$t1, $t0 %
+00000206 : ade80000;  % 163:     sw $t0, 0($t7) %
+00000207 : 03e00008;  % 164:     jr $ra %
+00000208 : 8de80000;  % 166:     lw $t0, 0($t7) %
+00000209 : 3c01ff00;  % 167:     andi $t1, $t0, 0xff00ffff %
+0000020a : 3421ffff;  % 167:  %
+0000020b : 01014824;  % 167:  %
+0000020c : 00074400;  % 168:     sll $t0, $a3, 16 %
+0000020d : 01284025;  % 169:     or $t0,$t1, $t0 %
+0000020e : ade80000;  % 170:     sw $t0, 0($t7) %
+0000020f : 03e00008;  % 171:     jr $ra %
+00000210 : 8de80000;  % 173:     lw $t0, 0($t7) %
+00000211 : 3c01ffff;  % 174:     andi $t1, $t0, 0xffff00ff %
+00000212 : 342100ff;  % 174:  %
+00000213 : 01014824;  % 174:  %
+00000214 : 00074200;  % 175:     sll $t0, $a3, 8 %
+00000215 : 01284025;  % 176:     or $t0,$t1, $t0 %
+00000216 : ade80000;  % 177:     sw $t0, 0($t7) %
+00000217 : 03e00008;  % 178:     jr $ra %
+00000218 : 8de80000;  % 180:     lw $t0, 0($t7) %
+00000219 : 3c01ffff;  % 181:     andi $t1, $t0, 0xffffff00 %
+0000021a : 3421ff00;  % 181:  %
+0000021b : 01014824;  % 181:  %
+0000021c : 01274025;  % 182:     or $t0,$t1, $a3 %
+0000021d : ade80000;  % 183:     sw $t0, 0($t7) %
+0000021e : 03e00008;  % 184:     jr $ra %
+0000021f : 24080014;  % 200:     li $t0, 20  %
+00000220 : 24090011;  % 201:     li $t1, 17 %
+00000221 : 00045402;  % 203:     srl $t2, $a0, 16 #x %
+00000222 : 00045c00;  % 204:     sll $t3, $a0, 16 #pre-y %
+00000223 : 000b5c02;  % 205:     srl $t3, $t3, 16 #y %
+00000224 : 00086020;  % 207:     add $t4, $zero, $t0 %
+00000225 : 0009c820;  % 208:     add $t9, $zero, $t1 %
+00000226 : 00006820;  % 209:     add $t5, $zero, $zero #i %
+00000227 : 00007820;  % 210:     add $t7, $zero, $zero #j %
+00000228 : 240e0001;  % 211:     li $t6, 1 %
+00000229 : 014cc02a;  % 214:         slt $t8, $t2, $t4 #pixel < tile ? %
+0000022a : 130e0003;  % 215:         beq $t8, $t6, procuraY # t8 == 1, entao tileX ok %
+0000022b : 21ad0001;  % 216:         addi $t5, $t5, 1 %
+0000022c : 01886020;  % 217:         add $t4, $t4, $t0 %
+0000022d : 08100229;  % 218:         j procuraX %
+0000022e : 0179c02a;  % 221:         slt $t8, $t3, $t9 #pixel < tile ? %
+0000022f : 130e0003;  % 222:         beq $t8, $t6, setIJ # t8 == 1, entao tileX ok %
+00000230 : 21ef0001;  % 223:         addi $t7, $t7, 1 %
+00000231 : 0329c820;  % 224:         add $t9, $t9, $t1 %
+00000232 : 0810022e;  % 225:         j procuraY %
+00000233 : 00001020;  % 228:         add $v0, $zero, $zero %
+00000234 : 000d1020;  % 229:         add $v0, $zero, $t5 %
+00000235 : 00021400;  % 230:         sll $v0, $v0, 16 %
+00000236 : 004f1020;  % 231:         add $v0, $v0, $t7 %
+00000237 : 03e00008;  % 233:     jr $ra %
+00000238 : 24080014;  % 245:     li $t0, 20  %
+00000239 : 24090011;  % 246:     li $t1, 17 %
+0000023a : 00055402;  % 248:     srl $t2, $a1, 16 #i %
+0000023b : 00055c00;  % 249:     sll $t3, $a1, 16 #pre-j %
+0000023c : 000b5c02;  % 250:     srl $t3, $t3, 16 #j %
+0000023d : 01480018;  % 252:     mult $t2, $t0 %
+0000023e : 00005012;  % 253:     mflo $t2 #pixel x %
+0000023f : 01690018;  % 255:     mult $t3, $t1 %
+00000240 : 00005812;  % 256:     mflo $t3 #pixel y %
+00000241 : 00043020;  % 258:     add $a2, $zero, $a0 #endereco da imagem %
+00000242 : 000a2020;  % 259:     add $a0, $zero, $t2 #posicao x %
+00000243 : 000b2820;  % 260:     add $a1, $zero, $t3 #posicao y %
+00000244 : 23bdfffc;  % 262:     addi $sp, $sp, -4 %
+00000245 : afbf0000;  % 263:     sw $ra, 0($sp) %
+00000246 : 0c100161;  % 265:     jal printImg %
+00000247 : 8fbf0000;  % 267:     lw $ra, 0($sp) %
+00000248 : 23bd0004;  % 268:     addi $sp, $sp, 4 %
+00000249 : 03e00008;  % 270:     jr $ra %
+0000024a : 24080014;  % 284:     li $t0, 20 #largura tile %
+0000024b : 24090011;  % 285:     li $t1, 17 #altura tile %
+0000024c : 00055402;  % 287:     srl $t2, $a1, 16 #i %
+0000024d : 00055c00;  % 288:     sll $t3, $a1, 16 #pré-j %
+0000024e : 000b5c02;  % 289:     srl $t3, $t3, 16 #j %
+0000024f : 01480018;  % 291:     mult $t2, $t0 %
+00000250 : 00005012;  % 292:     mflo $t2 #pixel x %
+00000251 : 01690018;  % 294:     mult $t3, $t1 %
+00000252 : 00005812;  % 295:     mflo $t3 #pixel y %
+00000253 : 01402820;  % 297:     add $a1, $t2, $zero %
+00000254 : 00052c00;  % 298:     sll $a1, $a1, 16 #x %
+00000255 : 00ab2820;  % 299:     add $a1, $a1, $t3 #y %
+00000256 : 23bdfffc;  % 301:     addi $sp, $sp, -4 %
+00000257 : afbf0000;  % 302:     sw $ra, 0($sp) %
+00000258 : 0c10025c;  % 304:     jal printTilePixel %
+00000259 : 8fbf0000;  % 306:     lw $ra, 0($sp) %
+0000025a : 23bd0004;  % 307:     addi $sp, $sp, 4 %
+0000025b : 03e00008;  % 309:     jr $ra %
+0000025c : 23bdfffc;  % 319:     addi $sp, $sp, -4 %
+0000025d : afbf0000;  % 320:     sw $ra, 0($sp) %
+0000025e : 23bdffe0;  % 322:     addi $sp, $sp, -32 %
+0000025f : afb00000;  % 323:     sw $s0, 0($sp) %
+00000260 : afb10004;  % 324:     sw $s1, 4($sp) %
+00000261 : afb20008;  % 325:     sw $s2, 8($sp) %
+00000262 : afb3000c;  % 326:     sw $s3, 12($sp) %
+00000263 : afb40010;  % 327:     sw $s4, 16($sp) %
+00000264 : afb50014;  % 328:     sw $s5, 20($sp) %
+00000265 : afb60018;  % 329:     sw $s6, 24($sp) %
+00000266 : afb7001c;  % 330:     sw $s7, 28($sp) %
+00000267 : 00058402;  % 336:     srl $s0, $a1, 16 #x %
+00000268 : 00058c00;  % 337:     sll $s1, $a1, 16 #pré-y %
+00000269 : 00118c02;  % 338:     srl $s1, $s1, 16 #y %
+0000026a : 20840008;  % 340:     addi $a0, $a0, 8 #pula word de largura e altura da imagem %
+0000026b : 00902020;  % 341:     add $a0, $a0, $s0 #posiciona em x %
+0000026c : 24080140;  % 343:     li $t0, 320 %
+0000026d : 01110018;  % 344:     mult $t0, $s1 #multiplicando pixel y por quantidade de pixel em x que tenho que pular %
+0000026e : 00004012;  % 345:     mflo $t0 %
+0000026f : 00882020;  % 346:     add $a0, $a0, $t0 %
+00000270 : 00046020;  % 348:     add $t4, $zero, $a0 #coloca em t4 o endereço de onde estão os pixels da imagem %
+00000271 : 24120014;  % 351:     li $s2, 20 #largura tile + 1 (20 na verdade) %
+00000272 : 24130011;  % 352:     li $s3, 17 #altura tile + 1 (17 na verdade) %
+00000273 : 0000b020;  % 354:     add $s6, $zero, $zero #contador de posicao y %
+00000274 : 24140019;  % 355:     li $s4, 25 #numero 24 %
+00000275 : 8d970000;  % 358:         lw $s7, 0($t4) %
+00000276 : 3c01ff00;  % 359:         addi $t1, $zero, 0xFF000000 #mascara %
+00000277 : 34210000;  % 359:  %
+00000278 : 00014820;  % 359:  %
+00000279 : 240a0018;  % 360:         li $t2, 24  #contador de shift %
+0000027a : 0000a820;  % 361:         add $s5, $zero, $zero #contador de posicao x %
+0000027b : 12b2002d;  % 364:             beq $s5, $s2, pulaEixoY %
+0000027c : 2402002d;  % 366:             li $v0, 45                          # Codigo do syscall plot %
+0000027d : 02154020;  % 368:             add $t0, $s0, $s5                   # posicao x do pixel + contador de pixel x %
+0000027e : 00082021;  % 369:             move $a0, $t0                       # Posicao x do pixel %
+0000027f : 02364020;  % 371:             add $t0, $s1, $s6                   # posicao y do pixel + contador de pixel y %
+00000280 : 00082821;  % 372:             move $a1, $t0                       # Posicao y do pixel %
+00000281 : 02e9c024;  % 374:             and $t8, $s7, $t1                   # pega pixel da imagem %
+00000282 : 0158c006;  % 375:             srlv $t8, $t8, $t2                  # shifta para pixel ocupar posicao menos significativa %
+00000283 : 00183021;  % 376:             move $a2, $t8                       # Cor para printar %
+00000284 : 23bdffd8;  % 378:             addi $sp, $sp, -40 %
+00000285 : afa80000;  % 379:             sw $t0, 0($sp) %
+00000286 : afa90004;  % 380:             sw $t1, 4($sp) %
+00000287 : afaa0008;  % 381:             sw $t2, 8($sp) %
+00000288 : afab000c;  % 382:             sw $t3, 12($sp) %
+00000289 : afac0010;  % 383:             sw $t4, 16($sp) %
+0000028a : afad0014;  % 384:             sw $t5, 20($sp) %
+0000028b : afae0018;  % 385:             sw $t6, 24($sp) %
+0000028c : afaf001c;  % 386:             sw $t7, 28($sp) %
+0000028d : afb80020;  % 387:             sw $t8, 32($sp) %
+0000028e : afb90024;  % 388:             sw $t9, 36($sp) %
+0000028f : 0c100347;  % 390:             jal Plot                             # Plota o pixel %
+00000290 : 8fa80000;  % 392:             lw $t0, 0($sp) %
+00000291 : 8fa90004;  % 393:             lw $t1, 4($sp) %
+00000292 : 8faa0008;  % 394:             lw $t2, 8($sp) %
+00000293 : 8fab000c;  % 395:             lw $t3, 12($sp) %
+00000294 : 8fac0010;  % 396:             lw $t4, 16($sp) %
+00000295 : 8fad0014;  % 397:             lw $t5, 20($sp) %
+00000296 : 8fae0018;  % 398:             lw $t6, 24($sp) %
+00000297 : 8faf001c;  % 399:             lw $t7, 28($sp) %
+00000298 : 8fb80020;  % 400:             lw $t8, 32($sp) %
+00000299 : 8fb90024;  % 401:             lw $t9, 36($sp) %
+0000029a : 23bd0028;  % 402:             addi $sp, $sp, 40 %
+0000029b : 214afff8;  % 404:             addi $t2, $t2, -8 %
+0000029c : 00094a02;  % 405:             srl $t1, $t1, 8 %
+0000029d : 22b50001;  % 407:             addi $s5, $s5, 1 %
+0000029e : 240bffff;  % 409:             li $t3, -1 %
+0000029f : 016a582a;  % 410:             slt $t3, $t3, $t2 %
+000002a0 : 11600001;  % 411:             beq $t3, $zero, proximaWord %
+000002a1 : 0810027b;  % 413:             j eixoX %
+000002a2 : 218c0004;  % 417:                 addi $t4, $t4, 4 %
+000002a3 : 8d970000;  % 418:                 lw $s7, 0($t4) %
+000002a4 : 3c01ff00;  % 419:                 addi $t1, $zero, 0xFF000000 #mascara %
+000002a5 : 34210000;  % 419:  %
+000002a6 : 00014820;  % 419:  %
+000002a7 : 240a0018;  % 420:                 li $t2, 24  #contador de shift %
+000002a8 : 0810027b;  % 421:                 j eixoX %
+000002a9 : 22d60001;  % 425:             addi $s6, $s6, 1 %
+000002aa : 218c012c;  % 426:             addi $t4, $t4, 300          #Andando mais 300 pixels porque andou 20 de x  %
+000002ab : 1676ffc9;  % 427:             bne $s3, $s6, printTileLoop %
+000002ac : 8fb00000;  % 432:         lw $s0, 0($sp) %
+000002ad : 8fb10004;  % 433:         lw $s1, 4($sp) %
+000002ae : 8fb20008;  % 434:         lw $s2, 8($sp) %
+000002af : 8fb3000c;  % 435:         lw $s3, 12($sp) %
+000002b0 : 8fb40010;  % 436:         lw $s4, 16($sp) %
+000002b1 : 8fb50014;  % 437:         lw $s5, 20($sp) %
+000002b2 : 8fb60018;  % 438:         lw $s6, 24($sp) %
+000002b3 : 8fb7001c;  % 439:         lw $s7, 28($sp) %
+000002b4 : 23bd0020;  % 440:         addi $sp, $sp, 32 %
+000002b5 : 8fbf0000;  % 442:         lw $ra, 0($sp) %
+000002b6 : 23bd0004;  % 443:         addi $sp, $sp, 4 %
+000002b7 : 03e00008;  % 445:         jr $ra %
+000002b8 : 23bdfff0;  % 4: 	addi $sp, $sp, -16 %
+000002b9 : afb00000;  % 5:     sw $s0, 0($sp) %
+000002ba : afb10004;  % 6:     sw $s1, 4($sp) %
+000002bb : afb20008;  % 7:     sw $s2, 8($sp) %
+000002bc : afb3000c;  % 8:     sw $s3, 12($sp) %
+000002bd : 241200c8;  % 10: 	li $s2, 200 #y %
+000002be : 2411003c;  % 12: 	li $s1, 60 #x inicial %
+000002bf : 24130104;  % 13: 	li $s3, 260 #x final %
+000002c0 : 02202020;  % 14: 	add $a0, $s1, $zero %
+000002c1 : 02402820;  % 15: 	add $a1, $s2, $zero %
+000002c2 : 24060044;  % 16: 	li $a2, 0x44 %
+000002c3 : 2402002d;  % 17: 	li $v0, 45 %
+000002c4 : 23bdfffc;  % 18: 	    addi $sp, $sp, -4 %
+000002c5 : afbf0000;  % 19:     sw $ra, 0($sp) %
+000002c6 : 0c100347;  % 20:     jal Plot %
+000002c7 : 8fbf0000;  % 21:     lw $ra, 0($sp) %
+000002c8 : 23bd0004;  % 22:     addi $sp, $sp, 4 %
+000002c9 : 1233000b;  % 25: 		beq $s1, $s3, proximaLinhaloadhorizontal %
+000002ca : 02202020;  % 26: 		add $a0, $s1, $zero %
+000002cb : 02402820;  % 27: 		add $a1, $s2, $zero %
+000002cc : 24060044;  % 28: 		li $a2, 0x44 %
+000002cd : 2402002d;  % 29: 		li $v0, 45 %
+000002ce : 23bdfffc;  % 31: 		addi $sp, $sp, -4 %
+000002cf : afbf0000;  % 32:     	sw $ra, 0($sp) %
+000002d0 : 0c100347;  % 33:     	jal Plot %
+000002d1 : 8fbf0000;  % 34:     	lw $ra, 0($sp) %
+000002d2 : 23bd0004;  % 35:     	addi $sp, $sp, 4 %
+000002d3 : 22310001;  % 37: 		addi $s1, $s1, 1 %
+000002d4 : 081002c9;  % 38: 		j linhaLoadhorizontal %
+000002d5 : 240800d2;  % 41: 			li $t0, 210 %
+000002d6 : 11120002;  % 42: 			beq $t0, $s2, linhasverticais %
+000002d7 : 241200d2;  % 43: 			li $s2, 210 #y %
+000002d8 : 081002be;  % 44: 			j linhasdeloadhorizontal %
+000002d9 : 2412003c;  % 48: 	li $s2, 60 #agora é o x %
+000002da : 241100c8;  % 50: 	li $s1, 200 #y inicial %
+000002db : 241300d2;  % 51: 	li $s3, 210 #y final %
+000002dc : 02402020;  % 52: 	add $a0, $s2, $zero %
+000002dd : 02202820;  % 53: 	add $a1, $s1, $zero %
+000002de : 24060044;  % 54: 	li $a2, 0x44 %
+000002df : 2402002d;  % 55: 	li $v0, 45 %
+000002e0 : 23bdfffc;  % 56: 	    addi $sp, $sp, -4 %
+000002e1 : afbf0000;  % 57:     sw $ra, 0($sp) %
+000002e2 : 0c100347;  % 58:     jal Plot %
+000002e3 : 8fbf0000;  % 59:     lw $ra, 0($sp) %
+000002e4 : 23bd0004;  % 60:     addi $sp, $sp, 4 %
+000002e5 : 1233000b;  % 63: 		beq $s1, $s3, proximaLinhaloadvertical %
+000002e6 : 02402020;  % 64: 		add $a0, $s2, $zero %
+000002e7 : 02202820;  % 65: 		add $a1, $s1, $zero %
+000002e8 : 24060044;  % 66: 		li $a2, 0x44 %
+000002e9 : 2402002d;  % 67: 		li $v0, 45 %
+000002ea : 23bdfffc;  % 69: 		addi $sp, $sp, -4 %
+000002eb : afbf0000;  % 70:     	sw $ra, 0($sp) %
+000002ec : 0c100347;  % 71:     	jal Plot %
+000002ed : 8fbf0000;  % 72:     	lw $ra, 0($sp) %
+000002ee : 23bd0004;  % 73:     	addi $sp, $sp, 4 %
+000002ef : 22310001;  % 75: 		addi $s1, $s1, 1 %
+000002f0 : 081002e5;  % 76: 		j linhaLoadvertical %
+000002f1 : 24080104;  % 80: 			li $t0, 260 %
+000002f2 : 11120002;  % 81: 			beq $t0, $s2, preenchendoBarra %
+000002f3 : 24120104;  % 82: 			li $s2, 260 %
+000002f4 : 081002da;  % 83: 			j linhasdeloadverticais %
+000002f5 : 241000c9;  % 87: 	li $s0, 201 #y inicial %
+000002f6 : 241100d1;  % 88: 	li $s1, 209 #y final %
+000002f7 : 2412003d;  % 89: 	li $s2, 61  #x inicial %
+000002f8 : 24130104;  % 90: 	li $s3, 260 #x final %
+000002f9 : 1253000b;  % 92: 		beq $s2, $s3, pulaPreencher %
+000002fa : 02402020;  % 93: 		add $a0, $s2, $zero %
+000002fb : 02002820;  % 94: 		add $a1, $s0, $zero %
+000002fc : 240600ff;  % 95: 		li $a2, 0xff %
+000002fd : 2402002d;  % 96: 		li $v0, 45 %
+000002fe : 23bdfffc;  % 98: 		addi $sp, $sp, -4 %
+000002ff : afbf0000;  % 99:     	sw $ra, 0($sp) %
+00000300 : 0c100347;  % 100:     	jal Plot %
+00000301 : 8fbf0000;  % 101:     	lw $ra, 0($sp) %
+00000302 : 23bd0004;  % 102:     	addi $sp, $sp, 4 %
+00000303 : 22520001;  % 104: 		addi $s2, $s2, 1 %
+00000304 : 081002f9;  % 105: 		j loopPreencher %
+00000305 : 12110003;  % 108: 			beq $s0, $s1, fimLinhaload %
+00000306 : 22100001;  % 109: 			addi $s0, $s0, 1 %
+00000307 : 2412003d;  % 110: 			li $s2, 61 %
+00000308 : 081002f9;  % 111: 			j loopPreencher %
+00000309 : 20040104;  % 115: addi $a0, $zero, 260 %
+0000030a : 200500d2;  % 116: addi $a1, $zero, 210 %
+0000030b : 24060044;  % 117: li $a2, 0x44 %
+0000030c : 2402002d;  % 118: li $v0, 45 %
+0000030d : 23bdfffc;  % 119:     addi $sp, $sp, -4 %
+0000030e : afbf0000;  % 120:     sw $ra, 0($sp) %
+0000030f : 0c100347;  % 121:     jal Plot %
+00000310 : 8fbf0000;  % 122:     lw $ra, 0($sp) %
+00000311 : 23bd0004;  % 123:     addi $sp, $sp, 4 %
+00000312 : 8fb00000;  % 126: lw $s0, 0($sp) %
+00000313 : 8fb10004;  % 127: lw $s1, 4($sp) %
+00000314 : 8fb20008;  % 128: lw $s2, 8($sp) %
+00000315 : 8fb3000c;  % 129: lw $s3, 12($sp) %
+00000316 : 23bd0010;  % 130: addi $sp, $sp, 16 %
+00000317 : 03e00008;  % 131: jr $ra %
+00000318 : 23bdfff0;  % 143: 	addi $sp, $sp, -16 %
+00000319 : afb00000;  % 144:     sw $s0, 0($sp) %
+0000031a : afb10004;  % 145:     sw $s1, 4($sp) %
+0000031b : afb20008;  % 146:     sw $s2, 8($sp) %
+0000031c : afb3000c;  % 147:     sw $s3, 12($sp) %
+0000031d : 241000ca;  % 149: 	li $s0, 202 #y inicial %
+0000031e : 241100d1;  % 150: 	li $s1, 209 #y final %
+0000031f : 2412003e;  % 151: 	li $s2, 62  #x inicial %
+00000320 : 24130102;  % 152: 	li $s3, 258 #x final %
+00000321 : 02724022;  % 154: 	sub $t0, $s3, $s2 %
+00000322 : 01040018;  % 155: 	mult $t0, $a0 %
+00000323 : 00004012;  % 156: 	mflo $t0 %
+00000324 : 0105001a;  % 157: 	div $t0, $a1 %
+00000325 : 00004012;  % 158: 	mflo $t0 %
+00000326 : 01124020;  % 159: 	add $t0, $t0, $s2 %
+00000327 : 00089821;  % 160: 	move $s3, $t0 %
+00000328 : 1211000b;  % 163: 		beq $s0, $s1, pulaPreencherPorcetagem %
+00000329 : 02402020;  % 164: 		add $a0, $s2, $zero %
+0000032a : 02002820;  % 165: 		add $a1, $s0, $zero %
+0000032b : 24060044;  % 166: 		li $a2, 0x44 %
+0000032c : 2402002d;  % 167: 		li $v0, 45 %
+0000032d : 23bdfffc;  % 169: 		addi $sp, $sp, -4 %
+0000032e : afbf0000;  % 170:     	sw $ra, 0($sp) %
+0000032f : 0c100347;  % 171:     	jal Plot %
+00000330 : 8fbf0000;  % 172:     	lw $ra, 0($sp) %
+00000331 : 23bd0004;  % 173:     	addi $sp, $sp, 4 %
+00000332 : 22100001;  % 175: 		addi $s0, $s0, 1 %
+00000333 : 08100328;  % 176: 		j loopPreencherPorcetagem %
+00000334 : 12530003;  % 179: 			beq $s2, $s3, fimPorcentagem %
+00000335 : 22520001;  % 180: 			addi $s2, $s2, 1 %
+00000336 : 241000ca;  % 181: 			li $s0, 202 %
+00000337 : 08100328;  % 182: 			j loopPreencherPorcetagem %
+00000338 : 8fb00000;  % 186:     lw $s0, 0($sp) %
+00000339 : 8fb10004;  % 187:     lw $s1, 4($sp) %
+0000033a : 8fb20008;  % 188:     lw $s2, 8($sp) %
+0000033b : 8fb3000c;  % 189:     lw $s3, 12($sp) %
+0000033c : 23bd0010;  % 190: 	addi $sp, $sp, 16 %
+0000033d : 03e00008;  % 192:     jr $ra %
+0000033e : 3c01ff00;  % 201:  	la $t6,0xFF000000  # Memoria VGA %
+0000033f : 342e0000;  % 201:  %
+00000340 : 3c01ff01;  % 202: 	la $t2,0xFF012C00  # Fim da memorai vga %
+00000341 : 342a2c00;  % 202:  %
+00000342 : 114e0003;  % 203: Fort3:  beq $t2,$t6, Endt3 %
+00000343 : a1c40000;  % 204: 	sb $a0,0($t6) %
+00000344 : 21ce0001;  % 205: 	addi $t6, $t6, 1 %
+00000345 : 08100342;  % 206: 	j Fort3 %
+00000346 : 03e00008;  % 207: Endt3:  jr $ra %
+00000347 : 24010140;  % 221: 	li $at,320   %
+00000348 : 00a10018;  % 222: 	mult $a1,$at %
+00000349 : 00002812;  % 223: 	mflo $a1 %
+0000034a : 00852020;  % 224: 	add $a0,$a0,$a1 %
+0000034b : 3c01ff00;  % 225: 	la $a1, 0xFF000000   #endereco VGA %
+0000034c : 34250000;  % 225:  %
+0000034d : 00852025;  % 226: 	or $a0,$a0,$a1 %
+0000034e : a0860000;  % 227: 	sb $a2,0($a0) %
+0000034f : 03e00008;  % 228: 	jr $ra %
+00000350 : 23bdfffc;  % 231:     addi $sp, $sp, -4 %
+00000351 : afbf0000;  % 232:     sw $ra, 0($sp) %
+00000352 : 00048021;  % 233:     move $s0, $a0 # numero de arquivos para ler %
+00000353 : 240400aa;  % 234:     li $a0,0xaa  #fundo azul %
+00000354 : 0c10033e;  % 235:     jal CLS %
+00000355 : 0c1002b8;  % 237:     jal loadBar %
+00000356 : 24110000;  % 239:     li $s1, 0 #contador %
+00000357 : 3c011001;  % 241:     li $s2, 0x10010000 #.data %
+00000358 : 34320000;  % 241:  %
+00000359 : 3c011001;  % 242:     li $s3, 0x10014000 # sram %
+0000035a : 34334000;  % 242:  %
+0000035b : ae530000;  % 243:     sw $s3, 0($s2) %
+0000035c : 1211000b;  % 246:         beq $s0, $s1, loadGameFim %
+0000035d : 8e530000;  % 247:         lw $s3, 0($s2) %
+0000035e : 00132021;  % 248:         move $a0, $s3 #endereco para ser escrito na sram %
+0000035f : 0c10003f;  % 249:         jal UART_READ %
+00000360 : 02624020;  % 250:         add $t0, $s3, $v0 #endereco anterior mais o numero de bytes do arquivo anterior %
+00000361 : 22520004;  % 251:         add $s2, $s2, 4 #aponta para a proxima label no .data %
+00000362 : ae480000;  % 252:         sw $t0, 0($s2)  #altera essa label para o proximo endereco vago %
+00000363 : 22310001;  % 254:         addi $s1, $s1, 1 %
+00000364 : 00112021;  % 256:         move $a0, $s1 %
+00000365 : 00102821;  % 257:         move $a1, $s0 %
+00000366 : 0c100318;  % 258:         jal preenchePorcentagem %
+00000367 : 0810035c;  % 260:         j loadGameLoop %
+00000368 : 8fbf0000;  % 262:     lw $ra, 0($sp) %
+00000369 : 23bd0004;  % 263:     addi $sp, $sp, 4 %
+0000036a : 03e00008;  % 264:     jr $ra %
+0000036b : 23bdfff4;  % 35:     addi $sp, $sp, -12 %
+0000036c : afb00000;  % 36:     sw $s0, 0($sp) %
+0000036d : afb10004;  % 37:     sw $s1, 4($sp) %
+0000036e : afbf0008;  % 38:     sw $ra, 8($sp) %
+0000036f : 0c100395;  % 39:     jal max_GetMovementInput %
+00000370 : 00028021;  % 40:     move $s0, $v0 %
+00000371 : 00038821;  % 41:     move $s1, $v1 %
+00000372 : 0c1004ef;  % 42:     jal max_GetInteractionInput %
+00000373 : 3c011001;  % 43:     lw $t0, maxCurrentState %
+00000374 : 8c2801c8;  % 43:  %
+00000375 : 1100000a;  % 44:     beq $t0, $zero, updateMax_SetNormalSprite %
+00000376 : 3c011001;  % 45:     la $t0, MAX_2_FRONT %
+00000377 : 34280090;  % 45:  %
+00000378 : 8d060000;  % 46:     lw $a2, 0($t0) # max front %
+00000379 : 8d070004;  % 47:     lw $a3, 4($t0) # max back %
+0000037a : 8d090008;  % 48:     lw $t1, 8($t0) %
+0000037b : 8d0a000c;  % 49:     lw $t2, 12($t0) %
+0000037c : 23bdfff8;  % 50:     addi $sp, $sp, -8 %
+0000037d : afa90000;  % 51:     sw $t1, 0($sp) # max right %
+0000037e : afaa0004;  % 52:     sw $t2, 4($sp) # max left %
+0000037f : 08100389;  % 53:     j updateMax_changeSprite %
+00000380 : 3c011001;  % 55:     la $t0, MAX_FRONT %
+00000381 : 34280080;  % 55:  %
+00000382 : 8d060000;  % 56:     lw $a2, 0($t0) # max front %
+00000383 : 8d070004;  % 57:     lw $a3, 4($t0) # max back %
+00000384 : 8d090008;  % 58:     lw $t1, 8($t0) %
+00000385 : 8d0a000c;  % 59:     lw $t2, 12($t0) %
+00000386 : 23bdfff8;  % 60:     addi $sp, $sp, -8 %
+00000387 : afa90000;  % 61:     sw $t1, 0($sp) # max right %
+00000388 : afaa0004;  % 62:     sw $t2, 4($sp) # max left %
+00000389 : 00102021;  % 64:     move $a0, $s0 %
+0000038a : 00112821;  % 65:     move $a1, $s1 %
+0000038b : 0c1004a8;  % 66:     jal max_ChangeSprite %
+0000038c : 23bd0008;  % 67:     addi $sp, $sp, 8 %
+0000038d : 00102021;  % 68:     move $a0, $s0 %
+0000038e : 00112821;  % 69:     move $a1, $s1 %
+0000038f : 0c100461;  % 70:     jal moveMax %
+00000390 : 8fb00000;  % 72:     lw $s0, 0($sp) %
+00000391 : 8fb10004;  % 73:     lw $s1, 4($sp) %
+00000392 : 8fbf0008;  % 74:     lw $ra, 8($sp) %
+00000393 : 23bd000c;  % 75:     addi $sp, $sp, 12 %
+00000394 : 03e00008;  % 76:     jr $ra %
+00000395 : 23bdfff4;  % 83:     addi $sp, $sp, -12 %
+00000396 : afb00000;  % 84:     sw $s0, 0($sp) %
+00000397 : afb10004;  % 85:     sw $s1, 4($sp) %
+00000398 : afbf0008;  % 86:     sw $ra, 8($sp) %
+00000399 : 24100000;  % 87:     li $s0, 0   # Movimento horizontal %
+0000039a : 24110000;  % 88:     li $s1, 0   # Movimento vertical %
+0000039b : 0c100148;  % 90:     jal isButtonDown_Up %
+0000039c : 10400001;  % 91:     beq $v0, $zero, max_GetMovementInput_CheckDown %
+0000039d : 2231ffff;  % 92:     addi $s1, $s1, -1 # Movimento vertical -= 1 %
+0000039e : 0c100152;  % 94:     jal isButtonDown_Down %
+0000039f : 10400001;  % 95:     beq $v0, $zero, max_GetMovementInput_CheckLeft %
+000003a0 : 22310001;  % 96:     addi $s1, $s1, 1 # Movimento vertical += 1 %
+000003a1 : 0c10014d;  % 98:     jal isButtonDown_Left %
+000003a2 : 10400001;  % 99:     beq $v0, $zero, max_GetMovementInput_CheckRight %
+000003a3 : 2210ffff;  % 100:     addi $s0, $s0, -1 # Movimento horizontal -= 1 %
+000003a4 : 0c100143;  % 102:     jal isButtonDown_Right %
+000003a5 : 10400001;  % 103:     beq $v0, $zero, max_GetMovementInput_End %
+000003a6 : 22100001;  % 104:     addi $s0, $s0, 1 # Movimento horizontal += 1 %
+000003a7 : 00101021;  % 106:     move $v0, $s0 %
+000003a8 : 00111821;  % 107:     move $v1, $s1 %
+000003a9 : 8fb00000;  % 108:     lw $s0, 0($sp) %
+000003aa : 8fb10004;  % 109:     lw $s1, 4($sp) %
+000003ab : 8fbf0008;  % 110:     lw $ra, 8($sp) %
+000003ac : 23bd000c;  % 111:     addi $sp, $sp, 12 %
+000003ad : 03e00008;  % 112:     jr $ra %
+000003ae : 23bdfff4;  % 118:     addi $sp, $sp, -12 %
+000003af : afbf0000;  % 119:     sw $ra, 0($sp) %
+000003b0 : afb00004;  % 120:     sw $s0, 4($sp) %
+000003b1 : afb10008;  % 121:     sw $s1, 8($sp) %
+000003b2 : 3c011001;  % 123:     lw $s0, BG_ATUAL %
+000003b3 : 8c3001e0;  % 123:  %
+000003b4 : 3c011001;  % 125:     lw $t0, maxPositionX %
+000003b5 : 8c2801b8;  % 125:  %
+000003b6 : 00084400;  % 126:     sll $t0, $t0, 16 %
+000003b7 : 3c011001;  % 127:     lw $t1, maxPositionY %
+000003b8 : 8c2901bc;  % 127:  %
+000003b9 : 01098825;  % 128:     or $s1, $t0, $t1 %
+000003ba : 00102021;  % 130:     move $a0, $s0 %
+000003bb : 00112821;  % 131:     move $a1, $s1 %
+000003bc : 0c10024a;  % 132:     jal printTile %
+000003bd : 3c011001;  % 134:     lw $a0, MATUAL %
+000003be : 8c2400d0;  % 134:  %
+000003bf : 3c011001;  % 135:     lw $a1, maxPositionX %
+000003c0 : 8c2501b8;  % 135:  %
+000003c1 : 3c011001;  % 136:     lw $a2, maxPositionY %
+000003c2 : 8c2601bc;  % 136:  %
+000003c3 : 20c6ffff;  % 137:     addi $a2, $a2, -1 %
+000003c4 : 0c1001e2;  % 138:     jal getTileInfo %
+000003c5 : 2408002a;  % 140:     li $t0, 0x2A %
+000003c6 : 10480009;  % 141:     beq $v0, $t0, preencheComBg #caso seja chao pisavel %
+000003c7 : 24080023;  % 142:     li $t0, 0x23 %
+000003c8 : 10480007;  % 143:     beq $v0, $t0, preencheComBg #caso seja parede %
+000003c9 : 24080064;  % 144:     li $t0, 0x64 %
+000003ca : 10480005;  % 145:     beq $v0, $t0, preencheComBg #caso seja caixa de madeira %
+000003cb : 24080063;  % 147:     li $t0, 0x63 %
+000003cc : 1048000b;  % 148:     beq $v0, $t0, max_printMovingBlock %
+000003cd : 24080066;  % 149:     li $t0, 0x66 %
+000003ce : 20010066;  % 150:     beq $v0, 0x66 max_printBarrel %
+000003cf : 1022000f;  % 150:  %
+000003d0 : 00102021;  % 153:     move $a0, $s0 %
+000003d1 : 2225ffff;  % 154:     addi $a1, $s1, -1 %
+000003d2 : 0c10024a;  % 155:     jal printTile %
+000003d3 : 8fbf0000;  % 157:     lw $ra, 0($sp) %
+000003d4 : 8fb00004;  % 158:     lw $s0, 4($sp) %
+000003d5 : 8fb10008;  % 159:     lw $s1, 8($sp) %
+000003d6 : 23bd000c;  % 160:     addi $sp, $sp, 12 %
+000003d7 : 03e00008;  % 161:     jr $ra %
+000003d8 : 3c011001;  % 164:     lw $a0, MVBLOCK %
+000003d9 : 8c2400a0;  % 164:  %
+000003da : 00102c00;  % 165:     sll $a1, $s0, 16 %
+000003db : 00b12820;  % 166:     add $a1, $a1, $s1 %
+000003dc : 20a5ffff;  % 167:     addi $a1, $a1, -1 %
+000003dd : 0c100238;  % 168:     jal printInTile %
+000003de : 081003d3;  % 169:     j fimApagaMax %
+000003df : 3c011001;  % 171:     lw $a0, barrel %
+000003e0 : 8c2400a8;  % 171:  %
+000003e1 : 00102c00;  % 172:     sll $a1, $s0, 16 %
+000003e2 : 00b12820;  % 173:     add $a1, $a1, $s1 %
+000003e3 : 20a5ffff;  % 174:     addi $a1, $a1, -1 %
+000003e4 : 0c100238;  % 175:     jal printInTile %
+000003e5 : 081003d3;  % 176:     j fimApagaMax     %
+000003e6 : 23bdfff0;  % 192:     addi $sp, $sp, -16 %
+000003e7 : afbf0000;  % 193:     sw $ra, 0($sp) %
+000003e8 : afb00004;  % 194:     sw $s0, 4($sp) %
+000003e9 : afb10008;  % 195:     sw $s1, 8($sp) %
+000003ea : afb2000c;  % 196:     sw $s2, 12($sp) %
+000003eb : 00048021;  % 197:     move $s0, $a0  # Nova posicao X vai para $s0 %
+000003ec : 00058821;  % 198:     move $s1, $a1  # Nova posicao Y vai para $s1 %
+000003ed : 3c011001;  % 199:     lw $s2, MATUAL %
+000003ee : 8c3200d0;  % 199:  %
+000003ef : 14c0000d;  % 200:     bne $a2, $zero, verificaMoveMax_diagonal # Se o movimento for diagonal o tratamento eh diferente %
+000003f0 : 2408ffff;  % 202:     li $t0, -1 %
+000003f1 : 1208003d;  % 203:     beq $s0, $t0, verificaMoveMax_invalid %
+000003f2 : 1228003c;  % 204:     beq $s1, $t0, verificaMoveMax_invalid %
+000003f3 : 24080010;  % 205:     li $t0, 16 %
+000003f4 : 1208003a;  % 206:     beq $s0, $t0, verificaMoveMax_invalid %
+000003f5 : 2408000e;  % 207:     li $t0, 14 %
+000003f6 : 12280038;  % 208:     beq $s1, $t0, verificaMoveMax_invalid %
+000003f7 : 00122021;  % 210:     move $a0, $s2 %
+000003f8 : 00102821;  % 211:     move $a1, $s0 %
+000003f9 : 00113021;  % 212:     move $a2, $s1 %
+000003fa : 0c100436;  % 213:     jal verificaTileIntransponivel %
+000003fb : 10400033;  % 214:     beq $v0, $zero, verificaMoveMax_invalid %
+000003fc : 0810042d;  % 215:     j verificaMoveMax_valid %
+000003fd : 2408ffff;  % 218:     li $t0, -1 %
+000003fe : 12080030;  % 219:     beq $s0, $t0, verificaMoveMax_invalid %
+000003ff : 1228002f;  % 220:     beq $s1, $t0, verificaMoveMax_invalid %
+00000400 : 24080010;  % 221:     li $t0, 16 %
+00000401 : 1208002d;  % 222:     beq $s0, $t0, verificaMoveMax_invalid %
+00000402 : 2408000e;  % 223:     li $t0, 14 %
+00000403 : 1228002b;  % 224:     beq $s1, $t0, verificaMoveMax_invalid %
+00000404 : 00122021;  % 226:     move $a0, $s2 %
+00000405 : 00102821;  % 227:     move $a1, $s0 %
+00000406 : 00113021;  % 228:     move $a2, $s1 %
+00000407 : 0c100436;  % 229:     jal verificaTileIntransponivel %
+00000408 : 1040000d;  % 230:     beq $v0, $zero, verificaMoveMax_diagonalInvalido %
+00000409 : 00122021;  % 234:     move $a0, $s2 %
+0000040a : 3c011001;  % 235:     lw   $a1, maxPositionX %
+0000040b : 8c2501b8;  % 235:  %
+0000040c : 00113021;  % 236:     move $a2, $s1 %
+0000040d : 0c100436;  % 237:     jal verificaTileIntransponivel %
+0000040e : 1440001e;  % 238:     bne $v0, $zero, verificaMoveMax_valid # Se essa lateral for valida, o movimento eh valido %
+0000040f : 00122021;  % 239:     move $a0, $s2 %
+00000410 : 00102821;  % 240:     move $a1, $s0 %
+00000411 : 3c011001;  % 241:     lw   $a2, maxPositionY %
+00000412 : 8c2601bc;  % 241:  %
+00000413 : 0c100436;  % 242:     jal verificaTileIntransponivel %
+00000414 : 14400018;  % 243:     bne $v0, $zero, verificaMoveMax_valid # Se essa lateral for valida, o movimento eh valido %
+00000415 : 0810042f;  % 245:     j verificaMoveMax_invalid %
+00000416 : 00122021;  % 249:     move $a0, $s2 %
+00000417 : 3c011001;  % 250:     lw   $a1, maxPositionX %
+00000418 : 8c2501b8;  % 250:  %
+00000419 : 00113021;  % 251:     move $a2, $s1 %
+0000041a : 0c100436;  % 252:     jal verificaTileIntransponivel %
+0000041b : 14400007;  % 253:     bne $v0, $zero, verificaMoveMax_validForX # Se essa lateral for valida, o movimento preserva o X %
+0000041c : 00122021;  % 254:     move $a0, $s2 %
+0000041d : 00102821;  % 255:     move $a1, $s0 %
+0000041e : 3c011001;  % 256:     lw   $a2, maxPositionY %
+0000041f : 8c2601bc;  % 256:  %
+00000420 : 0c100436;  % 257:     jal verificaTileIntransponivel %
+00000421 : 14400006;  % 258:     bne $v0, $zero, verificaMoveMax_validForY # Se essa lateral for valida, o movimento preserva o Y %
+00000422 : 0810042f;  % 260:     j verificaMoveMax_invalid %
+00000423 : 0c1003ae;  % 262:     jal apagaMax %
+00000424 : 3c011001;  % 263:     sw $s1, maxPositionY # Salva a nova posicao do Y %
+00000425 : ac3101bc;  % 263:  %
+00000426 : 0c10048e;  % 264:     jal printMax %
+00000427 : 0810042f;  % 265:     j verificaMoveMax_invalid %
+00000428 : 0c1003ae;  % 267:     jal apagaMax %
+00000429 : 3c011001;  % 268:     sw $s0, maxPositionX # Salva a nova posicao do X %
+0000042a : ac3001b8;  % 268:  %
+0000042b : 0c10048e;  % 269:     jal printMax %
+0000042c : 0810042f;  % 270:     j verificaMoveMax_invalid %
+0000042d : 24020001;  % 272:     li $v0, 1 %
+0000042e : 08100430;  % 273:     j verificaMoveMax_End %
+0000042f : 24020000;  % 275:     li $v0, 0  # Movimento eh invalido %
+00000430 : 8fbf0000;  % 277:     lw $ra, 0($sp) %
+00000431 : 8fb00004;  % 278:     lw $s0, 4($sp) %
+00000432 : 8fb10008;  % 279:     lw $s1, 8($sp) %
+00000433 : 8fb2000c;  % 280:     lw $s2, 12($sp) %
+00000434 : 23bd0010;  % 281:     addi $sp, $sp, 16 %
+00000435 : 03e00008;  % 282:     jr $ra %
+00000436 : 23bdfffc;  % 293:     addi $sp, $sp, -4 %
+00000437 : afbf0000;  % 294:     sw $ra, 0($sp) %
+00000438 : 0c1001e2;  % 295:     jal getTileInfo %
+00000439 : 24080023;  % 297:     li $t0, 0x23    ## Codigo de paredes %
+0000043a : 10480022;  % 298:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+0000043b : 24080063;  % 299:     li $t0, 0x63    ## Codigo de blocos com estrela %
+0000043c : 10480020;  % 300:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+0000043d : 24080042;  % 301:     li $t0, 0x42   ## Inimigo Magro azul %
+0000043e : 1048001e;  % 302:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+0000043f : 24080043;  % 303:     li $t0, 0x43    ## Inimigo Magro verde %
+00000440 : 1048001c;  % 304:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000441 : 24080044;  % 305:     li $t0, 0x44    ## Inimigo Azul escuro que vira bolota %
+00000442 : 1048001a;  % 306:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000443 : 24080045;  % 307:     li $t0, 0x45    ## Chefão %
+00000444 : 10480018;  % 308:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000445 : 24080046;  % 309:     li $t0, 0x46    ## Porco espinho %
+00000446 : 10480016;  % 310:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000447 : 24080041;  % 311:     li $t0, 0x41    ##Inimigo Gordo azul claro %
+00000448 : 10480014;  % 312:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000449 : 24080047;  % 313:     li $t0, 0x47    ## Sapo %
+0000044a : 10480012;  % 314:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+0000044b : 24080048;  % 315:     li $t0, 0x48    ## Cobra %
+0000044c : 10480010;  % 316:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+0000044d : 2408004e;  % 317:     li $t0, 0x4E    ## Canhão vivo %
+0000044e : 1048000e;  % 318:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+0000044f : 2408004f;  % 319:     li $t0, 0x4F    ## Canhão morto %
+00000450 : 1048000c;  % 320:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000451 : 24080064;  % 321:     li $t0, 0x64    ## Caixa de madeira %
+00000452 : 1048000a;  % 322:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000453 : 24080066;  % 323:     li $t0, 0x66    ## Barril %
+00000454 : 10480008;  % 324:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000455 : 24080067;  % 325:     li $t0, 0x67    ## Planta %
+00000456 : 10480006;  % 326:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000457 : 24080034;  % 327:     li $t0, 0x34    ## Gancho %
+00000458 : 10480004;  % 328:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+00000459 : 2408007c;  % 329:     li $t0, 0x7C    ## Porta %
+0000045a : 10480002;  % 330:     beq $v0, $t0, verificaTileIntransponivel_RetornaZero %
+0000045b : 24020001;  % 332:     li $v0, 1 %
+0000045c : 0810045e;  % 333:     j verificaTileIntransponivel_end %
+0000045d : 00001021;  % 335:     move $v0, $zero %
+0000045e : 8fbf0000;  % 337:     lw $ra, 0($sp) %
+0000045f : 23bd0004;  % 338:     addi $sp, $sp, 4 %
+00000460 : 03e00008;  % 339:     jr $ra %
+00000461 : 23bdfff4;  % 349:     addi $sp, $sp, -12 %
+00000462 : afbf0000;  % 350:     sw $ra, 0($sp) %
+00000463 : afb00004;  % 351:     sw $s0, 4($sp) %
+00000464 : afb10008;  % 352:     sw $s1, 8($sp) %
+00000465 : 10800009;  % 353:     beq $a0, $zero, moveMax_delayOrtogonal %
+00000466 : 10a00008;  % 354:     beq $a1, $zero, moveMax_delayOrtogonal %
+00000467 : 24060001;  % 356:     li $a2, 1 %
+00000468 : 3c011001;  % 357:     lw $t0, FRAME_COUNTER %
+00000469 : 8c2801b0;  % 357:  %
+0000046a : 240901a8;  % 358:     li $t1, 424 %
+0000046b : 0109001a;  % 359:     div $t0, $t1 %
+0000046c : 00004010;  % 360:     mfhi $t0 %
+0000046d : 1500001b;  % 361:     bne $t0, $zero, moveMax_End %
+0000046e : 08100476;  % 362:     j moveMax_checkIfHasMovement %
+0000046f : 24060000;  % 364:     li $a2, 0 %
+00000470 : 3c011001;  % 365:     lw $t0, FRAME_COUNTER %
+00000471 : 8c2801b0;  % 365:  %
+00000472 : 2409012c;  % 366:     li $t1, 300 %
+00000473 : 0109001a;  % 367:     div $t0, $t1 %
+00000474 : 00004010;  % 368:     mfhi $t0 %
+00000475 : 15000013;  % 369:     bne $t0, $zero, moveMax_End %
+00000476 : 14800002;  % 371:     bne $a0, $zero, moveMax_move %
+00000477 : 14a00001;  % 372:     bne $a1, $zero, moveMax_move %
+00000478 : 08100489;  % 373:     j moveMax_End %
+00000479 : 3c011001;  % 375:     lw $t6, maxPositionX %
+0000047a : 8c2e01b8;  % 375:  %
+0000047b : 3c011001;  % 376:     lw $t7, maxPositionY %
+0000047c : 8c2f01bc;  % 376:  %
+0000047d : 01c48020;  % 377:     add $s0, $t6, $a0 %
+0000047e : 01e58820;  % 378:     add $s1, $t7, $a1 %
+0000047f : 00102021;  % 379:     move $a0, $s0 %
+00000480 : 00112821;  % 380:     move $a1, $s1 %
+00000481 : 0c1003e6;  % 381:     jal verificaMoveMax %
+00000482 : 10400006;  % 382:     beq $v0, $zero, moveMax_End %
+00000483 : 0c1003ae;  % 383:     jal apagaMax %
+00000484 : 3c011001;  % 384:     sw $s0, maxPositionX %
+00000485 : ac3001b8;  % 384:  %
+00000486 : 3c011001;  % 385:     sw $s1, maxPositionY %
+00000487 : ac3101bc;  % 385:  %
+00000488 : 0c10048e;  % 386:     jal printMax %
+00000489 : 8fbf0000;  % 388:     lw $ra, 0($sp) %
+0000048a : 8fb00004;  % 389:     lw $s0, 4($sp) %
+0000048b : 8fb10008;  % 390:     lw $s1, 8($sp) %
+0000048c : 23bd000c;  % 391:     addi $sp, $sp, 12 %
+0000048d : 03e00008;  % 392:     jr $ra %
+0000048e : 23bdfffc;  % 400:     addi $sp, $sp, -4 %
+0000048f : afbf0000;  % 401:     sw $ra, 0($sp) %
+00000490 : 3c011001;  % 402:     lw $a0, maxCurrentImage %
+00000491 : 8c2401c4;  % 402:  %
+00000492 : 3c011001;  % 403:     lw $t0, maxPositionX %
+00000493 : 8c2801b8;  % 403:  %
+00000494 : 00084400;  % 404:     sll $t0, $t0, 16 %
+00000495 : 3c011001;  % 405:     lw $t1, maxPositionY %
+00000496 : 8c2901bc;  % 405:  %
+00000497 : 2129ffff;  % 406:     addi $t1, $t1, -1 %
+00000498 : 240cffff;  % 408:     li $t4, -1 %
+00000499 : 112c0003;  % 409:     beq $t1, $t4, printMaxHardCoded %
+0000049a : 01092825;  % 410:     or $a1, $t0, $t1 %
+0000049b : 0c100238;  % 411:     jal printInTile %
+0000049c : 081004a5;  % 412:     j printMax_end %
+0000049d : 00043021;  % 414:     move $a2, $a0 %
+0000049e : 240d0014;  % 415:     li $t5, 20 %
+0000049f : 3c011001;  % 416:     lw $t0, maxPositionX %
+000004a0 : 8c2801b8;  % 416:  %
+000004a1 : 010d0018;  % 417:     mult $t0, $t5 %
+000004a2 : 00002012;  % 418:     mflo $a0 %
+000004a3 : 2405ffef;  % 419:     li $a1, -17 %
+000004a4 : 0c100161;  % 420:     jal printImg %
+000004a5 : 8fbf0000;  % 422:     lw $ra, 0($sp) %
+000004a6 : 23bd0004;  % 423:     addi $sp, $sp, 4 %
+000004a7 : 03e00008;  % 424:     jr $ra %
+000004a8 : 23bdffe4;  % 442:     addi $sp, $sp, -28 %
+000004a9 : afbf0000;  % 443:     sw $ra, 0($sp) %
+000004aa : afa40004;  % 444:     sw $a0, 4($sp) %
+000004ab : afa50008;  % 445:     sw $a1, 8($sp) %
+000004ac : afb0000c;  % 446:     sw $s0, 12($sp) %
+000004ad : afb10010;  % 447:     sw $s1, 16($sp) %
+000004ae : afb20014;  % 448:     sw $s2, 20($sp) %
+000004af : afb30018;  % 449:     sw $s3, 24($sp) %
+000004b0 : 00068021;  % 451:     move $s0, $a2 # front %
+000004b1 : 00078821;  % 452:     move $s1, $a3 # back %
+000004b2 : 8fb2001c;  % 453:     lw $s2, 28($sp) # right %
+000004b3 : 8fb30020;  % 454:     lw $s3, 32($sp) # left %
+000004b4 : 10800002;  % 456:     beq $a0, $zero, max_ChangeSprite_CheckVertical %
+000004b5 : 10a00015;  % 457:     beq $a1, $zero, max_ChangeSprite_CheckHorizontal %
+000004b6 : 081004e0;  % 458:     j max_ChangeSprite_checkStateControl %
+000004b7 : 10a00028;  % 460:     beq $a1, $zero, max_ChangeSprite_checkStateControl # Se $a1 for zero nao tem movimento %
+000004b8 : 2408ffff;  % 462:     li $t0, -1 %
+000004b9 : 11050008;  % 463:     beq $t0, $a1, max_ChangeSprite_CheckVertical_negative %
+000004ba : 3c011001;  % 465:     lw $t0, maxSide %
+000004bb : 8c2801c0;  % 465:  %
+000004bc : 11000023;  % 466:     beq $t0, $zero, max_ChangeSprite_checkStateControl # Se o lado anterior for igual ao atual, nao precisa fazer nada %
+000004bd : 3c011001;  % 467:     sw $zero, maxSide %
+000004be : ac2001c0;  % 467:  %
+000004bf : 3c011001;  % 468:     sw $s0, maxCurrentImage %
+000004c0 : ac3001c4;  % 468:  %
+000004c1 : 081004e3;  % 469:     j max_ChangeSprite_reprintMax %
+000004c2 : 24080001;  % 472:     li $t0, 1 %
+000004c3 : 3c011001;  % 473:     lw $t1, maxSide %
+000004c4 : 8c2901c0;  % 473:  %
+000004c5 : 1109001a;  % 474:     beq $t0, $t1, max_ChangeSprite_checkStateControl # Se o lado anterior for igual ao atual, nao precisa fazer nada %
+000004c6 : 3c011001;  % 475:     sw $t0, maxSide %
+000004c7 : ac2801c0;  % 475:  %
+000004c8 : 3c011001;  % 476:     sw $s1, maxCurrentImage %
+000004c9 : ac3101c4;  % 476:  %
+000004ca : 081004e3;  % 477:     j max_ChangeSprite_reprintMax %
+000004cb : 10800014;  % 479:     beq $a0, $zero, max_ChangeSprite_checkStateControl # Se $a0 for zero nao tem movimento %
+000004cc : 2408ffff;  % 481:     li $t0, -1 %
+000004cd : 11040009;  % 482:     beq $t0, $a0, max_ChangeSprite_CheckHorizontal_negative %
+000004ce : 24080002;  % 484:     li $t0, 2 %
+000004cf : 3c011001;  % 485:     lw $t1, maxSide %
+000004d0 : 8c2901c0;  % 485:  %
+000004d1 : 1109000e;  % 486:     beq $t0, $t1, max_ChangeSprite_checkStateControl # Se o lado anterior for igual ao atual, nao precisa fazer nada %
+000004d2 : 3c011001;  % 487:     sw $t0, maxSide %
+000004d3 : ac2801c0;  % 487:  %
+000004d4 : 3c011001;  % 488:     sw $s2, maxCurrentImage %
+000004d5 : ac3201c4;  % 488:  %
+000004d6 : 081004e3;  % 489:     j max_ChangeSprite_reprintMax %
+000004d7 : 24080003;  % 492:     li $t0, 3 %
+000004d8 : 3c011001;  % 493:     lw $t1, maxSide %
+000004d9 : 8c2901c0;  % 493:  %
+000004da : 11090005;  % 494:     beq $t0, $t1, max_ChangeSprite_checkStateControl # Se o lado anterior for igual ao atual, nao precisa fazer nada %
+000004db : 3c011001;  % 495:     sw $t0, maxSide %
+000004dc : ac2801c0;  % 495:  %
+000004dd : 3c011001;  % 496:     sw $s3, maxCurrentImage %
+000004de : ac3301c4;  % 496:  %
+000004df : 081004e3;  % 497:     j max_ChangeSprite_reprintMax %
+000004e0 : 3c011001;  % 499:     lw $t9, maxCurrentStateControl %
+000004e1 : 8c3901cc;  % 499:  %
+000004e2 : 13200004;  % 500:     beq $t9, $zero, max_ChangeSprite_end %
+000004e3 : 0c1003ae;  % 502:     jal apagaMax %
+000004e4 : 0c10048e;  % 503:     jal printMax %
+000004e5 : 3c011001;  % 504:     sw $zero, maxCurrentStateControl %
+000004e6 : ac2001cc;  % 504:  %
+000004e7 : 8fbf0000;  % 506:     lw $ra, 0($sp) %
+000004e8 : 8fa40004;  % 507:     lw $a0, 4($sp) %
+000004e9 : 8fa50008;  % 508:     lw $a1, 8($sp) %
+000004ea : 8fb0000c;  % 509:     lw $s0, 12($sp) %
+000004eb : 8fb10010;  % 510:     lw $s1, 16($sp) %
+000004ec : 8fb20014;  % 511:     lw $s2, 20($sp) %
+000004ed : 8fb30018;  % 512:     lw $s3, 24($sp) %
+000004ee : 23bd001c;  % 513:     addi $sp, $sp, 28 %
+000004ef : 23bdfffc;  % 526:     addi $sp, $sp, -4 %
+000004f0 : afbf0000;  % 527:     sw $ra, 0($sp) %
+000004f1 : 0c10012a;  % 529:     jal isButtonDown_B %
+000004f2 : 10400032;  % 530:     beq $v0, $zero, max_GetInteractionInput_end # Se o botao B nao estiver pressionado pode terminar %
+000004f3 : 3c011001;  % 532:     la $t0, max_GetInteractionInput_B %
+000004f4 : 342801d4;  % 532:  %
+000004f5 : 8d090000;  % 533:     lw $t1, 0($t0) %
+000004f6 : 240a0001;  % 534:     li $t2, 1 %
+000004f7 : 1149002d;  % 535:     beq $t2, $t1, max_GetInteractionInput_end # Se esta pressionado e esteve pressionado, pode terminar %
+000004f8 : 0c10052a;  % 538:     jal checkMaxFront %
+000004f9 : 2408ffff;  % 539:     li $t0, -1 %
+000004fa : 1048000a;  % 540:     beq $v0, $t0, max_GetInteractionInput_levantaMaos %
+000004fb : 3c011001;  % 541:     lw $t0, maxSide %
+000004fc : 8c2801c0;  % 541:  %
+000004fd : 21080001;  % 542:     addi $t0, $t0, 1 %
+000004fe : 3c011001;  % 543:     sw $t0, mvBlockDir %
+000004ff : ac2801ec;  % 543:  %
+00000500 : 3c011001;  % 544:     sw $v0, mvBlockPosX %
+00000501 : ac2201e4;  % 544:  %
+00000502 : 3c011001;  % 545:     sw $v1, mvBlockPosY %
+00000503 : ac2301e8;  % 545:  %
+00000504 : 08100525;  % 546:     j max_GetInteractionInput_end %
+00000505 : 3c011001;  % 549:     lw $t0, maxCurrentState %
+00000506 : 8c2801c8;  % 549:  %
+00000507 : 01004027;  % 550:     not $t0, $t0 %
+00000508 : 31080001;  % 551:     andi $t0, $t0, 0x0001 %
+00000509 : 3c011001;  % 552:     sw $t0, maxCurrentState %
+0000050a : ac2801c8;  % 552:  %
+0000050b : 3c011001;  % 553:     sw $t2, maxCurrentStateControl %
+0000050c : ac2a01cc;  % 553:  %
+0000050d : 1100000c;  % 554:     beq $t0, $zero, max_GetInteractionInput_changeToNormal %
+0000050e : 3c011001;  % 555:     lw $t0, maxSide %
+0000050f : 8c2801c0;  % 555:  %
+00000510 : 24090004;  % 556:     li $t1, 4 %
+00000511 : 01090018;  % 557:     mult $t0, $t1 %
+00000512 : 00004012;  % 558:     mflo $t0 %
+00000513 : 3c011001;  % 559:     la $t1, MAX_2_FRONT %
+00000514 : 34290090;  % 559:  %
+00000515 : 01094820;  % 560:     add $t1, $t0, $t1 %
+00000516 : 8d280000;  % 561:     lw $t0, 0($t1) %
+00000517 : 3c011001;  % 562:     sw $t0, maxCurrentImage %
+00000518 : ac2801c4;  % 562:  %
+00000519 : 08100525;  % 563:     j max_GetInteractionInput_end %
+0000051a : 3c011001;  % 565:     lw $t0, maxSide %
+0000051b : 8c2801c0;  % 565:  %
+0000051c : 24090004;  % 566:     li $t1, 4 %
+0000051d : 01090018;  % 567:     mult $t0, $t1 %
+0000051e : 00004012;  % 568:     mflo $t0 %
+0000051f : 3c011001;  % 569:     la $t1, MAX_FRONT %
+00000520 : 34290080;  % 569:  %
+00000521 : 01094820;  % 570:     add $t1, $t0, $t1 %
+00000522 : 8d280000;  % 571:     lw $t0, 0($t1) %
+00000523 : 3c011001;  % 572:     sw $t0, maxCurrentImage %
+00000524 : ac2801c4;  % 572:  %
+00000525 : 3c011001;  % 574:     sw $v0, max_GetInteractionInput_B %
+00000526 : ac2201d4;  % 574:  %
+00000527 : 8fbf0000;  % 575:     lw $ra, 0($sp) %
+00000528 : 23bd0004;  % 576:     addi $sp, $sp, 4 %
+00000529 : 03e00008;  % 577:     jr $ra %
+0000052a : 23bdfffc;  % 583:     addi $sp, $sp, -4 %
+0000052b : afbf0000;  % 584:     sw $ra, 0($sp) %
+0000052c : 3c011001;  % 585:     la $t4, maxPositionX %
+0000052d : 342c01b8;  % 585:  %
+0000052e : 8d8d0004;  % 586:     lw $t5, 4($t4) # Posicao y do max em $t5 %
+0000052f : 8d8c0000;  % 587:     lw $t4, 0($t4) # Posicao x do max em $t4 %
+00000530 : 3c011001;  % 588:     lw $t0, maxSide %
+00000531 : 8c2801c0;  % 588:  %
+00000532 : 3c011001;  % 589:     lw $t6, MATUAL %
+00000533 : 8c2e00d0;  % 589:  %
+00000534 : 1500000d;  % 590:     bne $t0, $zero, checkBack %
+00000535 : 240a000d;  % 592:     li $t2, 13 %
+00000536 : 114d0037;  % 593:     beq $t2, $t5, checkMaxFront_end # Se estiver de frente e no limite inferior do mapa, nao precisa fazer nada %
+00000537 : 000e2021;  % 594:     move $a0, $t6 %
+00000538 : 000c2821;  % 595:     move $a1, $t4 %
+00000539 : 000d3021;  % 596:     move $a2, $t5 %
+0000053a : 20c60001;  % 597:     addi $a2, $a2, 1 %
+0000053b : 0c1001e2;  % 598:     jal getTileInfo %
+0000053c : 24080063;  % 599:     li $t0, 0x63 %
+0000053d : 1448002f;  % 600:     bne $v0, $t0, checkMaxFront_no_tile %
+0000053e : 000c1021;  % 601:     move $v0, $t4 %
+0000053f : 000d1821;  % 602:     move $v1, $t5 %
+00000540 : 20630001;  % 603:     addi $v1, $v1, 1 %
+00000541 : 0810056e;  % 604:     j checkMaxFront_end %
+00000542 : 24090001;  % 606:     li $t1, 1 %
+00000543 : 1509000d;  % 607:     bne $t0, $t1, checkRight %
+00000544 : 240a0000;  % 609:     li $t2, 0 %
+00000545 : 114d0028;  % 610:     beq $t2, $t5, checkMaxFront_end # Se estiver de costas e no limite superior do mapa, nao precisa fazer nada %
+00000546 : 000e2021;  % 611:     move $a0, $t6 %
+00000547 : 000c2821;  % 612:     move $a1, $t4 %
+00000548 : 000d3021;  % 613:     move $a2, $t5 %
+00000549 : 20c6ffff;  % 614:     addi $a2, $a2, -1 %
+0000054a : 0c1001e2;  % 615:     jal getTileInfo %
+0000054b : 24080063;  % 616:     li $t0, 0x63 %
+0000054c : 14480020;  % 617:     bne $v0, $t0, checkMaxFront_no_tile %
+0000054d : 000c1021;  % 618:     move $v0, $t4 %
+0000054e : 000d1821;  % 619:     move $v1, $t5 %
+0000054f : 2063ffff;  % 620:     addi $v1, $v1, -1 %
+00000550 : 0810056e;  % 621:     j checkMaxFront_end %
+00000551 : 24090002;  % 623:     li $t1, 2 %
+00000552 : 1509000d;  % 624:     bne $t0, $t1, checkLeft %
+00000553 : 240a000f;  % 626:     li $t2, 15 %
+00000554 : 114c0019;  % 627:     beq $t2, $t4, checkMaxFront_end # Se estiver para a direita e no limite do mapa, nao precisa fazer nada %
+00000555 : 000e2021;  % 628:     move $a0, $t6 %
+00000556 : 000c2821;  % 629:     move $a1, $t4 %
+00000557 : 20a50001;  % 630:     addi $a1, $a1, 1 %
+00000558 : 000d3021;  % 631:     move $a2, $t5 %
+00000559 : 0c1001e2;  % 632:     jal getTileInfo %
+0000055a : 24080063;  % 633:     li $t0, 0x63 %
+0000055b : 14480011;  % 634:     bne $v0, $t0, checkMaxFront_no_tile %
+0000055c : 000c1021;  % 635:     move $v0, $t4 %
+0000055d : 000d1821;  % 636:     move $v1, $t5 %
+0000055e : 20420001;  % 637:     addi $v0, $v0, 1 %
+0000055f : 0810056e;  % 638:     j checkMaxFront_end %
+00000560 : 240a0000;  % 641:     li $t2, 0 %
+00000561 : 114c000c;  % 642:     beq $t2, $t4, checkMaxFront_end # Se estiver para a esquerda e no limite do mapa, nao precisa fazer nada %
+00000562 : 000e2021;  % 643:     move $a0, $t6 %
+00000563 : 000c2821;  % 644:     move $a1, $t4 %
+00000564 : 20a5ffff;  % 645:     addi $a1, $a1, -1 %
+00000565 : 000d3021;  % 646:     move $a2, $t5 %
+00000566 : 0c1001e2;  % 647:     jal getTileInfo %
+00000567 : 24080063;  % 648:     li $t0, 0x63 %
+00000568 : 14480004;  % 649:     bne $v0, $t0, checkMaxFront_no_tile %
+00000569 : 000c1021;  % 650:     move $v0, $t4 %
+0000056a : 000d1821;  % 651:     move $v1, $t5 %
+0000056b : 2042ffff;  % 652:     addi $v0, $v0, -1 %
+0000056c : 0810056e;  % 653:     j checkMaxFront_end %
+0000056d : 2402ffff;  % 655:     li $v0, -1 # Se nao houver tile, retorna -1 em $v0 %
+0000056e : 8fbf0000;  % 657:     lw $ra, 0($sp) %
+0000056f : 23bd0004;  % 658:     addi $sp, $sp, 4 %
+00000570 : 03e00008;  % 659:     jr $ra %
+00000571 : 3c011001;  % 7: 	lw $a1, maxPositionX %
+00000572 : 8c2501b8;  % 7:  %
+00000573 : 3c011001;  % 8: 	lw $a2, maxPositionY %
+00000574 : 8c2601bc;  % 8:  %
+00000575 : 3c011001;  % 9: 	lw $a0, MATUAL %
+00000576 : 8c2400d0;  % 9:  %
+00000577 : 23bdfffc;  % 11: 	addi $sp, $sp, -4 %
+00000578 : afbf0000;  % 12:     sw $ra, 0($sp) %
+00000579 : 0c1001e2;  % 13:     jal getTileInfo %
+0000057a : 8fbf0000;  % 14:     lw $ra, 0($sp) %
+0000057b : 23bd0004;  % 15:     addi $sp, $sp, 4 %
+0000057c : 2408003d;  % 17:     li $t0, 0x3d %
+0000057d : 10480001;  % 18:     beq $v0, $t0, mudaMapa %
+0000057e : 03e00008;  % 19:     jr $ra %
+0000057f : 3c011001;  % 23: 		lw $a1, maxPositionX %
+00000580 : 8c2501b8;  % 23:  %
+00000581 : 3c011001;  % 24: 		lw $a2, maxPositionY %
+00000582 : 8c2601bc;  % 24:  %
+00000583 : 3c011001;  % 26: 		lw $t0, BG_ATUAL %
+00000584 : 8c2801e0;  % 26:  %
+00000585 : 3c011001;  % 28: 		lw $t1, BG_0 %
+00000586 : 8c290000;  % 28:  %
+00000587 : 11090099;  % 29: 		beq $t0, $t1, mapa0 %
+00000588 : 3c011001;  % 30: 		lw $t1, BG_1 %
+00000589 : 8c290008;  % 30:  %
+0000058a : 11090097;  % 31: 		beq $t0, $t1, mapa1 %
+0000058b : 3c011001;  % 32: 		lw $t1, BG_2 %
+0000058c : 8c290010;  % 32:  %
+0000058d : 11090098;  % 33: 		beq $t0, $t1, mapa2 %
+0000058e : 3c011001;  % 34: 		lw $t1, BG_3 %
+0000058f : 8c290018;  % 34:  %
+00000590 : 11090099;  % 35: 		beq $t0, $t1, mapa3 %
+00000591 : 3c011001;  % 36: 		lw $t1, BG_4 %
+00000592 : 8c290020;  % 36:  %
+00000593 : 1109009d;  % 37: 		beq $t0, $t1, mapa4 %
+00000594 : 3c011001;  % 38: 		lw $t1, BG_5 %
+00000595 : 8c290028;  % 38:  %
+00000596 : 1109009e;  % 39: 		beq $t0, $t1, mapa5 %
+00000597 : 3c011001;  % 40: 		lw $t1, BG_6 %
+00000598 : 8c290030;  % 40:  %
+00000599 : 1109009c;  % 41: 		beq $t0, $t1, mapa6 %
+0000059a : 3c011001;  % 42: 		lw $t1, BG_7 %
+0000059b : 8c290038;  % 42:  %
+0000059c : 1109009d;  % 43: 		beq $t0, $t1, mapa7 %
+0000059d : 3c011001;  % 44: 		lw $t1, BG_8 %
+0000059e : 8c290040;  % 44:  %
+0000059f : 1109009f;  % 45: 		beq $t0, $t1, mapa8 %
+000005a0 : 3c011001;  % 46: 		lw $t1, BG_9 %
+000005a1 : 8c290048;  % 46:  %
+000005a2 : 110900a0;  % 47: 		beq $t0, $t1, mapa9 %
+000005a3 : 3c011001;  % 48: 		lw $t1, BG_10 %
+000005a4 : 8c290050;  % 48:  %
+000005a5 : 110900a2;  % 49: 		beq $t0, $t1, mapa10 %
+000005a6 : 3c011001;  % 50: 		lw $t1, BG_11 %
+000005a7 : 8c290058;  % 50:  %
+000005a8 : 110900a6;  % 51: 		beq $t0, $t1, mapa11 %
+000005a9 : 3c011001;  % 52: 		lw $t1, BG_12 %
+000005aa : 8c290060;  % 52:  %
+000005ab : 110900a4;  % 53: 		beq $t0, $t1, mapa12 %
+000005ac : 3c011001;  % 54: 		lw $t1, BG_13 %
+000005ad : 8c290068;  % 54:  %
+000005ae : 110900a6;  % 55: 		beq $t0, $t1, mapa13 %
+000005af : 3c011001;  % 56: 		lw $t1, BG_14 %
+000005b0 : 8c290070;  % 56:  %
+000005b1 : 110900a7;  % 57: 		beq $t0, $t1, mapa14	 %
+000005b2 : 03e00008;  % 62: jr $ra %
+000005b3 : 3c011001;  % 68: 	lw $a1, MATUAL %
+000005b4 : 8c2500d0;  % 68:  %
+000005b5 : 23bdfff8;  % 69:     addi $sp, $sp, -8 %
+000005b6 : afbf0000;  % 70: 	sw $ra, 0($sp) %
+000005b7 : afa60004;  % 71: 	sw $a2, 4($sp) %
+000005b8 : 0c100674;  % 72: 	jal copiaMatriz %
+000005b9 : 8fbf0000;  % 73: 	lw $ra, 0($sp) %
+000005ba : 8fa60004;  % 74: 	lw $a2, 4($sp) %
+000005bb : 23bd0008;  % 75: 	addi $sp, $sp, 8 %
+000005bc : 3c011001;  % 76: 	sw $a2, BG_ATUAL %
+000005bd : ac2601e0;  % 76:  %
+000005be : 0810065d;  % 77: 	j imprimeRestante %
+000005bf : 3c011001;  % 80:     lw $a0, MBG_0 %
+000005c0 : 8c240004;  % 80:  %
+000005c1 : 3c011001;  % 81:     lw $a2, BG_0 %
+000005c2 : 8c260000;  % 81:  %
+000005c3 : 081005b3;  % 82:     j atualizaMapaInfo %
+000005c4 : 3c011001;  % 84:     lw $a0, MBG_1 %
+000005c5 : 8c24000c;  % 84:  %
+000005c6 : 3c011001;  % 85:     lw $a2, BG_1 %
+000005c7 : 8c260008;  % 85:  %
+000005c8 : 081005b3;  % 86:     j atualizaMapaInfo %
+000005c9 : 3c011001;  % 88:     lw $a0, MBG_2 %
+000005ca : 8c240014;  % 88:  %
+000005cb : 3c011001;  % 89:     lw $a2, BG_2 %
+000005cc : 8c260010;  % 89:  %
+000005cd : 081005b3;  % 90:     j atualizaMapaInfo %
+000005ce : 3c011001;  % 92:     lw $a0, MBG_3 %
+000005cf : 8c24001c;  % 92:  %
+000005d0 : 3c011001;  % 93:     lw $a2, BG_3 %
+000005d1 : 8c260018;  % 93:  %
+000005d2 : 081005b3;  % 94:     j atualizaMapaInfo %
+000005d3 : 3c011001;  % 96:     lw $a0, MBG_4 %
+000005d4 : 8c240024;  % 96:  %
+000005d5 : 3c011001;  % 97:     lw $a2, BG_4 %
+000005d6 : 8c260020;  % 97:  %
+000005d7 : 081005b3;  % 98:     j atualizaMapaInfo %
+000005d8 : 3c011001;  % 100:     lw $a0, MBG_5 %
+000005d9 : 8c24002c;  % 100:  %
+000005da : 3c011001;  % 101:     lw $a2, BG_5 %
+000005db : 8c260028;  % 101:  %
+000005dc : 081005b3;  % 102:     j atualizaMapaInfo %
+000005dd : 3c011001;  % 104:     lw $a0, MBG_6 %
+000005de : 8c240034;  % 104:  %
+000005df : 3c011001;  % 105:     lw $a2, BG_6 %
+000005e0 : 8c260030;  % 105:  %
+000005e1 : 081005b3;  % 106:     j atualizaMapaInfo %
+000005e2 : 3c011001;  % 108:     lw $a0, MBG_7 %
+000005e3 : 8c24003c;  % 108:  %
+000005e4 : 3c011001;  % 109:     lw $a2, BG_7 %
+000005e5 : 8c260038;  % 109:  %
+000005e6 : 081005b3;  % 110:     j atualizaMapaInfo %
+000005e7 : 3c011001;  % 112:     lw $a0, MBG_8 %
+000005e8 : 8c240044;  % 112:  %
+000005e9 : 3c011001;  % 113:     lw $a2, BG_8 %
+000005ea : 8c260040;  % 113:  %
+000005eb : 081005b3;  % 114:     j atualizaMapaInfo %
+000005ec : 3c011001;  % 116:     lw $a0, MBG_9 %
+000005ed : 8c24004c;  % 116:  %
+000005ee : 3c011001;  % 117:     lw $a2, BG_9 %
+000005ef : 8c260048;  % 117:  %
+000005f0 : 081005b3;  % 118:     j atualizaMapaInfo %
+000005f1 : 3c011001;  % 120:     lw $a0, MBG_10 %
+000005f2 : 8c240054;  % 120:  %
+000005f3 : 3c011001;  % 121:     lw $a2, BG_10 %
+000005f4 : 8c260050;  % 121:  %
+000005f5 : 081005b3;  % 122:     j atualizaMapaInfo %
+000005f6 : 3c011001;  % 124:     lw $a0, MBG_11 %
+000005f7 : 8c24005c;  % 124:  %
+000005f8 : 3c011001;  % 125:     lw $a2, BG_11 %
+000005f9 : 8c260058;  % 125:  %
+000005fa : 081005b3;  % 126:     j atualizaMapaInfo %
+000005fb : 3c011001;  % 128:     lw $a0, MBG_12 %
+000005fc : 8c240064;  % 128:  %
+000005fd : 3c011001;  % 129:     lw $a2, BG_12 %
+000005fe : 8c260060;  % 129:  %
+000005ff : 081005b3;  % 130:     j atualizaMapaInfo %
+00000600 : 3c011001;  % 132:     lw $a0, MBG_13 %
+00000601 : 8c24006c;  % 132:  %
+00000602 : 3c011001;  % 133:     lw $a2, BG_13 %
+00000603 : 8c260068;  % 133:  %
+00000604 : 081005b3;  % 134:     j atualizaMapaInfo %
+00000605 : 23bdfff8;  % 137: 	addi $sp, $sp, -8 %
+00000606 : afbf0000;  % 138: 	sw $ra, 0($sp) %
+00000607 : afa40004;  % 139: 	sw $a0, 4($sp) %
+00000608 : 3c011001;  % 140: 	lw $a0,BEGIN_MUS_1 %
+00000609 : 8c2400c8;  % 140:  %
+0000060a : 0c100807;  % 141:     jal trocaMus %
+0000060b : 8fbf0000;  % 142: 	lw $ra, 0($sp) %
+0000060c : 8fa40004;  % 143: 	lw $a0, 4($sp) %
+0000060d : 23bd0008;  % 144: 	addi $sp, $sp, 8 %
+0000060e : 3c011001;  % 147:     lw $a0, MBG_14 %
+0000060f : 8c240074;  % 147:  %
+00000610 : 3c011001;  % 148:     lw $a2, BG_14 %
+00000611 : 8c260070;  % 148:  %
+00000612 : 081005b3;  % 149:     j atualizaMapaInfo %
+00000613 : 23bdfff8;  % 153: 	addi $sp, $sp, -8 %
+00000614 : afbf0000;  % 154: 	sw $ra, 0($sp) %
+00000615 : afa40004;  % 155: 	sw $a0, 4($sp) %
+00000616 : 3c011001;  % 156: 	lw $a0,BEGIN_MUS_2 %
+00000617 : 8c2400cc;  % 156:  %
+00000618 : 0c100807;  % 157:     jal trocaMus %
+00000619 : 8fbf0000;  % 158: 	lw $ra, 0($sp) %
+0000061a : 8fa40004;  % 159: 	lw $a0, 4($sp) %
+0000061b : 23bd0008;  % 160: 	addi $sp, $sp, 8 %
+0000061c : 3c011001;  % 163:     lw $a0, MBG_15 %
+0000061d : 8c24007c;  % 163:  %
+0000061e : 3c011001;  % 164:     lw $a2, BG_15 %
+0000061f : 8c260078;  % 164:  %
+00000620 : 081005b3;  % 165:     j atualizaMapaInfo %
+00000621 : 081005c4;  % 169: 	j vaipra1 %
+00000622 : 3c011001;  % 171: 	lw $t0, maxPositionY %
+00000623 : 8c2801bc;  % 171:  %
+00000624 : 1100ffa4;  % 172: 	beq $t0, $zero, vaipra2 %
+00000625 : 081005bf;  % 173: 	j vaipra0 %
+00000626 : 3c011001;  % 175: 	lw $t0, maxPositionY %
+00000627 : 8c2801bc;  % 175:  %
+00000628 : 1100ffa5;  % 176: 	beq $t0, $zero, vaipra3 %
+00000629 : 081005c4;  % 177: 	j vaipra1 %
+0000062a : 3c011001;  % 179: 	lw $t0, maxPositionY %
+0000062b : 8c2801bc;  % 179:  %
+0000062c : 1100ffab;  % 180: 	beq $t0, $zero, vaipra5 %
+0000062d : 3c011001;  % 181: 	lw $t0, maxPositionX %
+0000062e : 8c2801b8;  % 181:  %
+0000062f : 1100ffa3;  % 182: 	beq $t0, $zero, vaipra4 %
+00000630 : 081005c9;  % 183: 	j vaipra2 %
+00000631 : 3c011001;  % 185: 	lw $t0, maxPositionY %
+00000632 : 8c2801bc;  % 185:  %
+00000633 : 1100ffa9;  % 186: 	beq $t0, $zero, vaipra6 %
+00000634 : 081005ce;  % 187: 	j vaipra3 %
+00000635 : 081005ce;  % 189: 	j vaipra3 %
+00000636 : 3c011001;  % 191: 	lw $t0, maxPositionY %
+00000637 : 8c2801bc;  % 191:  %
+00000638 : 1100ffa9;  % 192: 	beq $t0, $zero, vaipra7 %
+00000639 : 081005d3;  % 193: 	j vaipra4 %
+0000063a : 2408000d;  % 195: 	li $t0, 13 %
+0000063b : 3c011001;  % 196: 	lw $t1, maxPositionY %
+0000063c : 8c2901bc;  % 196:  %
+0000063d : 1109ff9f;  % 197: 	beq $t0, $t1, vaipra6 %
+0000063e : 081005e7;  % 198: 	j vaipra8 %
+0000063f : 3c011001;  % 200: 	lw $t0, maxPositionY %
+00000640 : 8c2801bc;  % 200:  %
+00000641 : 1100ffaa;  % 201: 	beq $t0, $zero, vaipra9 %
+00000642 : 081005e2;  % 202: 	j vaipra7 %
+00000643 : 2408000d;  % 204: 	li $t0, 13 %
+00000644 : 3c011001;  % 205: 	lw $t1, maxPositionY %
+00000645 : 8c2901bc;  % 205:  %
+00000646 : 1109ffa0;  % 206: 	beq $t0, $t1, vaipra8 %
+00000647 : 081005f1;  % 207: 	j vaipra10 %
+00000648 : 3c011001;  % 209: 	lw $t0, maxPositionY %
+00000649 : 8c2801bc;  % 209:  %
+0000064a : 1100ffb0;  % 210: 	beq $t0, $zero, vaipra12 %
+0000064b : 3c011001;  % 211: 	lw $t0, maxPositionX %
+0000064c : 8c2801b8;  % 211:  %
+0000064d : 1100ff9e;  % 212: 	beq $t0, $zero, vaipra9 %
+0000064e : 081005f6;  % 213: 	j vaipra11 %
+0000064f : 081005f1;  % 215: 	j vaipra10 %
+00000650 : 2408000d;  % 217: 	li $t0, 13 %
+00000651 : 3c011001;  % 218: 	lw $t1, maxPositionY %
+00000652 : 8c2901bc;  % 218:  %
+00000653 : 1109ff9d;  % 219: 	beq $t0, $t1, vaipra10 %
+00000654 : 08100600;  % 220: 	j vaipra13 %
+00000655 : 3c011001;  % 222: 	lw $t0, maxPositionY %
+00000656 : 8c2801bc;  % 222:  %
+00000657 : 1100ffad;  % 223: 	beq $t0, $zero, vaipra14 %
+00000658 : 081005fb;  % 224: 	j vaipra12 %
+00000659 : 3c011001;  % 226: 	lw $t0, maxPositionY %
+0000065a : 8c2801bc;  % 226:  %
+0000065b : 1100ffb7;  % 227: 	beq $t0, $zero, vaipra15 %
+0000065c : 08100600;  % 228: 	j vaipra13 %
+0000065d : 24040000;  % 231: li $a0, 0 %
+0000065e : 24050000;  % 232: li $a1, 0 %
+0000065f : 23bdfffc;  % 233: addi $sp, $sp, -4 %
+00000660 : afbf0000;  % 234: sw $ra, 0($sp) %
+00000661 : 0c100161;  % 235: jal printImg %
+00000662 : 8fbf0000;  % 236: lw $ra, 0($sp) %
+00000663 : 23bd0004;  % 237: addi $sp, $sp, 4 %
+00000664 : 23bdfffc;  % 239: addi $sp, $sp, -4 %
+00000665 : afbf0000;  % 240: sw, $ra, 0($sp) %
+00000666 : 0c10069f;  % 241: jal printaObjetosInicio %
+00000667 : 8fbf0000;  % 242: lw $ra, 0($sp) %
+00000668 : 23bd0004;  % 243: addi $sp, $sp, 4 %
+00000669 : 23bdfffc;  % 245: addi $sp, $sp, -4 %
+0000066a : afbf0000;  % 246: sw, $ra, 0($sp) %
+0000066b : 0c100685;  % 247: jal iniciaMaxPosicao %
+0000066c : 8fbf0000;  % 248: lw $ra, 0($sp) %
+0000066d : 23bd0004;  % 249: addi $sp, $sp, 4 %
+0000066e : 23bdfffc;  % 252: addi $sp, $sp, -4 %
+0000066f : afbf0000;  % 253: sw $ra, 0($sp) %
+00000670 : 0c10048e;  % 254: jal printMax %
+00000671 : 8fbf0000;  % 255: lw $ra, 0($sp) %
+00000672 : 23bd0004;  % 256: addi $sp, $sp, 4 %
+00000673 : 03e00008;  % 257: jr $ra %
+00000674 : 23bdfff8;  % 269: 	addi $sp, $sp, -8 %
+00000675 : afb00000;  % 270: 	sw $s0, 0($sp) %
+00000676 : afb10004;  % 271: 	sw $s1, 4($sp) %
+00000677 : 00048021;  % 274: 	move $s0, $a0 %
+00000678 : 00058821;  % 275: 	move $s1, $a1 %
+00000679 : 24080038;  % 276: 	li $t0, 56 %
+0000067a : 11000006;  % 279: 	    beq $t0, $zero, fimCopiaMatriz %
+0000067b : 8e090000;  % 280: 	    lw $t1, 0($s0) %
+0000067c : ae290000;  % 281: 	    sw $t1, 0($s1) %
+0000067d : 22100004;  % 282: 	    addi $s0, $s0, 4 %
+0000067e : 22310004;  % 283: 	    addi $s1, $s1, 4 %
+0000067f : 2108ffff;  % 284: 	    addi $t0, $t0, -1 %
+00000680 : 0810067a;  % 286: 	    j loopCopiaMatriz %
+00000681 : 8fb00000;  % 289: 	lw $s0, 0($sp) %
+00000682 : 8fb10004;  % 290: 	lw $s1, 4($sp) %
+00000683 : 23bd0008;  % 291: 	addi $sp, $sp, 8 %
+00000684 : 03e00008;  % 292: 	jr $ra %
+00000685 : 3c011001;  % 298: 	lw $t0, maxPositionX %
+00000686 : 8c2801b8;  % 298:  %
+00000687 : 3c011001;  % 299: 	lw $t1, maxPositionY %
+00000688 : 8c2901bc;  % 299:  %
+00000689 : 11200005;  % 302: 	beq $t1, $zero, porCima %
+0000068a : 11000008;  % 303: 	beq $t0, $zero, porEsquerda %
+0000068b : 240b000f;  % 304: 	li $t3, 15 %
+0000068c : 1168000a;  % 305: 	beq $t3, $t0, porDireita %
+0000068d : 240b000d;  % 306: 	li $t3, 13 %
+0000068e : 1169000c;  % 307: 	beq $t3, $t1, porBaixo %
+0000068f : 240a000c;  % 310: 		li $t2, 12 %
+00000690 : 3c011001;  % 311: 		sw $t2, maxPositionY %
+00000691 : ac2a01bc;  % 311:  %
+00000692 : 03e00008;  % 312: 		jr $ra %
+00000693 : 240a000e;  % 315: 		li $t2, 14 %
+00000694 : 3c011001;  % 316: 		sw $t2, maxPositionX %
+00000695 : ac2a01b8;  % 316:  %
+00000696 : 03e00008;  % 317: 		jr $ra %
+00000697 : 240a0001;  % 320: 		li $t2, 1 %
+00000698 : 3c011001;  % 321: 		sw $t2, maxPositionX %
+00000699 : ac2a01b8;  % 321:  %
+0000069a : 03e00008;  % 322: 		jr $ra %
+0000069b : 240a0001;  % 325: 		li $t2, 1 %
+0000069c : 3c011001;  % 326: 		sw $t2, maxPositionY %
+0000069d : ac2a01bc;  % 326:  %
+0000069e : 03e00008;  % 327: 		jr $ra %
+0000069f : 23bdfffc;  % 333: 	addi $sp, $sp, -4 %
+000006a0 : afbf0000;  % 334: 	sw $ra, 0($sp) %
+000006a1 : 23bdfff8;  % 336: 	addi $sp, $sp, -8 %
+000006a2 : afb00000;  % 337: 	sw $s0, 0($sp) %
+000006a3 : afb10004;  % 338: 	sw $s1, 4($sp) %
+000006a4 : 2410000e;  % 340: 	li $s0, 14 %
+000006a5 : 24110010;  % 341: 	li $s1, 16 %
+000006a6 : 00004021;  % 343: 	move $t0, $zero %
+000006a7 : 00004821;  % 346: 		move $t1, $zero %
+000006a8 : 1110005c;  % 347: 		beq $t0, $s0, objetosFim %
+000006a9 : 11310059;  % 350: 			beq $t1, $s1, fimMATUALj %
+000006aa : 23bdfff0;  % 352: 			addi $sp, $sp, -16 %
+000006ab : afb00000;  % 353: 			sw $s0, 0($sp) %
+000006ac : afb10004;  % 354: 			sw $s1, 4($sp) %
+000006ad : afa80008;  % 355: 			sw $t0, 8($sp) %
+000006ae : afa9000c;  % 356: 			sw $t1, 12($sp) %
+000006af : 00092820;  % 358: 			add $a1, $zero, $t1 %
+000006b0 : 00083020;  % 359: 			add $a2, $zero, $t0 %
+000006b1 : 3c011001;  % 360: 			lw $a0, MATUAL %
+000006b2 : 8c2400d0;  % 360:  %
+000006b3 : 0c1001e2;  % 361: 			jal getTileInfo  %
+000006b4 : 8fb00000;  % 363: 			lw $s0, 0($sp) %
+000006b5 : 8fb10004;  % 364: 			lw $s1, 4($sp) %
+000006b6 : 8fa80008;  % 365: 			lw $t0, 8($sp) %
+000006b7 : 8fa9000c;  % 366: 			lw $t1, 12($sp) %
+000006b8 : 23bd0010;  % 367: 			addi $sp, $sp, 16 %
+000006b9 : 240a0023;  % 369: 			li $t2, 0x23 # parede %
+000006ba : 104a0046;  % 370: 			beq $v0, $t2, proxMATUALj %
+000006bb : 240a003d;  % 371: 			li $t2, 0x3D # limite %
+000006bc : 104a0044;  % 372: 			beq $v0, $t2, proxMATUALj %
+000006bd : 240a002a;  % 373: 			li $t2, 0x2A # caminho pisável %
+000006be : 104a0042;  % 374: 			beq $v0, $t2, proxMATUALj %
+000006bf : 240a007c;  % 375: 			li $t2, 0x7C # porta %
+000006c0 : 104a0040;  % 376: 			beq $v0, $t2, proxMATUALj %
+000006c1 : 240a0061;  % 377: 			li $t2, 0x61 # botão pra caixa %
+000006c2 : 104a003e;  % 378: 			beq $v0, $t2, proxMATUALj %
+000006c3 : 240a0062;  % 379: 			li $t2, 0x62 # botão pra caixa com gancho %
+000006c4 : 104a003c;  % 380: 			beq $v0, $t2, proxMATUALj %
+000006c5 : 240a0041;  % 384: 			li $t2, 0x41 %
+000006c6 : 104a003a;  % 385: 			beq $v0, $t2, proxMATUALj %
+000006c7 : 240a0042;  % 386: 			li $t2, 0x42 %
+000006c8 : 104a0038;  % 387: 			beq $v0, $t2, proxMATUALj %
+000006c9 : 240a0043;  % 388: 			li $t2, 0x43 %
+000006ca : 104a0036;  % 389: 			beq $v0, $t2, proxMATUALj %
+000006cb : 240a0044;  % 390: 			li $t2, 0x44 %
+000006cc : 104a0034;  % 391: 			beq $v0, $t2, proxMATUALj %
+000006cd : 240a0045;  % 392: 			li $t2, 0x45 %
+000006ce : 104a0032;  % 393: 			beq $v0, $t2, proxMATUALj %
+000006cf : 240a0046;  % 394: 			li $t2, 0x46 %
+000006d0 : 104a0030;  % 395: 			beq $v0, $t2, proxMATUALj %
+000006d1 : 240a0047;  % 396: 			li $t2, 0x47 %
+000006d2 : 104a002e;  % 397: 			beq $v0, $t2, proxMATUALj %
+000006d3 : 240a0048;  % 398: 			li $t2, 0x48 %
+000006d4 : 104a002c;  % 399: 			beq $v0, $t2, proxMATUALj %
+000006d5 : 240a0049;  % 400: 			li $t2, 0x49 %
+000006d6 : 104a002a;  % 401: 			beq $v0, $t2, proxMATUALj %
+000006d7 : 240a004a;  % 402: 			li $t2, 0x4A %
+000006d8 : 104a0028;  % 403: 			beq $v0, $t2, proxMATUALj %
+000006d9 : 240a004b;  % 404: 			li $t2, 0x4B %
+000006da : 104a0026;  % 405: 			beq $v0, $t2, proxMATUALj %
+000006db : 240a004c;  % 406: 			li $t2, 0x4C %
+000006dc : 104a0024;  % 407: 			beq $v0, $t2, proxMATUALj %
+000006dd : 240a004d;  % 408: 			li $t2, 0x4D %
+000006de : 104a0022;  % 409: 			beq $v0, $t2, proxMATUALj %
+000006df : 240a004e;  % 410: 			li $t2, 0x4E %
+000006e0 : 104a0020;  % 411: 			beq $v0, $t2, proxMATUALj %
+000006e1 : 240a004f;  % 412: 			li $t2, 0x4F %
+000006e2 : 104a001e;  % 413: 			beq $v0, $t2, proxMATUALj %
+000006e3 : 240a002e;  % 414: 			li $t2, 0x2e %
+000006e4 : 104a001c;  % 415: 			beq $v0, $t2, proxMATUALj %
+000006e5 : 1040001b;  % 419: 			beq $v0, $zero, proxMATUALj %
+000006e6 : 23bdfff0;  % 422: 			addi $sp, $sp, -16 %
+000006e7 : afb00000;  % 423: 			sw $s0, 0($sp) %
+000006e8 : afb10004;  % 424: 			sw $s1, 4($sp) %
+000006e9 : afa80008;  % 425: 			sw $t0, 8($sp) %
+000006ea : afa9000c;  % 426: 			sw $t1, 12($sp) %
+000006eb : 00022021;  % 428: 			move $a0, $v0 %
+000006ec : 0c1001ae;  % 429: 			jal getObjAddr %
+000006ed : 8fb00000;  % 431: 			lw $s0, 0($sp) %
+000006ee : 8fb10004;  % 432: 			lw $s1, 4($sp) %
+000006ef : 8fa80008;  % 433: 			lw $t0, 8($sp) %
+000006f0 : 8fa9000c;  % 434: 			lw $t1, 12($sp) %
+000006f1 : 23bd0010;  % 435: 			addi $sp, $sp, 16 %
+000006f2 : 23bdfff0;  % 437: 			addi $sp, $sp, -16 %
+000006f3 : afb00000;  % 438: 			sw $s0, 0($sp) %
+000006f4 : afb10004;  % 439: 			sw $s1, 4($sp) %
+000006f5 : afa80008;  % 440: 			sw $t0, 8($sp) %
+000006f6 : afa9000c;  % 441: 			sw $t1, 12($sp) %
+000006f7 : 00022021;  % 443: 			move $a0, $v0 %
+000006f8 : 00092820;  % 444: 			add $a1, $zero, $t1 %
+000006f9 : 00052c00;  % 445: 			sll $a1, $a1, 16 %
+000006fa : 00a82820;  % 446: 			add $a1, $a1, $t0 %
+000006fb : 0c100238;  % 447: 			jal printInTile %
+000006fc : 8fb00000;  % 449: 			lw $s0, 0($sp) %
+000006fd : 8fb10004;  % 450: 			lw $s1, 4($sp) %
+000006fe : 8fa80008;  % 451: 			lw $t0, 8($sp) %
+000006ff : 8fa9000c;  % 452: 			lw $t1, 12($sp) %
+00000700 : 23bd0010;  % 453: 			addi $sp, $sp, 16 %
+00000701 : 21290001;  % 456: 				addi $t1, $t1, 1 %
+00000702 : 081006a9;  % 457: 				j objetosMATUALj %
+00000703 : 21080001;  % 459: 			addi $t0, $t0, 1 %
+00000704 : 081006a7;  % 460: 			j objetosMATUALi %
+00000705 : 8fb00000;  % 463: 		lw $s0, 0($sp) %
+00000706 : 8fb10004;  % 464: 		lw $s1, 4($sp) %
+00000707 : 23bd0008;  % 465: 		addi $sp, $sp, 8 %
+00000708 : 8fbf0000;  % 468: 	lw $ra, 0($sp) %
+00000709 : 23bd0004;  % 469: 	addi $sp, $sp, 4 %
+0000070a : 03e00008;  % 470: jr $ra %
+0000070b : 23bdfffc;  % 9:     addi $sp, $sp, -4 %
+0000070c : afbf0000;  % 10:     sw $ra, 0($sp) %
+0000070d : 3c011001;  % 13:     lw $t0, mvBlockDir %
+0000070e : 8c2801ec;  % 13:  %
+0000070f : 11000008;  % 14:     beq $t0, $zero, fimUpdateBlock %
+00000710 : 24090001;  % 19:     li $t1, 1 %
+00000711 : 11280009;  % 20:     beq $t1, $t0, mvFrente %
+00000712 : 24090002;  % 21:     li $t1, 2 %
+00000713 : 1128003b;  % 22:     beq $t1, $t0, mvTras %
+00000714 : 24090003;  % 23:     li $t1, 3 %
+00000715 : 1128006d;  % 24:     beq $t1, $t0, mvDireita %
+00000716 : 24090004;  % 25:     li $t1, 4 %
+00000717 : 1128009f;  % 26:     beq $t1, $t0, mvEsquerda %
+00000718 : 8fbf0000;  % 30:     lw $ra, 0($sp) %
+00000719 : 23bd0004;  % 31:     addi $sp, $sp, 4 %
+0000071a : 03e00008;  % 32:     jr $ra %
+0000071b : 3c011001;  % 35:     lw $t0, mvBlockPosX %
+0000071c : 8c2801e4;  % 35:  %
+0000071d : 3c011001;  % 36:     lw $t1, mvBlockPosY %
+0000071e : 8c2901e8;  % 36:  %
+0000071f : 2129ffff;  % 37:     addi $t1, $t1, -1 %
+00000720 : 3c011001;  % 39:     lw $a0, MATUAL %
+00000721 : 8c2400d0;  % 39:  %
+00000722 : 00082821;  % 40:     move $a1, $t0 %
+00000723 : 00093021;  % 41:     move $a2, $t1 %
+00000724 : 0c1001e2;  % 42:     jal getTileInfo %
+00000725 : 24080061;  % 44:     li $t0, 0x61 %
+00000726 : 11020003;  % 45:     beq $t0, $v0, mvFront %
+00000727 : 2408002a;  % 46:     li $t0, 0x2a %
+00000728 : 11020001;  % 47:     beq $t0, $v0, mvFront %
+00000729 : 08100718;  % 48:     j fimUpdateBlock %
+0000072a : 3c011001;  % 52:         lw $a0, MATUAL %
+0000072b : 8c2400d0;  % 52:  %
+0000072c : 24070063;  % 53:         li $a3, 0x63 %
+0000072d : 0c1001ef;  % 54:         jal setTileInfo %
+0000072e : 3c011001;  % 56:         lw $a0, MATUAL %
+0000072f : 8c2400d0;  % 56:  %
+00000730 : 3c011001;  % 57:         lw $a1, mvBlockPosX %
+00000731 : 8c2501e4;  % 57:  %
+00000732 : 3c011001;  % 58:         lw $a2, mvBlockPosY %
+00000733 : 8c2601e8;  % 58:  %
+00000734 : 2407002a;  % 59:         li $a3, 0x2a %
+00000735 : 0c1001ef;  % 60:         jal setTileInfo %
+00000736 : 3c011001;  % 63:         lw $a0, BG_ATUAL %
+00000737 : 8c2401e0;  % 63:  %
+00000738 : 3c011001;  % 64:         lw $t0, mvBlockPosX %
+00000739 : 8c2801e4;  % 64:  %
+0000073a : 00084400;  % 65:         sll $t0, $t0, 16 %
+0000073b : 3c011001;  % 66:         lw $t1, mvBlockPosY %
+0000073c : 8c2901e8;  % 66:  %
+0000073d : 01092825;  % 67:         or $a1, $t0, $t1 %
+0000073e : 0c10024a;  % 68:         jal printTile %
+0000073f : 3c011001;  % 71:         lw $a0, MVBLOCK %
+00000740 : 8c2400a0;  % 71:  %
+00000741 : 3c011001;  % 72:         lw $t0, mvBlockPosX %
+00000742 : 8c2801e4;  % 72:  %
+00000743 : 00084400;  % 73:         sll $t0, $t0, 16 %
+00000744 : 3c011001;  % 74:         lw $t1, mvBlockPosY %
+00000745 : 8c2901e8;  % 74:  %
+00000746 : 2129ffff;  % 75:         addi $t1, $t1, -1 %
+00000747 : 01092825;  % 76:         or $a1, $t0, $t1 %
+00000748 : 0c100238;  % 77:         jal printInTile %
+00000749 : 3c011001;  % 80:         lw $t0, mvBlockPosY %
+0000074a : 8c2801e8;  % 80:  %
+0000074b : 2108ffff;  % 81:         addi $t0, $t0, -1 %
+0000074c : 3c011001;  % 82:         sw $t0, mvBlockPosY %
+0000074d : ac2801e8;  % 82:  %
+0000074e : 08100718;  % 85:         j fimUpdateBlock %
+0000074f : 3c011001;  % 89:     lw $t0, mvBlockPosX %
+00000750 : 8c2801e4;  % 89:  %
+00000751 : 3c011001;  % 90:     lw $t1, mvBlockPosY %
+00000752 : 8c2901e8;  % 90:  %
+00000753 : 21290001;  % 91:     addi $t1, $t1, 1 %
+00000754 : 3c011001;  % 93:     lw $a0, MATUAL %
+00000755 : 8c2400d0;  % 93:  %
+00000756 : 00082821;  % 94:     move $a1, $t0 %
+00000757 : 00093021;  % 95:     move $a2, $t1 %
+00000758 : 0c1001e2;  % 96:     jal getTileInfo %
+00000759 : 24080061;  % 98:     li $t0, 0x61 %
+0000075a : 11020003;  % 99:     beq $t0, $v0, mvBack %
+0000075b : 2408002a;  % 100:     li $t0, 0x2a %
+0000075c : 11020001;  % 101:     beq $t0, $v0, mvBack %
+0000075d : 08100718;  % 102:     j fimUpdateBlock %
+0000075e : 3c011001;  % 106:         lw $a0, MATUAL %
+0000075f : 8c2400d0;  % 106:  %
+00000760 : 24070063;  % 107:         li $a3, 0x63 %
+00000761 : 0c1001ef;  % 108:         jal setTileInfo %
+00000762 : 3c011001;  % 110:         lw $a0, MATUAL %
+00000763 : 8c2400d0;  % 110:  %
+00000764 : 3c011001;  % 111:         lw $a1, mvBlockPosX %
+00000765 : 8c2501e4;  % 111:  %
+00000766 : 3c011001;  % 112:         lw $a2, mvBlockPosY %
+00000767 : 8c2601e8;  % 112:  %
+00000768 : 2407002a;  % 113:         li $a3, 0x2a %
+00000769 : 0c1001ef;  % 114:         jal setTileInfo %
+0000076a : 3c011001;  % 117:         lw $a0, BG_ATUAL %
+0000076b : 8c2401e0;  % 117:  %
+0000076c : 3c011001;  % 118:         lw $t0, mvBlockPosX %
+0000076d : 8c2801e4;  % 118:  %
+0000076e : 00084400;  % 119:         sll $t0, $t0, 16 %
+0000076f : 3c011001;  % 120:         lw $t1, mvBlockPosY %
+00000770 : 8c2901e8;  % 120:  %
+00000771 : 01092825;  % 121:         or $a1, $t0, $t1 %
+00000772 : 0c10024a;  % 122:         jal printTile %
+00000773 : 3c011001;  % 125:         lw $a0, MVBLOCK %
+00000774 : 8c2400a0;  % 125:  %
+00000775 : 3c011001;  % 126:         lw $t0, mvBlockPosX %
+00000776 : 8c2801e4;  % 126:  %
+00000777 : 00084400;  % 127:         sll $t0, $t0, 16 %
+00000778 : 3c011001;  % 128:         lw $t1, mvBlockPosY %
+00000779 : 8c2901e8;  % 128:  %
+0000077a : 21290001;  % 129:         addi $t1, $t1, 1 %
+0000077b : 01092825;  % 130:         or $a1, $t0, $t1 %
+0000077c : 0c100238;  % 131:         jal printInTile %
+0000077d : 3c011001;  % 134:         lw $t0, mvBlockPosY %
+0000077e : 8c2801e8;  % 134:  %
+0000077f : 21080001;  % 135:         addi $t0, $t0, 1 %
+00000780 : 3c011001;  % 136:         sw $t0, mvBlockPosY %
+00000781 : ac2801e8;  % 136:  %
+00000782 : 08100718;  % 139:         j fimUpdateBlock %
+00000783 : 3c011001;  % 142:     lw $t0, mvBlockPosX %
+00000784 : 8c2801e4;  % 142:  %
+00000785 : 3c011001;  % 143:     lw $t1, mvBlockPosY %
+00000786 : 8c2901e8;  % 143:  %
+00000787 : 21080001;  % 144:     addi $t0, $t0, 1 %
+00000788 : 3c011001;  % 146:     lw $a0, MATUAL %
+00000789 : 8c2400d0;  % 146:  %
+0000078a : 00082821;  % 147:     move $a1, $t0 %
+0000078b : 00093021;  % 148:     move $a2, $t1 %
+0000078c : 0c1001e2;  % 149:     jal getTileInfo %
+0000078d : 24080061;  % 151:     li $t0, 0x61 %
+0000078e : 11020003;  % 152:     beq $t0, $v0, mvRight %
+0000078f : 2408002a;  % 153:     li $t0, 0x2a %
+00000790 : 11020001;  % 154:     beq $t0, $v0, mvRight %
+00000791 : 08100718;  % 155:     j fimUpdateBlock %
+00000792 : 3c011001;  % 159:         lw $a0, MATUAL %
+00000793 : 8c2400d0;  % 159:  %
+00000794 : 24070063;  % 160:         li $a3, 0x63 %
+00000795 : 0c1001ef;  % 161:         jal setTileInfo %
+00000796 : 3c011001;  % 163:         lw $a0, MATUAL %
+00000797 : 8c2400d0;  % 163:  %
+00000798 : 3c011001;  % 164:         lw $a1, mvBlockPosX %
+00000799 : 8c2501e4;  % 164:  %
+0000079a : 3c011001;  % 165:         lw $a2, mvBlockPosY %
+0000079b : 8c2601e8;  % 165:  %
+0000079c : 2407002a;  % 166:         li $a3, 0x2a %
+0000079d : 0c1001ef;  % 167:         jal setTileInfo %
+0000079e : 3c011001;  % 170:         lw $a0, BG_ATUAL %
+0000079f : 8c2401e0;  % 170:  %
+000007a0 : 3c011001;  % 171:         lw $t0, mvBlockPosX %
+000007a1 : 8c2801e4;  % 171:  %
+000007a2 : 00084400;  % 172:         sll $t0, $t0, 16 %
+000007a3 : 3c011001;  % 173:         lw $t1, mvBlockPosY %
+000007a4 : 8c2901e8;  % 173:  %
+000007a5 : 01092825;  % 174:         or $a1, $t0, $t1 %
+000007a6 : 0c10024a;  % 175:         jal printTile %
+000007a7 : 3c011001;  % 178:         lw $a0, MVBLOCK %
+000007a8 : 8c2400a0;  % 178:  %
+000007a9 : 3c011001;  % 179:         lw $t0, mvBlockPosX %
+000007aa : 8c2801e4;  % 179:  %
+000007ab : 21080001;  % 180:         addi $t0, $t0, 1 %
+000007ac : 00084400;  % 181:         sll $t0, $t0, 16 %
+000007ad : 3c011001;  % 182:         lw $t1, mvBlockPosY %
+000007ae : 8c2901e8;  % 182:  %
+000007af : 01092825;  % 183:         or $a1, $t0, $t1 %
+000007b0 : 0c100238;  % 184:         jal printInTile %
+000007b1 : 3c011001;  % 187:         lw $t0, mvBlockPosX %
+000007b2 : 8c2801e4;  % 187:  %
+000007b3 : 21080001;  % 188:         addi $t0, $t0, 1 %
+000007b4 : 3c011001;  % 189:         sw $t0, mvBlockPosX %
+000007b5 : ac2801e4;  % 189:  %
+000007b6 : 08100718;  % 191:         j fimUpdateBlock %
+000007b7 : 3c011001;  % 194:     lw $t0, mvBlockPosX %
+000007b8 : 8c2801e4;  % 194:  %
+000007b9 : 3c011001;  % 195:     lw $t1, mvBlockPosY %
+000007ba : 8c2901e8;  % 195:  %
+000007bb : 2108ffff;  % 196:     addi $t0, $t0, -1 %
+000007bc : 3c011001;  % 198:     lw $a0, MATUAL %
+000007bd : 8c2400d0;  % 198:  %
+000007be : 00082821;  % 199:     move $a1, $t0 %
+000007bf : 00093021;  % 200:     move $a2, $t1 %
+000007c0 : 0c1001e2;  % 201:     jal getTileInfo %
+000007c1 : 24080061;  % 203:     li $t0, 0x61 %
+000007c2 : 11020003;  % 204:     beq $t0, $v0, mvLeft %
+000007c3 : 2408002a;  % 205:     li $t0, 0x2a %
+000007c4 : 11020001;  % 206:     beq $t0, $v0, mvLeft %
+000007c5 : 08100718;  % 207:     j fimUpdateBlock %
+000007c6 : 3c011001;  % 211:         lw $a0, MATUAL %
+000007c7 : 8c2400d0;  % 211:  %
+000007c8 : 24070063;  % 212:         li $a3, 0x63 #caixa %
+000007c9 : 0c1001ef;  % 213:         jal setTileInfo %
+000007ca : 3c011001;  % 215:         lw $a0, MATUAL %
+000007cb : 8c2400d0;  % 215:  %
+000007cc : 3c011001;  % 216:         lw $a1, mvBlockPosX %
+000007cd : 8c2501e4;  % 216:  %
+000007ce : 3c011001;  % 217:         lw $a2, mvBlockPosY %
+000007cf : 8c2601e8;  % 217:  %
+000007d0 : 2407002a;  % 218:         li $a3, 0x2a #caminho livre %
+000007d1 : 0c1001ef;  % 219:         jal setTileInfo %
+000007d2 : 3c011001;  % 222:         lw $a0, BG_ATUAL %
+000007d3 : 8c2401e0;  % 222:  %
+000007d4 : 3c011001;  % 223:         lw $t0, mvBlockPosX %
+000007d5 : 8c2801e4;  % 223:  %
+000007d6 : 00084400;  % 224:         sll $t0, $t0, 16 %
+000007d7 : 3c011001;  % 225:         lw $t1, mvBlockPosY %
+000007d8 : 8c2901e8;  % 225:  %
+000007d9 : 01092825;  % 226:         or $a1, $t0, $t1 %
+000007da : 0c10024a;  % 227:         jal printTile %
+000007db : 3c011001;  % 230:         lw $a0, MVBLOCK %
+000007dc : 8c2400a0;  % 230:  %
+000007dd : 3c011001;  % 231:         lw $t0, mvBlockPosX %
+000007de : 8c2801e4;  % 231:  %
+000007df : 2108ffff;  % 232:         addi $t0, $t0, -1 %
+000007e0 : 00084400;  % 233:         sll $t0, $t0, 16 %
+000007e1 : 3c011001;  % 234:         lw $t1, mvBlockPosY %
+000007e2 : 8c2901e8;  % 234:  %
+000007e3 : 01092825;  % 235:         or $a1, $t0, $t1 %
+000007e4 : 0c100238;  % 236:         jal printInTile %
+000007e5 : 3c011001;  % 239:         lw $t0, mvBlockPosX %
+000007e6 : 8c2801e4;  % 239:  %
+000007e7 : 2108ffff;  % 240:         addi $t0, $t0, -1 %
+000007e8 : 3c011001;  % 241:         sw $t0, mvBlockPosX %
+000007e9 : ac2801e4;  % 241:  %
+000007ea : 08100718;  % 244:         j fimUpdateBlock %
+000007eb : 3c011001;  % 10: 	lw $t5, CONTADOR_MUS %
+000007ec : 8c2d01f0;  % 10:  %
+000007ed : 3c011001;  % 11: 	lw $t3, TAMANHO_MUS %
+000007ee : 8c2b01f4;  % 11:  %
+000007ef : 3c011001;  % 12: 	lw $t4, MUS_ATUAL %
+000007f0 : 8c2c01f8;  % 12:  %
+000007f1 : 018b6020;  % 13: 	add $t4, $t4, $t3 %
+000007f2 : 3c01ffff;  % 15: 	la $t0,0xFFFF0000	# Endereco base %
+000007f3 : 34280000;  % 15:  %
+000007f4 : 24100003;  % 16: 	li $s0,3			#  os dois canais 011 %
+000007f5 : 01ac702a;  % 18: 	slt $t6, $t5, $t4 %
+000007f6 : 15c00002;  % 19: 	bne $t6, $zero, Segue %
+000007f7 : 3c011001;  % 20: 		lw $t5, MUS_ATUAL 	# Se chegou ao fim da musica, recomeca %
+000007f8 : 8c2d01f8;  % 20:  %
+000007f9 : ad000014;  % 23: 	sw $zero,20($t0)	# Aviso ao CODEC que pode iniciar %
+000007fa : 8d090010;  % 25: J1: 	lw $t1,16($t0)		# Aguarda que as amostras L e R estejam prontas %
+000007fb : 1530fffe;  % 26: 	bne $t1,$s0,J1 %
+000007fc : 8daa0000;  % 31: 	lw $t2, 0($t5)	# Le do arquivo %
+000007fd : 8dab0004;  % 32: 	lw $t3, 4($t5) %
+000007fe : ad0a0008;  % 34: 	sw $t2,8($t0)  # Escreve no Canal R  %
+000007ff : ad0b000c;  % 36: 	sw $t3,12($t0)  # Escreve no canal L %
+00000800 : ad100014;  % 38: 	sw $s0,20($t0)   # Avisa ao CODEC que está tudo lido e escrito %
+00000801 : 21ad0008;  % 40: 	addi $t5, $t5, 8 # próximo local da memoria %
+00000802 : 8d0b0010;  % 42: J2: 	lw $t3,16($t0)		# Aguarda o CODEC reconhecer %
+00000803 : 1560fffe;  % 43: 	bne $t3,$zero,J2 %
+00000804 : 3c011001;  % 45: 	sw $t5, CONTADOR_MUS %
+00000805 : ac2d01f0;  % 45:  %
+00000806 : 03e00008;  % 47: 	jr $ra %
+00000807 : 3c011001;  % 53: 	sw $a0, MUS_ATUAL %
+00000808 : ac2401f8;  % 53:  %
+00000809 : 3c011001;  % 54: 	sw $a0, CONTADOR_MUS %
+0000080a : ac2401f0;  % 54:  %
+0000080b : 03e00008;  % 55: 	jr $ra %
+
+END;

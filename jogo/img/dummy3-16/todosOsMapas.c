@@ -142,7 +142,7 @@ int main(){
 int mandaArquivo(char *fileName)
 {
 
-  int cport_nr=3,        /* /dev/ttyS0 (COM1 on windows) */
+  int cport_nr=5,        /* /dev/ttyS0 (COM1 on windows) */
       bdrate=115200;       /* 9600 baud */
 
   char mode[]={'8','N','1',0};
