@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
-#include "rs232.c"
+#include "transmissao/rs232.c"
 #include <windows.h>
 using namespace std;
 
@@ -11,7 +11,7 @@ void sleep(int n)
 {
     for (int i = 0; i < n; ++i);
 }
-static int cport_nr = 5,bdrate=115200;
+static int cport_nr = 4,bdrate=115200;
 static char mode[]={'8','N','2',0};
 
 int mandaArquivo(char *fileName)
@@ -28,7 +28,6 @@ int mandaArquivo(char *fileName)
 	fseek (arq , 0 , SEEK_END);
 	lSize = ftell (arq);
 	rewind (arq);
-	//printf("lSize = %ld\n", lSize);
 
     
 	while(true)
@@ -47,15 +46,13 @@ int enviaBootLoader(){
     int i = 0;
     unsigned char byte, aux0,aux1,aux2,aux3;
     unsigned int nbytes = 0;
-    //FILE *fileIn;
     FILE *arq[4];
 
-    //fileIn = fopen("mapalvl2.bin", "rb");
     
-    arq[0] = fopen("ktext.txt","rb");
-    arq[1] = fopen("kdata.txt","rb");
-    arq[2] = fopen("text.txt","rb");
-    arq[3] = fopen("data.txt","rb");
+    arq[0] = fopen("bootLoader/ktext.txt","rb");
+    arq[1] = fopen("bootLoader/kdata.txt","rb");
+    arq[2] = fopen("bootLoader/text.txt","rb");
+    arq[3] = fopen("bootLoader/data.txt","rb");
     
     
     //Error Handling (fingindo)
@@ -147,11 +144,45 @@ int enviaObjetos(){
     }
 	printf("Enviando Objetos: \n");
 	
-	lSize = mandaArquivo("obj1.bin\0");
-	if(lSize > 0)
-		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-	else
-		return -1;
+	lSize = mandaArquivo("img/objetos/movingBlock.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/movingBlock2.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/barrel.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/plant.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/key.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/bossKey.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/cherry.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/gancho.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/tabua.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/objetos/diamondRed.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
     
 	RS232_CloseComport(cport_nr);
 }
@@ -176,19 +207,137 @@ int enviaMapas(){
 	//	return -1;
 	//Sleep(10);
    
-   lSize = mandaArquivo("lvl2mapa2.bin");
-    if(lSize > 0)
-		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-	else
-		return -1;
+	lSize = mandaArquivo("img/mapas/lvl2mapa0.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
 	Sleep(10);
    
-    lSize = mandaArquivo("lvl2mapa2_matriz.bin");
-    if(lSize > 0)
-		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-	else
-		return -1;
+    lSize = mandaArquivo("img/mapas/lvl2mapa0_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
 	Sleep(10);
+   ////////////////////////////////////////////////////////////
+   
+   	lSize = mandaArquivo("img/mapas/lvl2mapa1.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa1_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	////////////////////////////////////////////////////////////
+		lSize = mandaArquivo("img/mapas/lvl2mapa2.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa2_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	///////////////////////////////////////////////////////////
+		lSize = mandaArquivo("img/mapas/lvl2mapa3.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa3_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	///////////////////////////////////////////////////////////
+		lSize = mandaArquivo("img/mapas/lvl2mapa4.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa4_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa5.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa5_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa6.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa6_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa7.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa7_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa8.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa8_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa9.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa9_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa10.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa10_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa11.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa11_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa12.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa12_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa13.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa13_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa14.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa14_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	///////////////////////////////////////////////////////////	
+		lSize = mandaArquivo("img/mapas/lvl2mapa15.bin");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+   
+    lSize = mandaArquivo("img/mapas/lvl2mapa15_matriz.bin");
+	printf("Enviado o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
    
 	RS232_CloseComport(cport_nr);
 	
@@ -214,32 +363,36 @@ int enviaSeresVivos(){
 	//	return -1;
 	//Sleep(10);
 	
-	lSize = mandaArquivo("max_parado_front.bin\0");
-    if(lSize > 0)
-		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-	else
-		return -1;
+	lSize = mandaArquivo("img/max/max_parado_front.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
 	Sleep(10);
 	
-	lSize = mandaArquivo("max_parado_back.bin\0");
-    if(lSize > 0)
-		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-	else
-		return -1;
+	lSize = mandaArquivo("img/max/max_parado_back.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
 	Sleep(10);
 	
-	lSize = mandaArquivo("max_parado_right.bin\0");
-    if(lSize > 0)
-		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-	else
-		return -1;
+	lSize = mandaArquivo("img/max/max_parado_right.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
 	Sleep(10);
 	
-	lSize = mandaArquivo("max_parado_left.bin\0");
-    if(lSize > 0)
-		printf("Enviando o Objeto de tamanho = %d\n",lSize);
-	else
-		return -1;
+	lSize = mandaArquivo("img/max/max_parado_left.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/max/max_1_front.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/max/max_1_back.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/max/max_1_right.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
+	Sleep(10);
+	
+	lSize = mandaArquivo("img/max/max_1_left.bin\0");
+	printf("Enviando o Objeto de tamanho = %d\n",lSize);
 	Sleep(10);
 	
 	
@@ -260,13 +413,14 @@ int enviaAudio(){
     }
 	printf("Enviando Audio: \n");
 	
-	//Exemplo
-	//lSize = mandaArquivo("obj1.bin\0");
-    //if(lSize > 0)
-	//	printf("Enviando o Objeto de tamanho = %d",lSize);
-	//else
-	//	return -1;
-	//Sleep(10);
+
+	lSize = mandaArquivo("musica/assobio\0");
+	printf("Enviando o Objeto de tamanho = %d",lSize);
+	Sleep(10);
+   
+	lSize = mandaArquivo("musica/batida2\0");
+	printf("Enviando o Objeto de tamanho = %d",lSize);
+	Sleep(10);
    
 	RS232_CloseComport(cport_nr);
 	
@@ -276,61 +430,79 @@ int enviaAudio(){
 
 int main()
 {
-	int errorHandler = 0;
+	int errorHandler = 0,enviaTudo = 0;
 	char c;
 	
-	printf("Envia Boot? ");
+	printf("Envia tudo? ");
 	c = getchar();
 	while ( getchar() != '\n' ); //LIMPA BUFFER
 	if (c =='s' || c == 'S' )
-		errorHandler = enviaBootLoader();
-	if (errorHandler==-1){
-		printf("\n#####Erro interno####\n");
-		return 0;
+	{
+		
+		enviaBootLoader();
+		Sleep(100);
+		enviaMapas();
+		enviaSeresVivos();
+		enviaObjetos();
+		enviaAudio();
+		enviaTudo = 1;
 	}
 
-	printf("Envia Mapas? ");
-	c = getchar();
-	while ( getchar() != '\n' ); //LIMPA BUFFER
-	if (c =='s' || c == 'S' )
-		errorHandler = enviaMapas();
-	if (errorHandler==-1){
-		printf("\n#####Erro interno####\n");
-		return 0;
-	}	
 	
+	if(enviaTudo == 0){
+		
+		printf("Envia Boot? ");
+		c = getchar();
+		while ( getchar() != '\n' ); //LIMPA BUFFER
+		if (c =='s' || c == 'S' )
+			errorHandler = enviaBootLoader();
+		if (errorHandler==-1){
+			printf("\n#####Erro interno####\n");
+			return 0;
+		}
 	
-	printf("Envia Objetos? ");
-	c = getchar();
-	while ( getchar() != '\n' ); //LIMPA BUFFER
-	if (c =='s' || c == 'S' )
-		errorHandler = enviaObjetos();
-	if (errorHandler==-1){
-		printf("\n#####Erro interno####\n");
-		return 0;
-	}	
-	
-	printf("Envia Seres vivos? ");
-	c = getchar();
-	while ( getchar() != '\n' ); //LIMPA BUFFER
-	if (c =='s' || c == 'S' )
-		errorHandler = enviaSeresVivos();
-	if (errorHandler==-1){
-		printf("\n#####Erro interno####\n");
-		return 0;
-	}	
-	
-	
-	printf("Envia Audio? ");
-	c = getchar();
-	while ( getchar() != '\n' ); //LIMPA BUFFER
-	if (c =='s' || c == 'S' )
-		errorHandler = enviaAudio();
-	if (errorHandler==-1){
-		printf("\n#####Erro interno####\n");
-		return 0;
+		printf("Envia Mapas? ");
+		c = getchar();
+		while ( getchar() != '\n' ); //LIMPA BUFFER
+		if (c =='s' || c == 'S' )
+			errorHandler = enviaMapas();
+		if (errorHandler==-1){
+			printf("\n#####Erro interno####\n");
+			return 0;
+		}	
+		
+		printf("Envia Seres vivos? ");
+		c = getchar();
+		while ( getchar() != '\n' ); //LIMPA BUFFER
+		if (c =='s' || c == 'S' )
+			errorHandler = enviaSeresVivos();
+		if (errorHandler==-1){
+			printf("\n#####Erro interno####\n");
+			return 0;
+		}
+		
+		
+		printf("Envia Objetos? ");
+		c = getchar();
+		while ( getchar() != '\n' ); //LIMPA BUFFER
+		if (c =='s' || c == 'S' )
+			errorHandler = enviaObjetos();
+		if (errorHandler==-1){
+			printf("\n#####Erro interno####\n");
+			return 0;
+		}		
+		
+		
+		printf("Envia Audio? ");
+		c = getchar();
+		while ( getchar() != '\n' ); //LIMPA BUFFER
+		if (c =='s' || c == 'S' )
+			errorHandler = enviaAudio();
+		if (errorHandler==-1){
+			printf("\n#####Erro interno####\n");
+			return 0;
+		}
 	}
-	
     return 0;
 }
 
